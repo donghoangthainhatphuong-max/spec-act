@@ -1,0 +1,39 @@
+/* ---------- additions on top of design v3 ---------- */
+.photos.rest { grid-template-columns: repeat(3, 1fr); }
+.photos button { cursor: zoom-in; }
+.autolink { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.only-mobile.search { display: flex; }
+@media (min-width: 861px) { .only-mobile.search { display: none; } }
+.btn:disabled, .icon-btn:disabled { cursor: not-allowed; }
+.sealed .remember { margin-top: 2px; }
+dialog.pin-dialog { text-align: center; }
+.pickgrid .pick span { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.set-row .btn.sm { flex: none; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+@media (max-width: 860px) {
+  .welcome { grid-template-rows: auto 1fr; }
+  .composer .prompt { font-size: 17px; }
+}
+@media (max-width: 520px) {
+  .add-friend { flex-wrap: wrap; }
+  .set-row { padding: 14px 16px; }
+  .post-text { font-size: 17.5px; }
+}
+
+/* On phones the keypad/forms are the point of the screen: shrink the artwork so they fit without scrolling. */
+@media (max-width: 860px) {
+  .welcome.compact .art { padding: 68px 20px 14px; gap: 8px; }
+  .welcome.compact .orbit { width: min(150px, 42vw); }
+  .welcome.compact .orbit .avatar.xl { width: 34px; height: 34px; font-size: 11px; }
+  .welcome.compact .orbit .avatar.lg { width: 28px; height: 28px; font-size: 10px; }
+  .welcome.compact .orbit .tick { width: 14px; height: 14px; }
+  .welcome.compact .orbit .tick svg { width: 8px; height: 8px; }
+  .welcome.compact .art .quote { display: none; }
+  .welcome.compact .panel .body { padding-top: 14px; gap: 12px; }
+  .welcome.compact .trust { display: none; }
+}
+
+@media (max-width: 480px) {
+  .post-head .pile { display: none; }
+  .banner { font-size: 13px; }
+}

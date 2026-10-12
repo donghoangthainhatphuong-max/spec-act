@@ -1,0 +1,37 @@
+/* ---------- compose ---------- */
+.write { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+.write .textarea { border: 0; padding: 4px 2px; min-height: 150px; resize: none; font-family: var(--read); font-size: 21px; line-height: 1.5; box-shadow: none; background: transparent; }
+.write .textarea:focus { box-shadow: none; }
+.aud-line { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); }
+.aud-line.has { color: var(--accent); font-weight: 550; }
+.thumbs { display: flex; gap: 8px; flex-wrap: wrap; }
+.thumb { position: relative; width: 104px; height: 104px; border-radius: 14px; overflow: hidden; background: var(--sunken); animation: menu .2s ease-out; }
+.thumb img { width: 100%; height: 100%; object-fit: cover; }
+.thumb button { position: absolute; top: 6px; inset-inline-end: 6px; width: 26px; height: 26px; border-radius: 50%; border: 0; background: rgba(0,0,0,.55); color: #fff; display: flex; align-items: center; justify-content: center; }
+.add-photo { width: 104px; height: 104px; border-radius: 14px; border: 1.5px dashed var(--line); background: transparent; color: var(--muted); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12.5px; font-weight: 500; }
+.add-photo:hover { border-color: var(--accent); color: var(--accent); }
+.pickgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 6px; }
+.pick { position: relative; border: 0; background: transparent; border-radius: 16px; padding: 10px 4px 8px; display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+.pick:hover { background: var(--sunken); }
+.pick .avatar { transition: transform .2s cubic-bezier(.3,.7,.4,1.5), box-shadow .2s; opacity: .85; }
+.pick.on { color: var(--text); font-weight: 650; }
+.pick.on .avatar { opacity: 1; transform: scale(1.04); box-shadow: 0 0 0 3px var(--surface), 0 0 0 5px var(--accent); }
+.pick .tick { position: absolute; top: 6px; inset-inline-end: calc(50% - 32px); width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: var(--on-accent); display: grid; place-items: center; box-shadow: 0 0 0 2px var(--surface); transform: scale(0); transition: transform .2s cubic-bezier(.3,.7,.4,1.6); }
+.pick.on .tick { transform: scale(1); }
+.row-between { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.footer-actions { display: flex; justify-content: flex-end; gap: 8px; }
+
+
+/* ---------- friends ---------- */
+.add-friend { display: flex; gap: 8px; }
+.fgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.fcard { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 18px; display: flex; flex-direction: column; gap: 14px; }
+.fcard .top-row { display: flex; align-items: center; gap: 14px; }
+.fcard .who { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.35; }
+.fcard .who b { font-size: 16px; font-weight: 650; }
+.fcard .who span { font-size: 13px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fcard .sees { display: flex; align-items: center; gap: 10px; justify-content: space-between; font-size: 13.5px; color: var(--muted); padding-top: 14px; border-top: 1px solid var(--line); min-height: 50px; }
+.fcard .mini-photos { display: flex; }
+.fcard .mini-photos img { width: 30px; height: 30px; border-radius: 8px; object-fit: cover; box-shadow: 0 0 0 2px var(--surface); }
+.fcard .mini-photos img + img { margin-inline-start: -8px; }
+

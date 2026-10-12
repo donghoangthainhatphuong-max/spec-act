@@ -1,0 +1,319 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { FakeDrive } from './fakeDrive';
+
+vi.mock('../src/config', async (orig) => {
+  const mod = await orig();
+  return { ...mod, config: { ...mod.config, pbkdf2Iterations: 1000, postKdfIterations: 1000, syncIntervalSeconds: 0 } };
+});
+vi.mock('../src/services/image', () => ({
+  prepareImage: async (file) => ({
+    name: `${(file.name || 'p').replace(/\.[^.]+$/, '')}.jpg`,
+    main: { blob: new Blob([new Uint8Array([0xff, 0xd8, ...new TextEncoder().encode(`MAIN-${file.name}`)])], { type: 'image/jpeg' }), w: 1600, h: 1200 },
+    thumb: { blob: new Blob([new Uint8Array([0xff, 0xd8, ...new TextEncoder().encode(`THUMB-${file.name}`)])], { type: 'image/jpeg' }), w: 480, h: 360 },
+  }),
+}));
+
+const { DriveClient } = await import('../src/services/drive');
+const { DriveRepo } = await import('../src/services/repo');
+const { vault } = await import('../src/services/secureStore');
+
+let fake;
+const mk = (email, name) => {
+  const token = fake.addUser(email, name);
+  const drive = new DriveClient({ getToken: async () => token });
+  return new DriveRepo({ drive, me: { email, name }, vault });
+};
+const file = (name) => ({ name, type: 'image/jpeg', size: 10 });
+
+beforeEach(async () => {
+  fake = new FakeDrive();
+  globalThis.fetch = fake.fetch;
+  URL.createObjectURL ||= () => 'blob:fake';
+  URL.revokeObjectURL ||= () => {};
+  await vault.create('123456');
+});
+
+describe('layout', () => {
+  it('creates SPECACT/posts once and reuses it', async () => {
+    const a = mk('alice@gmail.com', 'Alice');
+    const L = await a.ensureLayout();
+    expect(fake.files.get(L.rootId).name).toBe('SPECACT');
+    expect(fake.files.get(L.postsId).name).toBe('posts');
+    const again = new DriveRepo({ drive: a.drive, me: { email: 'alice@gmail.com' }, vault });
+    const L2 = await again.ensureLayout();
+    expect(L2.rootId).toBe(L.rootId);
+    expect(fake.find((f) => f.name === 'SPECACT')).toHaveLength(1);
+  });
+});
+
+describe('posts and sharing', () => {
+  it('stores each post in its own folder with post.json, comments.json and media/', async () => {
+    const alice = mk('alice@gmail.com', 'Alice');
+    const { post } = await alice.createPost({ text: 'Hello @bob@gmail.com', files: [file('a.jpg'), file('b.jpg')], audience: { 'bob@gmail.com': 'view' } });
+    const folder = fake.files.get(post.id);
+    expect(folder.parents).toEqual([(await alice.ensureLayout()).postsId]);
+    const kids = fake.find((f) => f.parents.includes(post.id)).map((f) => f.name).sort();
+    expect(kids).toEqual(['comments.json', 'media', 'post.json']);
+    const media = fake.find((f) => f.parents.includes(post.ids.mf));
+    expect(media).toHaveLength(4); // 2 photos + 2 thumbnails
+    const doc = JSON.parse(fake.text(fake.files.get(post.ids.pj)));
+    expect(doc.text).toBe('Hello @bob@gmail.com');
+    expect(doc.mentions).toEqual(['bob@gmail.com']);
+    expect(doc.audience).toEqual({ 'bob@gmail.com': 'view' });
+    expect(folder.properties).toMatchObject({ specact: 'post', pj: post.ids.pj, cj: post.ids.cj, mf: post.ids.mf });
+  });
+
+  it('only people with a permission can read; viewers cannot write; commenters can write comments only', async () => {
+    const alice = mk('alice@gmail.com', 'Alice');
+    const bob = mk('bob@gmail.com', 'Bob');
+    const carol = mk('carol@gmail.com', 'Carol');
+    const dave = mk('dave@gmail.com', 'Dave');
+    const { post } = await alice.createPost({ text: 'secret-ish', files: [file('a.jpg')], audience: { 'bob@gmail.com': 'view', 'carol@gmail.com': 'comment' } });
+
+    expect((await bob.openPost(post.id)).role).toBe('view');
+    expect((await carol.openPost(post.id)).role).toBe('comment');
+    await expect(dave.openPost(post.id)).rejects.toMatchObject({ code: 'forbidden' });
+
+    const bobPost = await bob.openPost(post.id);
+    await expect(bob.addComment(bobPost, 'hi')).rejects.toMatchObject({ code: 'forbidden' });
+    const carolPost = await carol.openPost(post.id);
+    const res = await carol.addComment(carolPost, 'nice @alice@gmail.com');
+    expect(res.comments).toHaveLength(1);
+    expect((await bob.loadComments(bobPost)).comments[0]).toMatchObject({ by: 'carol@gmail.com', text: 'nice @alice@gmail.com' });
+
+    // carol must not be able to rewrite the post itself
+    await expect(carol.drive.updateJson(post.ids.pj, { hacked: true })).rejects.toMatchObject({ status: 403 });
+    // likes
+    const liked = await carol.toggleLike(carolPost);
+    expect(liked.likes).toEqual(['carol@gmail.com']);
+    expect((await carol.toggleLike(carolPost)).likes).toEqual([]);
+    // only the author of a comment or the post owner can delete it
+    await expect(carol.deleteComment(carolPost, 'nope')).resolves.toBeTruthy();
+    const cid = res.comments[0].id;
+    expect((await alice.deleteComment(await alice.openPost(post.id), cid)).comments).toHaveLength(0);
+  });
+
+  it('builds a per-user index of shared posts and only re-downloads changed posts', async () => {
+    const alice = mk('alice@gmail.com', 'Alice');
+    const bob = mk('bob@gmail.com', 'Bob');
+    await alice.createPost({ text: 'one', files: [file('a.jpg')], audience: { 'bob@gmail.com': 'view' } });
+    const { post: second } = await alice.createPost({ text: 'two', files: [], audience: { 'bob@gmail.com': 'comment' } });
+    await alice.createPost({ text: 'private', files: [], audience: {} });
+
+    let idx = await bob.syncIndex();
+    expect(idx.shared.map((e) => e.text).sort()).toEqual(['one', 'two']);
+    expect(idx.mine).toHaveLength(0);
+    expect(idx.shared[0].owner.email).toBe('alice@gmail.com');
+    await bob.flush();
+    const L = await bob.ensureLayout();
+    expect(JSON.parse(fake.text(fake.files.get(L.indexId))).shared).toHaveLength(2);
+
+    fake.log.length = 0;
+    await bob.syncIndex();
+    expect(fake.log.filter((l) => l.endsWith('alt=media'))).toHaveLength(0); // nothing changed => no content downloads
+
+    // a new device with an empty local cache starts from the Drive copy of the index
+    const fresh = new DriveRepo({ drive: bob.drive, me: { email: 'bob@gmail.com' }, vault });
+    await vault.remove('index:bob@gmail.com');
+    expect((await fresh.loadIndex()).shared).toHaveLength(2);
+
+    // edit => rev bump => only that post re-downloaded
+    const aliceFull = await alice.openPost(second.id);
+    await alice.updatePost(aliceFull, { text: 'two (edited)', keepMedia: [], files: [] });
+    fake.log.length = 0;
+    idx = await bob.syncIndex();
+    expect(fake.log.filter((l) => l.endsWith('alt=media'))).toHaveLength(1);
+    expect(idx.shared.map((e) => e.text).sort()).toEqual(['one', 'two (edited)']);
+  });
+
+  it('changes roles, revokes access and removes the post from the viewer index', async () => {
+    const alice = mk('alice@gmail.com', 'Alice');
+    const bob = mk('bob@gmail.com', 'Bob');
+    const { post } = await alice.createPost({ text: 'hi', files: [], audience: { 'bob@gmail.com': 'view' } });
+    expect((await bob.openPost(post.id)).role).toBe('view');
+
+    let r = await alice.setAccess(post, 'bob@gmail.com', 'comment');
+    expect(r.warnings).toEqual([]);
+    expect((await bob.openPost(post.id)).role).toBe('comment');
+
+    r = await alice.setAccess(r.post, 'bob@gmail.com', 'view');
+    expect((await bob.openPost(post.id)).role).toBe('view');
+
+    const audience = await alice.readAudience(r.post);
+    expect(audience.audience).toEqual({ 'bob@gmail.com': 'view' });
+
+    await bob.syncIndex();
+    expect((await bob.loadIndex()).shared).toHaveLength(1);
+    await alice.setAccess(r.post, 'bob@gmail.com', null);
+    await expect(bob.openPost(post.id)).rejects.toMatchObject({ code: 'forbidden' });
+    expect((await bob.syncIndex()).shared).toHaveLength(0);
+  });
+
+  it('updates text and media, deleting files that are no longer referenced', async () => {
+    const alice = mk('alice@gmail.com', 'Alice');
+    const { post } = await alice.createPost({ text: 'v1', files: [file('a.jpg'), file('b.jpg')], audience: {} });
+    const keep = post.media[1].id;
+    const { post: next } = await alice.updatePost(post, { text: 'v2 @bob@gmail.com', keepMedia: [keep], files: [file('c.jpg')] });
+    expect(next.media.map((m) => m.id)).toContain(keep);
+    expect(next.media).toHaveLength(2);
+    expect(fake.find((f) => f.parents.includes(post.ids.mf))).toHaveLength(4);
+    expect(fake.files.has(post.media[0].id)).toBe(false);
+    expect(next.mentions).toEqual(['bob@gmail.com']);
+    expect((await alice.loadIndex()).mine[0].text).toContain('v2');
+  });
+
+  it('refuses edits from non-owners and respects the image limit', async () => {
+    const alice = mk('alice@gmail.com', 'Alice');
+    const bob = mk('bob@gmail.com', 'Bob');
+    const { post } = await alice.createPost({ text: 'x', files: [], audience: { 'bob@gmail.com': 'comment' } });
+    const bobPost = await bob.openPost(post.id);
+    await expect(bob.updatePost(bobPost, { text: 'hack' })).rejects.toMatchObject({ code: 'forbidden' });
+    await expect(bob.deletePost(bobPost)).rejects.toMatchObject({ code: 'forbidden' });
+    await expect(alice.createPost({ text: 'x', files: Array.from({ length: 11 }, (_, i) => file(`${i}.jpg`)), audience: {} })).rejects.toMatchObject({ code: 'too-many-images' });
+  });
+
+  it('deletes (trash) and rolls back failed creations', async () => {
+    const alice = mk('alice@gmail.com', 'Alice');
+    const bob = mk('bob@gmail.com', 'Bob');
+    const { post } = await alice.createPost({ text: 'bye', files: [], audience: { 'bob@gmail.com': 'view' } });
+    await bob.syncIndex();
+    await alice.deletePost(post);
+    expect(fake.files.get(post.id).trashed).toBe(true);
+    expect((await alice.loadIndex()).mine).toHaveLength(0);
+    expect((await bob.syncIndex()).shared).toHaveLength(0);
+
+    // a failure half-way trashes the half-written folder
+    const bad = mk('eve@gmail.com', 'Eve');
+    const orig = bad.drive.createJson.bind(bad.drive);
+    bad.drive.createJson = async (name, ...rest) => { if (name === 'post.json') throw new Error('boom'); return orig(name, ...rest); };
+    await expect(bad.createPost({ text: 'x', files: [], audience: {} })).rejects.toThrow('boom');
+    const L = await bad.ensureLayout();
+    expect(fake.find((f) => f.parents.includes(L.postsId) && !f.trashed)).toHaveLength(0);
+  });
+
+  it('keeps going when one recipient cannot be added and reports it', async () => {
+    const alice = mk('alice@gmail.com', 'Alice');
+    const { post, warnings } = await alice.createPost({ text: 'x', files: [], audience: { 'bob@gmail.com': 'view', 'not-an-email': 'view' } });
+    expect(warnings.map((w) => w.email)).toEqual(['not-an-email']);
+    expect(post.audience).toEqual({ 'bob@gmail.com': 'view' });
+    const doc = JSON.parse(fake.text(fake.files.get(post.ids.pj)));
+    expect(doc.audience).toEqual({ 'bob@gmail.com': 'view' });
+  });
+});
+
+describe('sharing edge cases', () => {
+  it('does not revoke people added through the Drive UI when changing someone else', async () => {
+    const alice = mk('alice@gmail.com', 'Alice');
+    const bob = mk('bob@gmail.com', 'Bob');
+    const carol = mk('carol@gmail.com', 'Carol');
+    const { post } = await alice.createPost({ text: 'x', files: [], audience: {} });
+    await alice.drive.addPermission(post.id, { email: 'carol@gmail.com', role: 'reader' }); // shared by hand in Drive
+    expect((await alice.readAudience(post)).audience).toEqual({ 'carol@gmail.com': 'view' });
+    await alice.setAccess(post, 'bob@gmail.com', 'view');
+    expect((await carol.openPost(post.id)).text).toBe('x');
+    expect((await bob.openPost(post.id)).text).toBe('x');
+  });
+
+  it('never records access in post.json that Drive refused to grant', async () => {
+    const alice = mk('alice@gmail.com', 'Alice');
+    const { post } = await alice.createPost({ text: 'x', files: [], audience: {} });
+    const { post: next, warnings } = await alice.setAccess(post, 'not-an-email', 'view');
+    expect(warnings.map((w) => w.email)).toEqual(['not-an-email']);
+    expect(next.audience).toEqual({});
+    expect(JSON.parse(fake.text(fake.files.get(post.ids.pj))).audience).toEqual({});
+  });
+
+  it('treats a trashed post as gone', async () => {
+    const alice = mk('alice@gmail.com', 'Alice');
+    const bob = mk('bob@gmail.com', 'Bob');
+    const { post } = await alice.createPost({ text: 'x', files: [], audience: { 'bob@gmail.com': 'view' } });
+    await alice.deletePost(post);
+    await expect(bob.openPost(post.id)).rejects.toMatchObject({ code: 'not-found' });
+  });
+});
+
+describe('password protected posts', () => {
+  it('seals text, comments and media; only the password opens them', async () => {
+    const alice = mk('alice@gmail.com', 'Alice');
+    const bob = mk('bob@gmail.com', 'Bob');
+    const { post } = await alice.createPost({
+      text: 'the-launch-codes-are-in-the-drawer', files: [file('plan.jpg')], audience: { 'bob@gmail.com': 'comment' }, password: 'open-sesame',
+    });
+    expect(post.protected).toBe(true);
+    expect(post.text).toBe('the-launch-codes-are-in-the-drawer');
+
+    // nothing readable at rest in Drive
+    expect(fake.allBytesContain('launch-codes')).toBe(false);
+    expect(fake.allBytesContain('plan')).toBe(false);
+    expect(fake.allBytesContain('MAIN-plan')).toBe(false);
+    const entry = (await alice.loadIndex()).mine[0];
+    expect(entry.text).toBe('');
+    expect(entry.media).toEqual([]);
+
+    const locked = await bob.openPost(post.id);
+    expect(locked.locked).toBe(true);
+    expect(locked.text).toBe('');
+    await expect(bob.unlockAndOpen(post.id, 'wrong')).rejects.toMatchObject({ code: 'wrong-password' });
+    const open = await bob.unlockAndOpen(post.id, 'open-sesame');
+    expect(open.locked).toBe(false);
+    expect(open.text).toBe('the-launch-codes-are-in-the-drawer');
+
+    const url = await bob.mediaUrl(open, open.media[0]);
+    expect(url).toBeTruthy();
+
+    const withComment = await bob.addComment(open, 'sealed reply');
+    expect(withComment.comments[0].text).toBe('sealed reply');
+    expect(fake.allBytesContain('sealed reply')).toBe(false);
+    expect((await alice.loadComments(await alice.openPost(post.id))).comments[0].text).toBe('sealed reply');
+  });
+
+  it('the owner keeps access on the same device but a fresh repo needs the password', async () => {
+    const alice = mk('alice@gmail.com', 'Alice');
+    const { post } = await alice.createPost({ text: 'mine', files: [], audience: {}, password: 'pw' });
+    const again = new DriveRepo({ drive: alice.drive, me: { email: 'alice@gmail.com' }, vault });
+    await again.restoreKeys();
+    expect((await again.openPost(post.id)).text).toBe('mine');
+    await vault.remove('postkeys:alice@gmail.com');
+    const other = new DriveRepo({ drive: alice.drive, me: { email: 'alice@gmail.com' }, vault });
+    expect((await other.openPost(post.id)).locked).toBe(true);
+  });
+
+  it('changing the password keeps old content readable and invalidates the old password', async () => {
+    const alice = mk('alice@gmail.com', 'Alice');
+    const bob = mk('bob@gmail.com', 'Bob');
+    const { post } = await alice.createPost({ text: 'rotate me', files: [file('a.jpg')], audience: { 'bob@gmail.com': 'view' }, password: 'old' });
+    const { post: next } = await alice.updatePost(post, { text: 'rotate me', newPassword: 'new', keepMedia: post.media.map((m) => m.id), files: [] });
+    await expect(bob.unlockAndOpen(post.id, 'old')).rejects.toMatchObject({ code: 'wrong-password' });
+    const open = await bob.unlockAndOpen(post.id, 'new');
+    expect(open.text).toBe('rotate me');
+    expect(open.media).toHaveLength(1);
+    expect(next.protected).toBe(true);
+  });
+
+  it('link sharing needs a password and lets anyone with the link plus password in', async () => {
+    const alice = mk('alice@gmail.com', 'Alice');
+    const dave = mk('dave@gmail.com', 'Dave');
+    const plain = await alice.createPost({ text: 'plain', files: [], audience: {}, linkShare: true });
+    expect(plain.post.linkShare).toBe(false);
+    await expect(dave.openPost(plain.post.id)).rejects.toMatchObject({ code: 'forbidden' });
+
+    const { post } = await alice.createPost({ text: 'via link', files: [], audience: {}, password: 'pw', linkShare: true });
+    expect(post.linkShare).toBe(true);
+    expect((await dave.openPost(post.id)).locked).toBe(true);
+    expect((await dave.unlockAndOpen(post.id, 'pw')).text).toBe('via link');
+    expect((await dave.loadIndex()).shared[0].via).toBe('link');
+    const off = await alice.setLinkShare(post, false);
+    expect(off.linkShare).toBe(false);
+    await expect(dave.openPost(post.id)).rejects.toMatchObject({ code: 'forbidden' });
+  });
+});
+
+describe('contacts', () => {
+  it('persist to Drive and to the local vault', async () => {
+    const alice = mk('alice@gmail.com', 'Alice');
+    await alice.saveContacts([{ email: 'bob@gmail.com', name: 'Bob', addedAt: 1 }]);
+    const other = new DriveRepo({ drive: alice.drive, me: { email: 'alice@gmail.com' }, vault });
+    await vault.remove('contacts:alice@gmail.com');
+    expect(await other.loadContacts()).toEqual([{ email: 'bob@gmail.com', name: 'Bob', addedAt: 1 }]);
+  });
+});

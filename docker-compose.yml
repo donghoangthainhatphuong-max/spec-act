@@ -1,0 +1,24 @@
+# docker compose up -d --build   →   http://localhost:${SPECACT_PORT:-8088}
+# Edit .env and run `docker compose up -d` again to change any setting (no rebuild needed,
+# except VITE_BASE_PATH).
+name: spec-act
+
+services:
+  specact:
+    image: spec-act:latest
+    build:
+      context: .
+      args:
+        VITE_BASE_PATH: ${VITE_BASE_PATH:-/}
+    container_name: spec-act
+    env_file: .env
+    ports:
+      - "${SPECACT_PORT:-8088}:8080"
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
