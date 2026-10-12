@@ -9,7 +9,7 @@ import { config } from '../config';
 import { b64d, b64e, createProtection, decryptBytes, decryptJson, encryptBytes, encryptJson, importRawKey, randomId, rewrapProtection, unlockProtection } from './crypto';
 import { DriveError, MIME_FOLDER, qs } from './drive';
 import { normEmail, extractMentions, prettyName } from './mentions';
-import { ROLE_COMMENT, ROLE_VIEW, buildPostDoc, byNewest, cleanAudience, emptyIndex, folderNameFor, openPostDoc, toEntry } from './postModel';
+import { ROLE_COMMENT, ROLE_VIEW, buildPostDoc, canCommentWith, normMode, byNewest, cleanAudience, emptyIndex, folderNameFor, openPostDoc, toEntry } from './postModel';
 import { prepareImage } from './image';
 import { debounce, mapLimit } from './util';
 
@@ -299,8 +299,10 @@ export class DriveRepo {
     const ownerEmail = post.owner.email || normEmail(f.owners?.[0]?.emailAddress);
     if (ownerEmail === this.me.email && f.parents?.[0]) return this.openPost(f.parents[0]); // my own post: use the real folder
     post.owner = { email: ownerEmail, name: post.owner.name || f.owners?.[0]?.displayName || prettyName(ownerEmail) };
-    const ids = { pj: id, cj: null, mf: null };
-    const full = { ...post, id, mine: false, role: ROLE_VIEW, ids, doc, rev: String(post.updatedAt), publicFile: true };
+    const ids = { pj: id, cj: post.commentMode === 'open' ? post.cj : null, mf: null };
+    let role = ROLE_VIEW;
+    if (ids.cj) { try { const c = await this.drive.get(ids.cj, 'capabilities(canEdit)'); if (c.capabilities?.canEdit) role = ROLE_COMMENT; } catch { /* read only */ } }
+    const full = { ...post, id, mine: false, role, ids, doc, rev: String(post.updatedAt), publicFile: true };
     await this.loadIndex();
     this.#upsertEntry(toEntry(post, { id, ids, rev: full.rev }), { link: true });
     this.#commitIndex().catch(() => {});
@@ -400,7 +402,7 @@ export class DriveRepo {
       const cj = await this.drive.createJson('comments.json', folder.id, { v: 1, comments: [], likes: [] });
       const doc = await buildPostDoc({
         id, owner: this.me, createdAt, updatedAt: createdAt, text, media, mentions, audience,
-        linkShare: !!input.linkShare, protection: prot?.protection || null, key: prot?.key,
+        linkShare: !!input.linkShare, commentMode: normMode(input.commentMode), cj: cj.id, protection: prot?.protection || null, key: prot?.key,
       });
       const pj = await this.drive.createJson('post.json', folder.id, doc);
       await this.drive.updateMeta(folder.id, { properties: { specact: 'post', v: '1', rev: String(createdAt), pj: pj.id, cj: cj.id, mf: mf.id } });
@@ -409,10 +411,13 @@ export class DriveRepo {
       // Nothing is shared until the content is complete.
       onProgress({ stage: 'share' });
       for (const [email, role] of Object.entries(audience)) {
-        try { await this.#grant(folder.id, cj.id, email, role); } catch (e) { warnings.push({ email, error: e }); delete doc.audience[email]; }
+        try { await this.#grant(folder.id, cj.id, email, role, doc.commentMode); } catch (e) { warnings.push({ email, error: e }); delete doc.audience[email]; }
       }
       if (doc.linkShare) {
         try { await this.#applyLink({ ids, media }, true); } catch (e) { doc.linkShare = false; warnings.push({ email: '*', error: e }); }
+      }
+      if (doc.commentMode === 'open' && doc.linkShare) {
+        try { await this.#setAnyoneComment(cj.id, true); } catch (e) { warnings.push({ email: '*', error: e }); }
       }
       if (warnings.length) await this.drive.updateJson(pj.id, doc);
       if (prot) await this.#rememberKey(folder.id, prot.raw, true);
@@ -467,9 +472,10 @@ export class DriveRepo {
       protection = await rewrapProtection(raw, input.newPassword, config.postKdfIterations);
     }
     const linkShare = input.linkShare ?? post.linkShare;
+    const commentMode = normMode(input.commentMode ?? post.commentMode);
     const doc = await buildPostDoc({
       id: post.pid, owner: post.owner, createdAt: post.createdAt, updatedAt,
-      text, media: [...kept, ...added], mentions: extractMentions(text), audience, linkShare, protection, key,
+      text, media: [...kept, ...added], mentions: extractMentions(text), audience, linkShare, commentMode, cj: post.ids.cj, protection, key,
     });
     await this.drive.updateJson(post.ids.pj, doc);
     await this.drive.updateMeta(post.id, { properties: { rev: String(updatedAt) } });
@@ -478,11 +484,15 @@ export class DriveRepo {
     const dropped = post.media.filter((m) => !keepIds.has(m.id));
     for (const m of dropped) for (const fid of [m.id, m.thumb]) if (fid) { try { await this.drive.remove(fid); } catch { /* already gone */ } this.#forgetBlob(fid); }
 
-    const warnings = touchAudience ? await this.#applyAudience(post, audience, truth?.audience) : [];
+    const warnings = touchAudience ? await this.#applyAudience(post, audience, truth?.audience, commentMode) : [];
     if (linkShare !== post.linkShare || (linkShare && added.length)) {
       // when only photos were added, just the new files need opening up; a toggle touches every file
       const files = linkShare !== post.linkShare ? [...kept, ...added] : added;
       try { await this.#applyLink({ ids: post.ids, media: files, pj: linkShare !== post.linkShare }, linkShare); } catch (e) { doc.linkShare = post.linkShare; warnings.push({ email: '*', error: e }); }
+    }
+    if (commentMode !== post.commentMode || linkShare !== post.linkShare) {
+      // who may write comments changes with the mode and with link sharing: bring comments.json in line
+      try { await this.#syncCommenting(post.ids.cj, doc.audience, commentMode, linkShare); } catch (e) { doc.commentMode = post.commentMode; warnings.push({ email: '*', error: e }); }
     }
     if (warnings.length) {
       // never claim access in post.json that Drive did not actually grant
@@ -533,11 +543,11 @@ export class DriveRepo {
    * view    -> reader on the folder
    * comment -> reader on the folder + writer on comments.json only (so a commenter can never edit the post itself)
    */
-  async #grant(folderId, cjId, email, role) {
+  async #grant(folderId, cjId, email, role, mode = 'shared') {
     const notify = config.notifyEmail;
     const folder = await this.#permsByEmail(folderId);
     if (!folder.map.has(email)) await this.drive.addPermission(folderId, { email, role: 'reader', notify });
-    if (cjId) await this.#setCommentAccess(cjId, email, role === ROLE_COMMENT);
+    if (cjId) await this.#setCommentAccess(cjId, email, canCommentWith(mode, role));
   }
 
   async #setCommentAccess(cjId, email, allow) {
@@ -554,6 +564,24 @@ export class DriveRepo {
     }
   }
 
+  /** Writer on comments.json for "anyone with the link" (open comments on a public post). The folder is never opened. */
+  async #setAnyoneComment(cjId, enabled) {
+    const { perms } = await this.#permsByEmail(cjId);
+    const any = perms.find((p) => p.type === 'anyone');
+    if (enabled) {
+      if (!any) await this.drive.addPermission(cjId, { type: 'anyone', role: 'writer' });
+      else if (any.role !== 'writer') await this.drive.updatePermission(cjId, any.id, 'writer');
+    } else if (any) {
+      try { await this.drive.removePermission(cjId, any.id); } catch (e) { if (!(e instanceof DriveError && e.notFound)) throw e; }
+    }
+  }
+
+  async #syncCommenting(cjId, audience, mode, linkShare) {
+    if (!cjId) return;
+    for (const [email, role] of Object.entries(audience || {})) await this.#setCommentAccess(cjId, email, canCommentWith(mode, role));
+    await this.#setAnyoneComment(cjId, mode === 'open' && !!linkShare);
+  }
+
   async #revoke(folderId, cjId, email) {
     if (cjId) { try { await this.#setCommentAccess(cjId, email, false); } catch { /* the folder permission removal below is what matters */ } }
     const { map } = await this.#permsByEmail(folderId);
@@ -561,12 +589,12 @@ export class DriveRepo {
     if (p && p.role !== 'owner') await this.drive.removePermission(folderId, p.id);
   }
 
-  async #applyAudience(post, wanted, known) {
+  async #applyAudience(post, wanted, known, mode = 'shared') {
     const warnings = [];
     // trust Drive over the mirror: sharing may also have been changed from the Drive UI
     const current = known ?? (await this.readAudience(post).catch(() => ({ audience: post.audience || {} }))).audience;
     for (const email of Object.keys(current)) if (!wanted[email]) { try { await this.#revoke(post.id, post.ids.cj, email); } catch (e) { warnings.push({ email, error: e }); } }
-    for (const [email, role] of Object.entries(wanted)) if (current[email] !== role) { try { await this.#grant(post.id, post.ids.cj, email, role); } catch (e) { warnings.push({ email, error: e }); } }
+    for (const [email, role] of Object.entries(wanted)) if (current[email] !== role) { try { await this.#grant(post.id, post.ids.cj, email, role, mode); } catch (e) { warnings.push({ email, error: e }); } }
     return warnings;
   }
 
@@ -596,6 +624,11 @@ export class DriveRepo {
     return { post: next, warnings };
   }
 
+  async setCommentMode(post, mode) {
+    const { post: next } = await this.updatePost(post, { commentMode: mode, keepMedia: post.media.map((m) => m.id), files: [] });
+    return next;
+  }
+
   async setLinkShare(post, enabled) {
     const { post: next } = await this.updatePost(post, { linkShare: enabled, keepMedia: post.media.map((m) => m.id), files: [] });
     return next;
@@ -609,7 +642,8 @@ export class DriveRepo {
     for (const [email, p] of folder.map) {
       if (p.role === 'owner' || email === this.me.email) continue;
       const f = file.map.get(email);
-      audience[email] = p.role === 'writer' || f?.role === 'writer' ? ROLE_COMMENT : ROLE_VIEW;
+      // the post remembers the level the owner chose; Drive only shows who can write right now (which also depends on the comment mode)
+      audience[email] = post.audience?.[email] ?? (p.role === 'writer' || f?.role === 'writer' ? ROLE_COMMENT : ROLE_VIEW);
     }
     const names = {};
     for (const p of folder.perms) if (p.emailAddress && p.displayName) names[normEmail(p.emailAddress)] = p.displayName;
@@ -650,6 +684,7 @@ export class DriveRepo {
     const value = String(text || '').trim();
     if (!value) return null;
     if (post.locked) throw new RepoError('locked');
+    if (post.commentMode === 'locked') throw new RepoError('comments-locked');
     const id = randomId(5);
     const entry = { id, by: this.me.email, name: this.me.name, at: Date.now() };
     const key = post.protected ? this.#keyFor(post.id) : null;
@@ -667,6 +702,7 @@ export class DriveRepo {
   }
 
   toggleLike(post) {
+    if (post.commentMode === 'locked') return Promise.reject(new RepoError('comments-locked'));
     return this.#mutateComments(post, (d) => {
       const me = this.me.email;
       d.likes = d.likes.map(normEmail);

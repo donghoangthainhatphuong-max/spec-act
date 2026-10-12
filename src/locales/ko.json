@@ -256,5 +256,13 @@
   "viewer.rotateRight": "오른쪽으로 회전",
   "viewer.zoomOut": "축소",
   "viewer.zoomIn": "확대",
-  "viewer.reset": "초기화"
+  "viewer.reset": "초기화",
+  "comments.mode": "댓글 허용 대상",
+  "comments.modeOpen": "모두 허용",
+  "comments.modeShared": "공유한 사람만",
+  "comments.modeLocked": "완전 잠금",
+  "comments.hintOpen": "이 글을 볼 수 있는 모든 사람이 댓글을 쓸 수 있습니다. 공개 링크라면 링크가 있는 사람도 포함됩니다.",
+  "comments.hintShared": "“댓글 가능” 수준으로 공유한 사람만 쓸 수 있습니다. 링크로 보는 사람은 읽기만 가능합니다.",
+  "comments.hintLocked": "아무도 댓글이나 반응을 남길 수 없습니다. 기존 댓글은 계속 보입니다.",
+  "comments.lockedNotice": "이 글은 댓글이 꺼져 있습니다."
 }

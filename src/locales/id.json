@@ -256,5 +256,13 @@
   "viewer.rotateRight": "Putar ke kanan",
   "viewer.zoomOut": "Perkecil",
   "viewer.zoomIn": "Perbesar",
-  "viewer.reset": "Atur ulang"
+  "viewer.reset": "Atur ulang",
+  "comments.mode": "Siapa yang boleh berkomentar",
+  "comments.modeOpen": "Terbuka",
+  "comments.modeShared": "Orang yang dibagikan",
+  "comments.modeLocked": "Terkunci",
+  "comments.hintOpen": "Siapa pun yang dapat melihat kiriman ini boleh berkomentar — termasuk pemegang tautan jika kiriman publik.",
+  "comments.hintShared": "Hanya orang yang dibagikan dengan level “Boleh berkomentar”. Pengunjung tautan hanya bisa membaca.",
+  "comments.hintLocked": "Tidak ada yang bisa berkomentar atau bereaksi. Komentar yang ada tetap terlihat.",
+  "comments.lockedNotice": "Komentar dimatikan untuk kiriman ini."
 }

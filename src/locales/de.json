@@ -256,5 +256,13 @@
   "viewer.rotateRight": "Nach rechts drehen",
   "viewer.zoomOut": "Verkleinern",
   "viewer.zoomIn": "Vergrößern",
-  "viewer.reset": "Zurücksetzen"
+  "viewer.reset": "Zurücksetzen",
+  "comments.mode": "Wer darf kommentieren",
+  "comments.modeOpen": "Offen",
+  "comments.modeShared": "Geteilte Personen",
+  "comments.modeLocked": "Gesperrt",
+  "comments.hintOpen": "Jeder, der diesen Beitrag sehen kann, darf kommentieren — auch Personen mit dem Link, wenn er öffentlich ist.",
+  "comments.hintShared": "Nur Personen, denen Sie „Kann kommentieren“ gegeben haben. Link-Besucher können nur lesen.",
+  "comments.hintLocked": "Niemand kann kommentieren oder reagieren. Vorhandene Kommentare bleiben sichtbar.",
+  "comments.lockedNotice": "Kommentare sind für diesen Beitrag deaktiviert."
 }

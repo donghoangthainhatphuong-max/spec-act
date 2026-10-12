@@ -37,7 +37,8 @@ const changingPw = ref(false);
 const post = computed(() => posts.full[props.id]);
 const mine = computed(() => post.value?.mine);
 const unlocked = computed(() => post.value && !post.value.locked);
-const canComment = computed(() => unlocked.value && (mine.value || post.value.role === 'comment'));
+const mode = computed(() => post.value?.commentMode || 'shared');
+const canComment = computed(() => unlocked.value && mode.value !== 'locked' && (mine.value || post.value.role === 'comment'));
 const soc = computed(() => posts.social[props.id]);
 const comments = computed(() => soc.value?.comments || []);
 const others = computed(() => people.sorted.filter((c) => !audience.value[c.email]));
@@ -92,6 +93,13 @@ async function addByEmail() {
   newEmail.value = '';
   if (!people.isContact(e)) await people.add(e).catch(() => {});
   await setAccess(e, 'view');
+}
+async function setMode(m) {
+  if (busy.value || m === mode.value) return;
+  busy.value = true;
+  try { await posts.setCommentMode(post.value, m); ui.toast(t('toast.saved')); }
+  catch { ui.toast(t('error.generic'), { kind: 'error' }); }
+  finally { busy.value = false; }
 }
 async function toggleLink() {
   if (busy.value) return;
@@ -164,6 +172,12 @@ const inIndex = computed(() => !!posts.entryById(props.id));
           <input id="share-email" v-model="newEmail" class="input" type="email" inputmode="email" autocomplete="off" :placeholder="t('post.shareByEmail')" />
           <button class="btn primary" style="min-height:46px" :disabled="busy || !newEmail"><AppIcon name="plus" :size="18" />{{ t('post.addPerson') }}</button>
         </form>
+        <div class="linkrow col">
+          <div><b>{{ t('comments.mode') }}</b><p class="hint">{{ t('comments.hint' + mode[0].toUpperCase() + mode.slice(1)) }}</p></div>
+          <div class="seg" role="radiogroup" :aria-label="t('comments.mode')">
+            <button v-for="m in ['open', 'shared', 'locked']" :key="m" type="button" role="radio" :aria-checked="mode === m" :class="{ on: mode === m }" :disabled="busy" @click="setMode(m)">{{ t('comments.mode' + m[0].toUpperCase() + m.slice(1)) }}</button>
+          </div>
+        </div>
         <div class="linkrow">
           <div>
             <b>{{ t('post.linkShare') }}</b>
@@ -204,6 +218,7 @@ const inIndex = computed(() => !!posts.entryById(props.id));
         <input :id="`c-${id}`" v-model="comment" class="input" :placeholder="t('comments.placeholder')" autocomplete="off" maxlength="2000" />
         <button class="btn primary" :disabled="sending || !comment.trim()">{{ t('comments.send') }}</button>
       </form>
+      <p v-else-if="mode === 'locked'" class="hint">{{ t('comments.lockedNotice') }}</p>
       <p v-else class="hint">{{ t('comments.viewOnly') }}</p>
     </section>
   </template>
@@ -213,6 +228,7 @@ const inIndex = computed(() => !!posts.entryById(props.id));
 .add-friend { margin-top: 2px; }
 .linkrow { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 14px; border-top: 1px solid var(--line); }
 .linkrow b { font-weight: 600; }
+.linkrow.col { flex-direction: column; align-items: stretch; gap: 10px; }
 .switch:disabled { opacity: .5; cursor: not-allowed; }
 .comment { align-items: flex-start; }
 .cbody { flex: 1; min-width: 0; }

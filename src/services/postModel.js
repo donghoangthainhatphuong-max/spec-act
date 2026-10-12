@@ -21,6 +21,16 @@ export const ENTRY_AUDIENCE = 12;
 export const ROLE_VIEW = 'view';
 export const ROLE_COMMENT = 'comment';
 
+/**
+ * Who may write comments (and react):
+ *   open   everyone who can see the post — shared people at any level and, if the post is public by link, link visitors
+ *   shared only people shared with at the "comment" level (default); link visitors can only read
+ *   locked nobody (existing comments stay visible; the owner can still delete)
+ */
+export const COMMENT_MODES = ['open', 'shared', 'locked'];
+export const normMode = (m) => (COMMENT_MODES.includes(m) ? m : 'shared');
+export const canCommentWith = (mode, role) => mode === 'open' || (mode === 'shared' && role === ROLE_COMMENT);
+
 export function folderNameFor(createdAt, id) {
   const d = new Date(createdAt);
   const p = (n) => String(n).padStart(2, '0');
@@ -47,9 +57,9 @@ export function publicMedia(m) {
 }
 
 /** The JSON written to post.json. For protected posts the sensitive part is sealed in `payload`. */
-export async function buildPostDoc({ id, owner, createdAt, updatedAt, text, media, mentions, audience, linkShare, protection, key }) {
+export async function buildPostDoc({ id, owner, createdAt, updatedAt, text, media, mentions, audience, linkShare, commentMode, cj, protection, key }) {
   const body = { text: text || '', media: (media || []).map(publicMedia), mentions: mentions || [] };
-  const base = { v: SCHEMA, id, owner: { email: normEmail(owner.email), name: owner.name || '' }, createdAt, updatedAt, audience: cleanAudience(audience, owner.email), linkShare: !!linkShare };
+  const base = { v: SCHEMA, id, owner: { email: normEmail(owner.email), name: owner.name || '' }, createdAt, updatedAt, audience: cleanAudience(audience, owner.email), linkShare: !!linkShare, commentMode: normMode(commentMode), cj: cj || null };
   if (protection) {
     if (!key) throw new Error('content key required');
     return { ...base, protection, payload: await encryptJson(key, body, `post:${id}`) };
@@ -75,6 +85,8 @@ export async function openPostDoc(doc, key) {
     protected: isProtected,
     locked,
     linkShare: !!doc.linkShare,
+    commentMode: normMode(doc.commentMode),
+    cj: doc.cj || null,
     text: body.text || '',
     media: (body.media || []).map(publicMedia),
     mentions: body.mentions || [],
@@ -96,6 +108,7 @@ export function toEntry(post, { id, ids, rev }) {
     rev: String(rev ?? post.updatedAt),
     protected: post.protected,
     linkShare: post.linkShare,
+    commentMode: post.commentMode,
     text: snip.text,
     truncated: snip.truncated,
     mediaCount: post.protected ? 0 : post.media.length,

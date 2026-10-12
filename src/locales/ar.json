@@ -256,5 +256,13 @@
   "viewer.rotateRight": "تدوير لليمين",
   "viewer.zoomOut": "تصغير",
   "viewer.zoomIn": "تكبير",
-  "viewer.reset": "إعادة الضبط"
+  "viewer.reset": "إعادة الضبط",
+  "comments.mode": "من يمكنه التعليق",
+  "comments.modeOpen": "مفتوح",
+  "comments.modeShared": "المشارَكون فقط",
+  "comments.modeLocked": "مقفل",
+  "comments.hintOpen": "يمكن لكل من يرى هذا المنشور التعليق — بمن فيهم أصحاب الرابط إذا كان عامًا.",
+  "comments.hintShared": "فقط الأشخاص الذين شاركتَ معهم بمستوى «يمكنه التعليق». زوّار الرابط يقرؤون فقط.",
+  "comments.hintLocked": "لا أحد يستطيع التعليق أو التفاعل. تبقى التعليقات الحالية ظاهرة.",
+  "comments.lockedNotice": "التعليقات متوقفة لهذا المنشور."
 }

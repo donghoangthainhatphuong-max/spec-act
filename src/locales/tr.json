@@ -256,5 +256,13 @@
   "viewer.rotateRight": "Sağa döndür",
   "viewer.zoomOut": "Uzaklaştır",
   "viewer.zoomIn": "Yakınlaştır",
-  "viewer.reset": "Sıfırla"
+  "viewer.reset": "Sıfırla",
+  "comments.mode": "Kimler yorum yapabilir",
+  "comments.modeOpen": "Açık",
+  "comments.modeShared": "Paylaşılan kişiler",
+  "comments.modeLocked": "Kilitli",
+  "comments.hintOpen": "Bu gönderiyi görebilen herkes yorum yapabilir — herkese açıksa bağlantıya sahip olanlar da.",
+  "comments.hintShared": "Yalnızca “Yorum yapabilir” düzeyinde paylaştığınız kişiler. Bağlantıyla gelenler sadece okur.",
+  "comments.hintLocked": "Kimse yorum yapamaz veya tepki veremez. Mevcut yorumlar görünmeye devam eder.",
+  "comments.lockedNotice": "Bu gönderide yorumlar kapalı."
 }

@@ -256,5 +256,13 @@
   "viewer.rotateRight": "दाएँ घुमाएँ",
   "viewer.zoomOut": "छोटा करें",
   "viewer.zoomIn": "बड़ा करें",
-  "viewer.reset": "रीसेट"
+  "viewer.reset": "रीसेट",
+  "comments.mode": "कौन टिप्पणी कर सकता है",
+  "comments.modeOpen": "खुला",
+  "comments.modeShared": "साझा किए गए लोग",
+  "comments.modeLocked": "पूरी तरह लॉक",
+  "comments.hintOpen": "जो भी यह पोस्ट देख सकता है वह टिप्पणी कर सकता है — पोस्ट सार्वजनिक हो तो लिंक वाले भी।",
+  "comments.hintShared": "केवल वे लोग जिन्हें “टिप्पणी कर सकते हैं” स्तर पर साझा किया गया। लिंक से आने वाले केवल पढ़ सकते हैं।",
+  "comments.hintLocked": "कोई टिप्पणी या प्रतिक्रिया नहीं दे सकता। पुरानी टिप्पणियाँ दिखती रहेंगी।",
+  "comments.lockedNotice": "इस पोस्ट पर टिप्पणियाँ बंद हैं।"
 }

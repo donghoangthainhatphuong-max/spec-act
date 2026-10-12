@@ -48,7 +48,13 @@ const ownerName = computed(() => people.nameFor(view.value.owner.email));
 const audienceEmails = computed(() => Object.keys(view.value.audience || {}).filter((e) => !people.isMe(e) && e !== view.value.owner.email));
 const audienceCount = computed(() => view.value.audienceCount ?? audienceEmails.value.length);
 const social = computed(() => posts.social[view.value.id]);
-const canReact = computed(() => !locked.value && (mine.value || view.value.role === 'comment' || (view.value.audience?.[session.me?.email] === 'comment')));
+const canReact = computed(() => {
+  if (locked.value) return false;
+  const mode = view.value.commentMode || 'shared';
+  if (mode === 'locked') return false;
+  if (mine.value || mode === 'open') return true;
+  return (view.value.role ?? view.value.audience?.[session.me?.email]) === 'comment';
+});
 const liked = computed(() => !!social.value?.likes.includes(session.me?.email));
 const likeCount = computed(() => social.value?.likes.length || 0);
 const commentCount = computed(() => social.value?.comments.length || 0);

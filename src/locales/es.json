@@ -256,5 +256,13 @@
   "viewer.rotateRight": "Girar a la derecha",
   "viewer.zoomOut": "Alejar",
   "viewer.zoomIn": "Acercar",
-  "viewer.reset": "Restablecer"
+  "viewer.reset": "Restablecer",
+  "comments.mode": "Quién puede comentar",
+  "comments.modeOpen": "Abierto",
+  "comments.modeShared": "Personas compartidas",
+  "comments.modeLocked": "Bloqueado",
+  "comments.hintOpen": "Cualquiera que vea esta publicación puede comentar, incluidas las personas con el enlace si es público.",
+  "comments.hintShared": "Solo las personas con nivel «Puede comentar». Quienes entran por enlace solo leen.",
+  "comments.hintLocked": "Nadie puede comentar ni reaccionar. Los comentarios existentes siguen visibles.",
+  "comments.lockedNotice": "Los comentarios están desactivados en esta publicación."
 }

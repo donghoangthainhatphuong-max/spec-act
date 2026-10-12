@@ -101,10 +101,10 @@ async function publish() {
     if (editing.value) {
       res = await posts.update(original.value, {
         text: draft.text, files, keepMedia: draft.photos.filter((p) => p.kind === 'old').map((p) => p.media.id),
-        audience: draft.audience, linkShare: draft.linkShare, newPassword: pw || undefined,
+        audience: draft.audience, linkShare: draft.linkShare, commentMode: draft.commentMode, newPassword: pw || undefined,
       }, (p) => { progress.value = p; });
     } else {
-      res = await posts.create({ text: draft.text, files, audience: draft.audience, password: draft.protect ? pw : undefined, linkShare: draft.linkShare }, (p) => { progress.value = p; });
+      res = await posts.create({ text: draft.text, files, audience: draft.audience, password: draft.protect ? pw : undefined, linkShare: draft.linkShare, commentMode: draft.commentMode }, (p) => { progress.value = p; });
     }
     done.value = true;
     draft.reset();
@@ -203,6 +203,16 @@ onBeforeRouteLeave(async () => {
           <p class="hint">{{ draft.protect ? t('post.linkShareHintPw') : t('post.linkShareHint') }}</p>
         </div>
         <button type="button" class="switch" role="switch" :aria-checked="draft.linkShare" :aria-label="t('post.linkShare')" @click="draft.linkShare = !draft.linkShare"><span /></button>
+      </div>
+    </section>
+
+    <section class="section">
+      <div>
+        <b style="font-weight:600">{{ t('comments.mode') }}</b>
+        <p class="hint">{{ t('comments.hint' + draft.commentMode[0].toUpperCase() + draft.commentMode.slice(1)) }}</p>
+      </div>
+      <div class="seg" role="radiogroup" :aria-label="t('comments.mode')">
+        <button v-for="m in ['open', 'shared', 'locked']" :key="m" type="button" role="radio" :aria-checked="draft.commentMode === m" :class="{ on: draft.commentMode === m }" @click="draft.commentMode = m">{{ t('comments.mode' + m[0].toUpperCase() + m.slice(1)) }}</button>
       </div>
     </section>
 

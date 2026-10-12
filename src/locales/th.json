@@ -256,5 +256,13 @@
   "viewer.rotateRight": "หมุนขวา",
   "viewer.zoomOut": "ย่อ",
   "viewer.zoomIn": "ขยาย",
-  "viewer.reset": "รีเซ็ต"
+  "viewer.reset": "รีเซ็ต",
+  "comments.mode": "ใครแสดงความคิดเห็นได้",
+  "comments.modeOpen": "เปิด",
+  "comments.modeShared": "เฉพาะผู้ที่แชร์ให้",
+  "comments.modeLocked": "ล็อกทั้งหมด",
+  "comments.hintOpen": "ทุกคนที่เห็นโพสต์นี้แสดงความคิดเห็นได้ รวมถึงผู้มีลิงก์หากโพสต์เป็นสาธารณะ",
+  "comments.hintShared": "เฉพาะผู้ที่แชร์ในระดับ “แสดงความคิดเห็นได้” ผู้เข้าผ่านลิงก์อ่านได้อย่างเดียว",
+  "comments.hintLocked": "ไม่มีใครแสดงความคิดเห็นหรือกดถูกใจได้ ความคิดเห็นเดิมยังแสดงอยู่",
+  "comments.lockedNotice": "โพสต์นี้ปิดความคิดเห็นแล้ว"
 }

@@ -377,6 +377,69 @@ describe('password protected posts', () => {
   });
 });
 
+describe('comment modes', () => {
+  const tryComment = (repo, post, text = 'hi') => repo.addComment(post, text).then(() => 'ok', (e) => e.code);
+
+  it('shared (default): only "can comment" people write; link visitors only read', async () => {
+    const alice = mk('alice@gmail.com', 'Alice');
+    const bob = mk('bob@gmail.com', 'Bob');
+    const carol = mk('carol@gmail.com', 'Carol');
+    const dave = mk('dave@gmail.com', 'Dave');
+    const { post } = await alice.createPost({ text: 'x', files: [], audience: { 'bob@gmail.com': 'view', 'carol@gmail.com': 'comment' }, linkShare: true });
+    expect(post.commentMode).toBe('shared');
+    expect(await tryComment(bob, await bob.openPost(post.id))).toBe('forbidden');
+    expect(await tryComment(carol, await carol.openPost(post.id))).toBe('ok');
+    const pub = await dave.openPost(post.ids.pj);
+    expect(pub.role).toBe('view');
+    expect(pub.ids.cj).toBeNull();
+  });
+
+  it('open: everyone who can see the post may comment, including link visitors — still without the folder', async () => {
+    const alice = mk('alice@gmail.com', 'Alice');
+    const bob = mk('bob@gmail.com', 'Bob');
+    const dave = mk('dave@gmail.com', 'Dave');
+    const { post } = await alice.createPost({ text: 'x', files: [], audience: { 'bob@gmail.com': 'view' }, linkShare: true, commentMode: 'open' });
+    expect(await tryComment(bob, await bob.openPost(post.id))).toBe('ok');
+    const pub = await dave.openPost(post.ids.pj);
+    expect(pub.role).toBe('comment');
+    expect(await tryComment(dave, pub, 'from a stranger')).toBe('ok');
+    expect((await alice.loadComments(post)).comments.map((c) => c.by).sort()).toEqual(['bob@gmail.com', 'dave@gmail.com']);
+    await expect(dave.drive.get(post.id)).rejects.toMatchObject({ status: 403 }); // folder stays private
+    await expect(dave.drive.updateJson(post.ids.pj, { hacked: true })).rejects.toMatchObject({ status: 403 }); // post.json read-only
+  });
+
+  it('switching modes re-applies permissions: locked blocks everybody, then shared / open restore', async () => {
+    const alice = mk('alice@gmail.com', 'Alice');
+    const bob = mk('bob@gmail.com', 'Bob');
+    const carol = mk('carol@gmail.com', 'Carol');
+    const dave = mk('dave@gmail.com', 'Dave');
+    const { post } = await alice.createPost({ text: 'x', files: [], audience: { 'bob@gmail.com': 'view', 'carol@gmail.com': 'comment' }, linkShare: true });
+    await carol.addComment(await carol.openPost(post.id), 'before lock');
+
+    let cur = await alice.setCommentMode(post, 'locked');
+    expect(cur.commentMode).toBe('locked');
+    const carolLocked = await carol.openPost(post.id);
+    expect(carolLocked.role).toBe('view');
+    expect(await tryComment(carol, { ...carolLocked, role: 'comment', commentMode: 'shared' })).toBe('forbidden'); // Drive refuses even a stale client
+    expect(await tryComment(alice, cur)).toBe('comments-locked');
+    await expect(alice.toggleLike(cur)).rejects.toMatchObject({ code: 'comments-locked' });
+    expect((await bob.loadComments(await bob.openPost(post.id))).comments).toHaveLength(1); // still readable
+    const first = (await alice.loadComments(cur)).comments[0];
+    expect((await alice.deleteComment(cur, first.id)).comments).toHaveLength(0); // owner can still moderate
+
+    cur = await alice.setCommentMode(cur, 'shared');
+    expect((await carol.openPost(post.id)).role).toBe('comment'); // level remembered
+    expect((await bob.openPost(post.id)).role).toBe('view');
+
+    cur = await alice.setCommentMode(cur, 'open');
+    expect((await bob.openPost(post.id)).role).toBe('comment');
+    expect((await dave.openPost(post.ids.pj)).role).toBe('comment');
+    await alice.setLinkShare(cur, false); // no link, no stranger writing
+    await expect(dave.openPost(post.ids.pj)).rejects.toMatchObject({ code: 'forbidden' });
+    expect((await bob.openPost(post.id)).role).toBe('comment');
+  });
+});
+
 describe('contacts', () => {
   it('persist to Drive and to the local vault', async () => {
     const alice = mk('alice@gmail.com', 'Alice');

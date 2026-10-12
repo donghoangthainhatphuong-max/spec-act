@@ -51,9 +51,9 @@ export class DemoRepo {
     const ids = { pj: `${p.id}:pj`, cj: `${p.id}:cj`, mf: `${p.id}:mf` };
     return {
       id: p.id, pid: p.id, owner: { email: p.owner, name: p.owner === DEMO_ME.email ? DEMO_ME.name : PEOPLE[p.owner] },
-      createdAt: p.at, updatedAt: p.at, protected: !!p.protected, locked: false, linkShare: false,
+      createdAt: p.at, updatedAt: p.at, protected: !!p.protected, locked: false, linkShare: false, commentMode: p.commentMode || 'shared', cj: null,
       text: p.text, media: p.media, mentions: extractMentions(p.text), audience: p.audience, protection: p.protected ? { demo: true } : null,
-      mine, role: mine ? 'owner' : (p.audience[DEMO_ME.email] === 'comment' ? 'comment' : 'view'), ids, rev: String(p.at), doc: {},
+      mine, role: mine ? 'owner' : (p.commentMode === 'locked' ? 'view' : p.commentMode === 'open' || p.audience[DEMO_ME.email] === 'comment' ? 'comment' : 'view'), ids, rev: String(p.at), doc: {},
     };
   }
 
@@ -109,6 +109,7 @@ export class DemoRepo {
     const prot = !!input.password;
     const p = this.#full({ id, owner: DEMO_ME.email, at: Date.now(), text, media: files, audience: cleanAudience(input.audience, DEMO_ME.email), protected: prot });
     p.linkShare = !!input.linkShare;
+    p.commentMode = ['open', 'shared', 'locked'].includes(input.commentMode) ? input.commentMode : 'shared';
     this.posts.set(id, p);
     this.comments.set(id, { comments: [], likes: [] });
     if (prot) this.keys.add(id);
@@ -125,7 +126,7 @@ export class DemoRepo {
     const text = input.text ?? cur.text;
     Object.assign(cur, {
       text, media: [...cur.media.filter((m) => keep.has(m.id)), ...added], mentions: extractMentions(text), updatedAt: Date.now(),
-      audience: cleanAudience(input.audience ?? cur.audience, DEMO_ME.email), linkShare: input.linkShare ?? cur.linkShare,
+      audience: cleanAudience(input.audience ?? cur.audience, DEMO_ME.email), linkShare: input.linkShare ?? cur.linkShare, commentMode: input.commentMode ?? cur.commentMode,
     });
     this.#buildIndex();
     return { post: { ...cur }, warnings: [] };
@@ -139,6 +140,7 @@ export class DemoRepo {
     if (role) audience[normEmail(email)] = role; else delete audience[normEmail(email)];
     return this.updatePost(post, { audience, keepMedia: post.media.map((m) => m.id), files: [] });
   }
+  async setCommentMode(post, mode) { return (await this.updatePost(post, { commentMode: mode, keepMedia: post.media.map((m) => m.id), files: [] })).post; }
   async setLinkShare(post, enabled) { return (await this.updatePost(post, { linkShare: enabled, keepMedia: post.media.map((m) => m.id), files: [] })).post; }
   async readAudience(post) { return { audience: { ...this.posts.get(post.id).audience }, linkShare: !!this.posts.get(post.id).linkShare, names: PEOPLE }; }
 

@@ -256,5 +256,13 @@
   "viewer.rotateRight": "Rotate right",
   "viewer.zoomOut": "Zoom out",
   "viewer.zoomIn": "Zoom in",
-  "viewer.reset": "Reset view"
+  "viewer.reset": "Reset view",
+  "comments.mode": "Who can comment",
+  "comments.modeOpen": "Open",
+  "comments.modeShared": "Shared people",
+  "comments.modeLocked": "Locked",
+  "comments.hintOpen": "Everyone who can see this post can comment — including people with the link, if it is public.",
+  "comments.hintShared": "Only people you shared with at “Can comment” level. Link visitors can only read.",
+  "comments.hintLocked": "Nobody can comment or react. Existing comments stay visible.",
+  "comments.lockedNotice": "Comments are turned off for this post."
 }

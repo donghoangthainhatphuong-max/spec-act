@@ -256,5 +256,13 @@
   "viewer.rotateRight": "向右旋转",
   "viewer.zoomOut": "缩小",
   "viewer.zoomIn": "放大",
-  "viewer.reset": "重置"
+  "viewer.reset": "重置",
+  "comments.mode": "谁可以评论",
+  "comments.modeOpen": "开放",
+  "comments.modeShared": "已分享的人",
+  "comments.modeLocked": "完全锁定",
+  "comments.hintOpen": "所有能看到此帖的人都可以评论——如果帖子通过链接公开，也包括持有链接的人。",
+  "comments.hintShared": "仅限以“可评论”级别分享的人。链接访问者只能阅读。",
+  "comments.hintLocked": "任何人都不能评论或点赞，已有评论仍可见。",
+  "comments.lockedNotice": "此帖已关闭评论。"
 }

@@ -38,8 +38,9 @@ describe('translations', () => {
       }
     };
     walk('src');
-    const dynamic = ['settings.light', 'settings.dark', 'settings.system', 'pin.change.old', 'pin.change.new', 'pin.change.confirm', 'home.morning', 'home.afternoon', 'home.evening'];
+    const dynamic = ['settings.light', 'settings.dark', 'settings.system', 'pin.change.old', 'pin.change.new', 'pin.change.confirm', 'home.morning', 'home.afternoon', 'home.evening',
+      'comments.hintOpen', 'comments.hintShared', 'comments.hintLocked', 'comments.modeOpen', 'comments.modeShared', 'comments.modeLocked'];
     dynamic.forEach((k) => used.add(k));
-    expect([...used].filter((k) => !(k in en) && !k.endsWith('.'))).toEqual([]);
+    expect([...used].filter((k) => !(k in en) && !k.endsWith('.') && k !== 'comments.hint')).toEqual([]);
   });
 });

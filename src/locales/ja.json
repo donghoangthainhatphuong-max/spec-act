@@ -256,5 +256,13 @@
   "viewer.rotateRight": "右に回転",
   "viewer.zoomOut": "縮小",
   "viewer.zoomIn": "拡大",
-  "viewer.reset": "リセット"
+  "viewer.reset": "リセット",
+  "comments.mode": "コメントできる人",
+  "comments.modeOpen": "全員に開放",
+  "comments.modeShared": "共有した人のみ",
+  "comments.modeLocked": "完全にロック",
+  "comments.hintOpen": "この投稿を見られる人は誰でもコメントできます（リンク公開ならリンクを知る人も）。",
+  "comments.hintShared": "「コメント可」で共有した人だけがコメントできます。リンクで見る人は閲覧のみです。",
+  "comments.hintLocked": "誰もコメントやリアクションができません。既存のコメントは表示されます。",
+  "comments.lockedNotice": "この投稿はコメントがオフです。"
 }

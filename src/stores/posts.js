@@ -141,6 +141,12 @@ export const usePostsStore = defineStore('posts', () => {
     apply(repo().index);
     return res;
   }
+  async function setCommentMode(post, mode) {
+    const next = await repo().setCommentMode(post, mode);
+    full[post.id] = next;
+    apply(repo().index);
+    return next;
+  }
   async function setLinkShare(post, on_) {
     const next = await repo().setLinkShare(post, on_);
     full[post.id] = next;
@@ -154,6 +160,6 @@ export const usePostsStore = defineStore('posts', () => {
 
   return {
     mine, shared, feed, loading, syncing, error, syncedAt, full, social, entryById,
-    init, sync, startAutoSync, open, unlock, hasKey, loadSocial, addComment, removeComment, toggleLike, create, update, remove, setAccess, setLinkShare, forgetShared,
+    init, sync, startAutoSync, open, unlock, hasKey, loadSocial, addComment, removeComment, toggleLike, create, update, remove, setAccess, setCommentMode, setLinkShare, forgetShared,
   };
 });

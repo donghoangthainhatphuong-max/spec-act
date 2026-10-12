@@ -256,5 +256,13 @@
   "viewer.rotateRight": "Xoay phải",
   "viewer.zoomOut": "Thu nhỏ",
   "viewer.zoomIn": "Phóng to",
-  "viewer.reset": "Đặt lại"
+  "viewer.reset": "Đặt lại",
+  "comments.mode": "Ai được bình luận",
+  "comments.modeOpen": "Mở",
+  "comments.modeShared": "Người được chia sẻ",
+  "comments.modeLocked": "Khóa hoàn toàn",
+  "comments.hintOpen": "Ai xem được bài này đều bình luận được — kể cả người có liên kết nếu bài công khai.",
+  "comments.hintShared": "Chỉ người được chia sẻ ở mức “Được bình luận”. Người lạ qua liên kết chỉ đọc.",
+  "comments.hintLocked": "Không ai bình luận hay thả tim được. Bình luận cũ vẫn hiển thị.",
+  "comments.lockedNotice": "Bài này đã tắt bình luận."
 }
