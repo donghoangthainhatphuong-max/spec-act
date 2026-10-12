@@ -25,18 +25,18 @@ const bool = (key, def) => {
 };
 
 export const LANGS = [
-  ['vi', 'Tiếng Việt'], ['en', 'English'], ['zh', '中文'], ['ja', '日本語'], ['ko', '한국어'], ['ru', 'Русский'], ['fr', 'Français'],
+  ['en', 'English'], ['vi', 'Tiếng Việt'], ['zh', '中文'], ['ja', '日本語'], ['ko', '한국어'], ['ru', 'Русский'], ['fr', 'Français'],
   ['de', 'Deutsch'], ['es', 'Español'], ['th', 'ไทย'], ['id', 'Bahasa Indonesia'], ['hi', 'हिन्दी'], ['ar', 'العربية'], ['tr', 'Türkçe'],
 ];
 
-const defaultLang = str('VITE_DEFAULT_LANG', 'vi');
+const defaultLang = str('VITE_DEFAULT_LANG', 'en');
 const defaultTheme = str('VITE_DEFAULT_THEME', 'system');
 
 export const config = Object.freeze({
   appName: str('VITE_APP_NAME', 'SPECACT'),
   basePath: str('BASE_URL', '/'),
   detectLang: bool('VITE_DETECT_LANG', true),
-  defaultLang: LANGS.some(([c]) => c === defaultLang) ? defaultLang : 'vi',
+  defaultLang: LANGS.some(([c]) => c === defaultLang) ? defaultLang : 'en',
   defaultTheme: ['system', 'light', 'dark'].includes(defaultTheme) ? defaultTheme : 'system',
   legalContact: str('VITE_LEGAL_CONTACT', ''),
   enableDemo: bool('VITE_ENABLE_DEMO', true),

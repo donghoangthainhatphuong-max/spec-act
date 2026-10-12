@@ -72,7 +72,7 @@ docker compose up -d --build
 | `SPECACT_PORT` | `8088` | Port published by docker compose |
 | `VITE_APP_NAME` | `SPECACT` | Display name (PWA manifest) |
 | `VITE_BASE_PATH` | `/` | Base path when hosted in a sub-folder (*build time*) |
-| `VITE_DEFAULT_LANG` / `VITE_DETECT_LANG` / `VITE_DEFAULT_THEME` | `vi` / `true` / `system` | Default language, whether to follow the browser language, default theme |
+| `VITE_DEFAULT_LANG` / `VITE_DETECT_LANG` / `VITE_DEFAULT_THEME` | `en` / `true` / `system` | Default language, whether to follow the browser language, default theme |
 | `VITE_LEGAL_CONTACT` | *(empty)* | Contact e-mail shown on the Terms/Privacy pages (operator fills in) |
 | `VITE_ENABLE_DEMO` | `true` | Enable demo mode |
 | `VITE_DRIVE_ROOT_FOLDER` / `VITE_DRIVE_POSTS_FOLDER` | `SPECACT` / `posts` | Folder names in Drive |
