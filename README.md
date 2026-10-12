@@ -76,6 +76,7 @@ docker compose up -d --build
 | `VITE_LEGAL_CONTACT` | *(empty)* | Contact e-mail shown on the Terms/Privacy pages (operator fills in) |
 | `VITE_ENABLE_DEMO` | `true` | Enable demo mode |
 | `VITE_DRIVE_ROOT_FOLDER` / `VITE_DRIVE_POSTS_FOLDER` | `SPECACT` / `posts` | Folder names in Drive |
+| `VITE_DRIVE_SHARED_FOLDER` / `VITE_GROUP_SHARED` | `shared` / `true` | Folder holding shortcuts to posts shared with you; turn grouping on/off |
 | `VITE_OAUTH_SCOPES` | `…/auth/drive` | OAuth scopes (full `drive` is needed to open posts others shared) |
 | `VITE_OAUTH_REDIRECT_URI` | *(auto)* | Override the redirect URI if needed |
 | `VITE_DELETE_MODE` | `trash` | `trash` (recoverable) or `permanent` |

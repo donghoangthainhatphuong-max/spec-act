@@ -80,6 +80,7 @@ docker compose up -d --build
 | `VITE_LEGAL_CONTACT` | *(trống)* | Email liên hệ hiển thị ở trang Điều khoản/Quyền riêng tư (người vận hành điền) |
 | `VITE_ENABLE_DEMO` | `true` | Bật chế độ dùng thử |
 | `VITE_DRIVE_ROOT_FOLDER` / `VITE_DRIVE_POSTS_FOLDER` | `SPECACT` / `posts` | Tên thư mục trên Drive |
+| `VITE_DRIVE_SHARED_FOLDER` / `VITE_GROUP_SHARED` | `shared` / `true` | Thư mục chứa lối tắt tới các bài được chia sẻ với bạn; bật/tắt việc gom nhóm |
 | `VITE_OAUTH_SCOPES` | `…/auth/drive` | Phạm vi OAuth (cần `drive` đầy đủ để mở bài người khác chia sẻ) |
 | `VITE_OAUTH_REDIRECT_URI` | *(tự động)* | Ghi đè redirect URI nếu cần |
 | `VITE_DELETE_MODE` | `trash` | `trash` (khôi phục được) hoặc `permanent` |

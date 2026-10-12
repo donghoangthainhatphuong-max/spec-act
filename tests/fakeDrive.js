@@ -100,6 +100,7 @@ export class FakeDrive {
       createdTime: file.createdTime, modifiedTime: file.modifiedTime, version: String(file.version),
       parents: file.parents.filter((p) => !p.startsWith('root:')),
       owners: [{ emailAddress: file.owner, displayName: o?.name || file.owner }],
+      shortcutDetails: file.shortcutDetails,
       capabilities: { canEdit: ['writer', 'owner'].includes(this.#role(file, user)) },
     };
   }
@@ -159,7 +160,7 @@ export class FakeDrive {
       const parent = body.parents?.[0] === 'root' || !body.parents ? `root:${user.email}` : body.parents[0];
       const pf = this.files.get(parent);
       if (!pf || !['owner', 'writer'].includes(this.#role(pf, user))) return err(403, 'insufficientFilePermissions');
-      const f = this.#blank({ id: this.#id(), name: body.name, mimeType: body.mimeType, owner: user.email, parents: [parent], properties: body.properties || {} });
+      const f = this.#blank({ id: this.#id(), name: body.name, mimeType: body.mimeType, owner: user.email, parents: [parent], properties: body.properties || {}, shortcutDetails: body.shortcutDetails });
       this.files.set(f.id, f);
       return json(200, this.#view(f, user));
     }

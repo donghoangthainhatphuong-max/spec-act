@@ -3,6 +3,7 @@
  * Handles bearer auth, one transparent token refresh, retries with back-off and a small concurrency cap.
  */
 export const MIME_FOLDER = 'application/vnd.google-apps.folder';
+export const MIME_SHORTCUT = 'application/vnd.google-apps.shortcut';
 const API = 'https://www.googleapis.com/drive/v3';
 const UPLOAD = 'https://www.googleapis.com/upload/drive/v3';
 
@@ -109,6 +110,14 @@ export class DriveClient {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, mimeType: MIME_FOLDER, parents: parentId ? [parentId] : undefined, properties }),
+    });
+  }
+
+  /** A Drive shortcut (a link inside my own Drive) to a folder shared with me. */
+  createShortcut(name, parentId, targetId) {
+    return this.request(`${API}/files?fields=${encodeURIComponent('id,name,shortcutDetails')}`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, mimeType: MIME_SHORTCUT, parents: [parentId], shortcutDetails: { targetId } }),
     });
   }
 

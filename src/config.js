@@ -43,6 +43,8 @@ export const config = Object.freeze({
 
   rootFolder: str('VITE_DRIVE_ROOT_FOLDER', 'SPECACT'),
   postsFolder: str('VITE_DRIVE_POSTS_FOLDER', 'posts'),
+  sharedFolder: str('VITE_DRIVE_SHARED_FOLDER', 'shared'),
+  groupShared: bool('VITE_GROUP_SHARED', true),
   oauthScopes: str('VITE_OAUTH_SCOPES', 'https://www.googleapis.com/auth/drive').split(/[\s,]+/).filter(Boolean),
   oauthRedirectUri: str('VITE_OAUTH_REDIRECT_URI', ''),
   deleteMode: str('VITE_DELETE_MODE', 'trash') === 'permanent' ? 'permanent' : 'trash',

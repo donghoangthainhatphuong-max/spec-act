@@ -19,6 +19,7 @@
 
 10. Đổi hành vi dữ liệu/quyền riêng tư/chia sẻ → cập nhật `src/locales/pages/*.json` (Terms/Privacy/About, cả en và vi, cùng cấu trúc — `tests/pages.test.js`) trong cùng commit.
 
+12. **Đặt tên:** mọi thứ SPECACT tạo trên Drive mà người khác thấy được đều dùng tiền tố `__S.P.E.C.T.A.C.T__` (`brandName()` trong `postModel.js`). Việc tìm kiếm phải chấp nhận cả tên có tiền tố lẫn tên cũ.
 11. **Thả tim đi theo quyền xem bài, không theo quyền bình luận.** Tim nằm ở `likes.json` riêng (writer cho mọi người được xem, không có quyền gì khác). Không đưa tim trở lại `comments.json`.
 
 ## 2. Lỗi đã gặp → quy tắc

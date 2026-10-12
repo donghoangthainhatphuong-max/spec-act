@@ -14,11 +14,13 @@
 SPECACT/                         properties: specact=root
 ├── index.json                   personal index (my posts + shared with me)
 ├── contacts.json                connected people
+├── shared/                      one branded Drive shortcut per post shared with me
+│   └── __S.P.E.C.T.A.C.T__ Alice · 2026-10-12   →  Alice's post folder
 └── posts/                       properties: specact=posts
-    └── 2026-10-12_ab12cd34ef/   properties: specact=post, rev, pj, cj, lj, mf
+    └── __S.P.E.C.T.A.C.T__ 2026-10-12_ab12cd34ef/   properties: specact=post, rev, pj, cj, lj, mf
         ├── post.json
-        ├── comments.json
-        ├── likes.json           {v:1, likes:[email]}
+        ├── __S.P.E.C.T.A.C.T__ comments.json
+        ├── __S.P.E.C.T.A.C.T__ likes.json           {v:1, likes:[email]}
         └── media/
             ├── ab12cd34ef_photo.jpg      resized photo
             └── ab12cd34ef_t.jpg          thumbnail
@@ -61,6 +63,10 @@ Comments of protected posts carry `enc` instead of `text`. Likes live in `likes.
 //         text(snippet ≤600), truncated, mediaCount, media(≤3), audience(≤12), ids{pj,cj,lj,mf}, via?
 ```
 Protected posts **never** have content in the index.
+
+## Keeping Drive tidy
+
+Everything SPECACT creates that other people may see carries the prefix `__S.P.E.C.T.A.C.T__` (post folders, `comments.json`, `likes.json`), so it is easy to recognise and search in Drive's "Shared with me". A person cannot move someone else's shared folder into their own tree, so on every index sync SPECACT creates a **Drive shortcut** per shared post inside `SPECACT/shared/` (named `__S.P.E.C.T.A.C.T__ <owner> · <date>`) and removes it when access ends. Everything shared with you is then reachable under your own `SPECACT` folder. Shortcuts are a convenience: failures never break a sync, and `VITE_GROUP_SHARED=false` turns the feature off. Drive still lists the shared files themselves (the post folder, `comments.json`, `likes.json`) under "Shared with me" — the prefix makes them easy to find or filter, but Drive offers no API to hide them.
 
 ## Permission model
 

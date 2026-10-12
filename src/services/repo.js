@@ -7,9 +7,9 @@
  */
 import { config } from '../config';
 import { b64d, b64e, createProtection, decryptBytes, decryptJson, encryptBytes, encryptJson, importRawKey, randomId, rewrapProtection, unlockProtection } from './crypto';
-import { DriveError, MIME_FOLDER, qs } from './drive';
+import { DriveError, MIME_FOLDER, MIME_SHORTCUT, qs } from './drive';
 import { normEmail, extractMentions, prettyName } from './mentions';
-import { ROLE_COMMENT, ROLE_VIEW, buildPostDoc, canCommentWith, normMode, byNewest, cleanAudience, emptyIndex, folderNameFor, openPostDoc, toEntry } from './postModel';
+import { ROLE_COMMENT, ROLE_VIEW, buildPostDoc, canCommentWith, normMode, byNewest, cleanAudience, emptyIndex, folderNameFor, isBranded, brandName, shortcutNameFor, openPostDoc, toEntry } from './postModel';
 import { prepareImage } from './image';
 import { debounce, mapLimit } from './util';
 
@@ -127,12 +127,30 @@ export class DriveRepo {
       try { const m = await this.drive.get(e.id, 'id,trashed'); return m.trashed ? null : e; } catch (err) { return err instanceof DriveError && (err.notFound || err.forbidden) ? null : e; }
     });
     shared.push(...alive.filter(Boolean));
+    await this.#syncShortcuts(L, shared.filter((e) => !e.via));
     idx.mine = mine.sort(byNewest);
     idx.shared = shared.sort(byNewest);
     idx.syncedAt = Date.now();
     await this.#saveLocalIndex();
     this.pushIndex();
     return idx;
+  }
+
+  /**
+   * Keep SPECACT/shared/ in step with what is shared with me: one branded Drive shortcut per post, so everything
+   * lives under my SPECACT folder instead of being scattered across "Shared with me". Best effort: never fails a sync.
+   */
+  async #syncShortcuts(L, entries) {
+    if (!config.groupShared) return;
+    try {
+      if (!L.sharedId) L.sharedId = (await this.#findOrCreateFolder(config.sharedFolder, L.rootId, { specact: 'shared', v: '1' })).id;
+      const kids = await this.drive.list({ q: `${qs(L.sharedId)} in parents and trashed = false`, fields: 'id,name,mimeType,shortcutDetails(targetId)' });
+      const have = new Map(kids.filter((k) => k.mimeType === MIME_SHORTCUT && k.shortcutDetails?.targetId).map((k) => [k.shortcutDetails.targetId, k]));
+      const wanted = new Set(entries.map((e) => e.id));
+      await mapLimit(entries.filter((e) => !have.has(e.id)), 3, (e) => this.drive.createShortcut(shortcutNameFor(e.owner.name || prettyName(e.owner.email), e.createdAt), L.sharedId, e.id).catch(() => null));
+      // access ended or the post was deleted: drop its shortcut (only ones we named)
+      await mapLimit([...have].filter(([target, k]) => !wanted.has(target) && isBranded(k.name)), 3, ([, k]) => this.drive.remove(k.id).catch(() => null));
+    } catch { /* grouping is a convenience */ }
   }
 
   /** Folders shared with me that are SPECACT posts. */
@@ -184,7 +202,8 @@ export class DriveRepo {
     const find = (n) => kids.find((k) => k.name === n)?.id || null;
     const pj = find('post.json');
     if (!pj) throw new RepoError('not-a-post');
-    return { pj, cj: find('comments.json'), mf: find('media'), lj: find('likes.json') };
+    const named = (n) => kids.find((k) => k.name === n || k.name === brandName(n))?.id || null; // old posts have plain names
+    return { pj, cj: named('comments.json'), mf: find('media'), lj: named('likes.json') };
   }
 
   #upsertEntry(entry, { link = false } = {}) {
@@ -298,7 +317,7 @@ export class DriveRepo {
   async #ensureLikes(folderId, doc, ids, meta) {
     let legacy = [];
     if (ids.cj) { try { legacy = (await this.drive.downloadJson(ids.cj)).likes || []; } catch { /* none */ } }
-    const lj = await this.drive.createJson('likes.json', folderId, { v: 1, likes: legacy });
+    const lj = await this.drive.createJson(brandName('likes.json'), folderId, { v: 1, likes: legacy });
     doc.lj = lj.id;
     await this.drive.updateJson(ids.pj, doc);
     const rev = String(Date.now()); // viewers re-read the post's ids when its rev moves
@@ -421,8 +440,8 @@ export class DriveRepo {
         media.push(await this.#uploadImage(files[i], mf.id, prot?.key, id));
       }
       onProgress({ stage: 'save', done: files.length, total: files.length });
-      const cj = await this.drive.createJson('comments.json', folder.id, { v: 1, comments: [], likes: [] });
-      const lj = await this.drive.createJson('likes.json', folder.id, { v: 1, likes: [] });
+      const cj = await this.drive.createJson(brandName('comments.json'), folder.id, { v: 1, comments: [], likes: [] });
+      const lj = await this.drive.createJson(brandName('likes.json'), folder.id, { v: 1, likes: [] });
       const doc = await buildPostDoc({
         id, owner: this.me, createdAt, updatedAt: createdAt, text, media, mentions, audience,
         linkShare: !!input.linkShare, commentMode: normMode(input.commentMode), cj: cj.id, lj: lj.id, protection: prot?.protection || null, key: prot?.key,

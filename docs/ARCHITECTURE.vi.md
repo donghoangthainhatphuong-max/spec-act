@@ -14,11 +14,13 @@
 SPECACT/                         properties: specact=root
 ├── index.json                   chỉ mục cá nhân (bài của tôi + được chia sẻ)
 ├── contacts.json                người đã kết nối
+├── shared/                      mỗi bài được chia sẻ cho tôi có một lối tắt Drive mang tiền tố
+│   └── __S.P.E.C.T.A.C.T__ Alice · 2026-10-12   →  thư mục bài của Alice
 └── posts/                       properties: specact=posts
-    └── 2026-10-12_ab12cd34ef/   properties: specact=post, rev, pj, cj, lj, mf
+    └── __S.P.E.C.T.A.C.T__ 2026-10-12_ab12cd34ef/   properties: specact=post, rev, pj, cj, lj, mf
         ├── post.json
-        ├── comments.json
-        ├── likes.json           {v:1, likes:[email]}
+        ├── __S.P.E.C.T.A.C.T__ comments.json
+        ├── __S.P.E.C.T.A.C.T__ likes.json           {v:1, likes:[email]}
         └── media/
             ├── ab12cd34ef_anh.jpg        ảnh đã thu nhỏ
             └── ab12cd34ef_t.jpg          ảnh thu nhỏ (thumbnail)
@@ -61,6 +63,10 @@ Bình luận của bài có mật khẩu mang `enc` thay cho `text`. Tim nằm t
 //         text(snippet ≤600), truncated, mediaCount, media(≤3), audience(≤12), ids{pj,cj,lj,mf}, via?
 ```
 Bài có mật khẩu **không bao giờ** có nội dung trong chỉ mục.
+
+## Giữ Drive gọn gàng
+
+Mọi thứ SPECACT tạo ra mà người khác có thể thấy đều mang tiền tố `__S.P.E.C.T.A.C.T__` (thư mục bài, `comments.json`, `likes.json`), nên dễ nhận biết và tìm trong “Được chia sẻ với tôi” của Drive. Không ai di chuyển được thư mục bài của người khác vào cây của mình, nên mỗi lần đồng bộ chỉ mục SPECACT tạo một **lối tắt Drive** cho mỗi bài được chia sẻ trong `SPECACT/shared/` (đặt tên `__S.P.E.C.T.A.C.T__ <chủ bài> · <ngày>`) và xóa nó khi hết quyền. Nhờ đó mọi thứ được chia sẻ với bạn đều truy cập được ngay trong thư mục `SPECACT` của chính bạn. Lối tắt chỉ là tiện ích: lỗi không làm hỏng đồng bộ, và `VITE_GROUP_SHARED=false` tắt tính năng. Drive vẫn liệt kê các tệp được chia sẻ (thư mục bài, `comments.json`, `likes.json`) trong “Được chia sẻ với tôi” — tiền tố giúp dễ tìm/lọc nhưng Drive không có API để ẩn chúng.
 
 ## Mô hình quyền
 

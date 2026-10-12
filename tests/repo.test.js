@@ -53,7 +53,8 @@ describe('posts and sharing', () => {
     const folder = fake.files.get(post.id);
     expect(folder.parents).toEqual([(await alice.ensureLayout()).postsId]);
     const kids = fake.find((f) => f.parents.includes(post.id)).map((f) => f.name).sort();
-    expect(kids).toEqual(['comments.json', 'likes.json', 'media', 'post.json']);
+    expect(kids).toEqual(['__S.P.E.C.T.A.C.T__ comments.json', '__S.P.E.C.T.A.C.T__ likes.json', 'media', 'post.json']);
+    expect(folder.name).toMatch(/^__S\.P\.E\.C\.T\.A\.C\.T__ \d{4}-\d{2}-\d{2}_/);
     const media = fake.find((f) => f.parents.includes(post.ids.mf));
     expect(media).toHaveLength(4); // 2 photos + 2 thumbnails
     const doc = JSON.parse(fake.text(fake.files.get(post.ids.pj)));
@@ -349,7 +350,7 @@ describe('password protected posts', () => {
     expect(await dave.mediaUrl(open, open.media[0])).toBeTruthy();
     expect((await dave.loadComments(open)).comments).toEqual([]);
     const seen = (await dave.drive.list({ q: `'${post.id}' in parents and trashed = false` })).map((f) => f.name);
-    expect(seen.sort()).toEqual(['likes.json', 'post.json']); // only public files show up: no comments.json, no media folder
+    expect(seen.sort()).toEqual(['__S.P.E.C.T.A.C.T__ likes.json', 'post.json']); // only public files show up: no comments.json, no media folder
     await expect(dave.drive.get(post.id)).rejects.toMatchObject({ status: 403 });
     expect((await dave.loadIndex()).shared[0]).toMatchObject({ id: post.ids.pj, via: 'link' });
     // the owner following their own link lands on the real post
@@ -437,6 +438,32 @@ describe('comment modes', () => {
     await alice.setLinkShare(cur, false); // no link, no stranger writing
     await expect(dave.openPost(post.ids.pj)).rejects.toMatchObject({ code: 'forbidden' });
     expect((await bob.openPost(post.id)).role).toBe('comment');
+  });
+});
+
+describe('grouping shared posts under SPECACT/shared', () => {
+  it('creates one branded shortcut per shared post, keeps them in step, and never duplicates', async () => {
+    const alice = mk('alice@gmail.com', 'Alice');
+    const bob = mk('bob@gmail.com', 'Bob');
+    const a = await alice.createPost({ text: 'one', files: [], audience: { 'bob@gmail.com': 'view' } });
+    await alice.createPost({ text: 'two', files: [], audience: { 'bob@gmail.com': 'view' } });
+    await alice.createPost({ text: 'private', files: [], audience: {} });
+    await bob.syncIndex();
+    const L = await bob.ensureLayout();
+    const list = () => fake.find((f) => f.parents.includes(L.sharedId) && f.mimeType === 'application/vnd.google-apps.shortcut');
+    expect(fake.files.get(L.sharedId).name).toBe('shared');
+    expect(fake.files.get(L.sharedId).parents).toEqual([L.rootId]);
+    expect(list()).toHaveLength(2);
+    expect(list().every((s) => s.name.startsWith('__S.P.E.C.T.A.C.T__ Alice · '))).toBe(true);
+    expect(list().map((s) => s.shortcutDetails.targetId)).toContain(a.post.id);
+    await bob.syncIndex(); // idempotent
+    expect(list()).toHaveLength(2);
+    // access removed -> its shortcut goes away; unrelated things in the folder stay
+    await bob.drive.createFolder('my own folder', L.sharedId);
+    await alice.setAccess(a.post, 'bob@gmail.com', null);
+    await bob.syncIndex();
+    expect(list()).toHaveLength(1);
+    expect(fake.find((f) => f.name === 'my own folder')).toHaveLength(1);
   });
 });
 

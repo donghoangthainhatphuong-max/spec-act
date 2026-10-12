@@ -31,10 +31,21 @@ export const COMMENT_MODES = ['open', 'shared', 'locked'];
 export const normMode = (m) => (COMMENT_MODES.includes(m) ? m : 'shared');
 export const canCommentWith = (mode, role) => mode === 'open' || (mode === 'shared' && role === ROLE_COMMENT);
 
+/** Marks everything SPECACT creates so it is easy to spot (and search) in Drive, e.g. in "Shared with me". */
+export const BRAND_PREFIX = '__S.P.E.C.T.A.C.T__';
+export const brandName = (name) => `${BRAND_PREFIX} ${name}`;
+export const isBranded = (name) => String(name || '').startsWith(BRAND_PREFIX);
+
+export function shortcutNameFor(ownerName, createdAt) {
+  const d = new Date(createdAt);
+  const p = (n) => String(n).padStart(2, '0');
+  return brandName(`${ownerName || '?'} · ${d.getUTCFullYear()}-${p(d.getUTCMonth() + 1)}-${p(d.getUTCDate())}`);
+}
+
 export function folderNameFor(createdAt, id) {
   const d = new Date(createdAt);
   const p = (n) => String(n).padStart(2, '0');
-  return `${d.getUTCFullYear()}-${p(d.getUTCMonth() + 1)}-${p(d.getUTCDate())}_${id}`;
+  return brandName(`${d.getUTCFullYear()}-${p(d.getUTCMonth() + 1)}-${p(d.getUTCDate())}_${id}`);
 }
 
 export function snippetOf(text) {
