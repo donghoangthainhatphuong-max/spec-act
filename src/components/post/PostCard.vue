@@ -50,10 +50,8 @@ const audienceCount = computed(() => view.value.audienceCount ?? audienceEmails.
 const social = computed(() => posts.social[view.value.id]);
 const canReact = computed(() => {
   if (locked.value) return false;
-  const mode = view.value.commentMode || 'shared';
-  if (mode === 'locked') return false;
-  if (mine.value || mode === 'open') return true;
-  return (view.value.role ?? view.value.audience?.[session.me?.email]) === 'comment';
+  // likes follow who the post is open to (likes.json), not the comment mode
+  return !!view.value.ids?.lj;
 });
 const liked = computed(() => !!social.value?.likes.includes(session.me?.email));
 const likeCount = computed(() => social.value?.likes.length || 0);

@@ -193,7 +193,7 @@
   "post.forbidden": "你没有访问此帖的权限。请让所有者与你的 Google 账号分享。",
   "post.forget": "从我的列表中移除",
   "post.forgetConfirm": "从你的列表中移除此帖？所有者的副本不受影响。",
-  "post.likeDisabled": "只能对你有权评论的帖子做出回应。",
+  "post.likeDisabled": "此帖暂时无法点赞（需要所有者先打开一次）。",
   "post.linkOn": "任何拥有链接的人",
   "post.linkShare": "任何拥有链接的人",
   "post.linkShareHint": "任何已登录 Google 且拥有链接的人都可以打开，无需逐个添加。",

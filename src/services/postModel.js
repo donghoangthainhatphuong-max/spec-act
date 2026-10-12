@@ -57,9 +57,9 @@ export function publicMedia(m) {
 }
 
 /** The JSON written to post.json. For protected posts the sensitive part is sealed in `payload`. */
-export async function buildPostDoc({ id, owner, createdAt, updatedAt, text, media, mentions, audience, linkShare, commentMode, cj, protection, key }) {
+export async function buildPostDoc({ id, owner, createdAt, updatedAt, text, media, mentions, audience, linkShare, commentMode, cj, lj, protection, key }) {
   const body = { text: text || '', media: (media || []).map(publicMedia), mentions: mentions || [] };
-  const base = { v: SCHEMA, id, owner: { email: normEmail(owner.email), name: owner.name || '' }, createdAt, updatedAt, audience: cleanAudience(audience, owner.email), linkShare: !!linkShare, commentMode: normMode(commentMode), cj: cj || null };
+  const base = { v: SCHEMA, id, owner: { email: normEmail(owner.email), name: owner.name || '' }, createdAt, updatedAt, audience: cleanAudience(audience, owner.email), linkShare: !!linkShare, commentMode: normMode(commentMode), cj: cj || null, lj: lj || null };
   if (protection) {
     if (!key) throw new Error('content key required');
     return { ...base, protection, payload: await encryptJson(key, body, `post:${id}`) };
@@ -87,6 +87,7 @@ export async function openPostDoc(doc, key) {
     linkShare: !!doc.linkShare,
     commentMode: normMode(doc.commentMode),
     cj: doc.cj || null,
+    lj: doc.lj || null,
     text: body.text || '',
     media: (body.media || []).map(publicMedia),
     mentions: body.mentions || [],

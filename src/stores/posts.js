@@ -114,7 +114,8 @@ export const usePostsStore = defineStore('posts', () => {
       social[id] = { ...optimistic, likes };
     }
     try {
-      setSocial(id, await repo().toggleLike({ ...target, id }));
+      const res = await repo().toggleLike({ ...target, id });
+      social[id] = { ...(social[id] || { comments: [] }), likes: res.likes, loaded: true };
     } catch (e) { if (optimistic) social[id] = optimistic; throw e; }
   }
 

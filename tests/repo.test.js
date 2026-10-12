@@ -53,7 +53,7 @@ describe('posts and sharing', () => {
     const folder = fake.files.get(post.id);
     expect(folder.parents).toEqual([(await alice.ensureLayout()).postsId]);
     const kids = fake.find((f) => f.parents.includes(post.id)).map((f) => f.name).sort();
-    expect(kids).toEqual(['comments.json', 'media', 'post.json']);
+    expect(kids).toEqual(['comments.json', 'likes.json', 'media', 'post.json']);
     const media = fake.find((f) => f.parents.includes(post.ids.mf));
     expect(media).toHaveLength(4); // 2 photos + 2 thumbnails
     const doc = JSON.parse(fake.text(fake.files.get(post.ids.pj)));
@@ -349,7 +349,7 @@ describe('password protected posts', () => {
     expect(await dave.mediaUrl(open, open.media[0])).toBeTruthy();
     expect((await dave.loadComments(open)).comments).toEqual([]);
     const seen = (await dave.drive.list({ q: `'${post.id}' in parents and trashed = false` })).map((f) => f.name);
-    expect(seen).toEqual(['post.json']); // only the public file shows up: no comments.json, no media folder
+    expect(seen.sort()).toEqual(['likes.json', 'post.json']); // only public files show up: no comments.json, no media folder
     await expect(dave.drive.get(post.id)).rejects.toMatchObject({ status: 403 });
     expect((await dave.loadIndex()).shared[0]).toMatchObject({ id: post.ids.pj, via: 'link' });
     // the owner following their own link lands on the real post
@@ -422,7 +422,7 @@ describe('comment modes', () => {
     expect(carolLocked.role).toBe('view');
     expect(await tryComment(carol, { ...carolLocked, role: 'comment', commentMode: 'shared' })).toBe('forbidden'); // Drive refuses even a stale client
     expect(await tryComment(alice, cur)).toBe('comments-locked');
-    await expect(alice.toggleLike(cur)).rejects.toMatchObject({ code: 'comments-locked' });
+    expect((await alice.toggleLike(cur)).likes).toEqual(['alice@gmail.com']); // likes are not comments: locking comments leaves them alone
     expect((await bob.loadComments(await bob.openPost(post.id))).comments).toHaveLength(1); // still readable
     const first = (await alice.loadComments(cur)).comments[0];
     expect((await alice.deleteComment(cur, first.id)).comments).toHaveLength(0); // owner can still moderate
@@ -437,6 +437,67 @@ describe('comment modes', () => {
     await alice.setLinkShare(cur, false); // no link, no stranger writing
     await expect(dave.openPost(post.ids.pj)).rejects.toMatchObject({ code: 'forbidden' });
     expect((await bob.openPost(post.id)).role).toBe('comment');
+  });
+});
+
+describe('likes', () => {
+  const likeBy = (repo, post) => repo.toggleLike(post).then((r) => r.likes, (e) => e.code);
+
+  it('follow who the post is open to: view-only people like, strangers cannot, whatever the comment mode', async () => {
+    const alice = mk('alice@gmail.com', 'Alice');
+    const bob = mk('bob@gmail.com', 'Bob');
+    const eve = mk('eve@gmail.com', 'Eve');
+    const { post } = await alice.createPost({ text: 'x', files: [], audience: { 'bob@gmail.com': 'view' }, commentMode: 'locked' });
+    const bobPost = await bob.openPost(post.id);
+    expect(bobPost.role).toBe('view');
+    expect(await likeBy(bob, bobPost)).toEqual(['bob@gmail.com']);
+    expect(await likeBy(alice, await alice.openPost(post.id))).toEqual(['bob@gmail.com', 'alice@gmail.com']);
+    expect((await bob.loadComments(bobPost)).likes).toEqual(['bob@gmail.com', 'alice@gmail.com']);
+    expect(await likeBy(bob, bobPost)).toEqual(['alice@gmail.com']); // unlike
+    await expect(eve.openPost(post.id)).rejects.toMatchObject({ code: 'forbidden' });
+    expect(await likeBy(eve, { id: post.id, ids: post.ids, protected: false })).toBe('forbidden'); // no permission on likes.json
+    // the like file never gives write access to the post or the comments
+    await expect(bob.drive.updateJson(post.ids.pj, {})).rejects.toMatchObject({ status: 403 });
+    await expect(bob.drive.updateJson(post.ids.cj, {})).rejects.toMatchObject({ status: 403 });
+  });
+
+  it('are removed with the person, and opened to link visitors only on public posts', async () => {
+    const alice = mk('alice@gmail.com', 'Alice');
+    const bob = mk('bob@gmail.com', 'Bob');
+    const dave = mk('dave@gmail.com', 'Dave');
+    const { post } = await alice.createPost({ text: 'x', files: [], audience: { 'bob@gmail.com': 'view' }, linkShare: true });
+    const pub = await dave.openPost(post.ids.pj);
+    expect(pub.ids.lj).toBe(post.ids.lj);
+    expect(await likeBy(dave, pub)).toEqual(['dave@gmail.com']);
+    const off = await alice.setLinkShare(post, false);
+    expect(await likeBy(dave, pub)).toBe('forbidden');
+    const cur = (await alice.setAccess(off, 'bob@gmail.com', null)).post;
+    expect(await likeBy(bob, { id: post.id, ids: post.ids })).toBe('forbidden');
+    expect(cur.audience).toEqual({});
+  });
+
+  it('posts made before likes.json get one (with the old likes) when the owner next opens them', async () => {
+    const alice = mk('alice@gmail.com', 'Alice');
+    const bob = mk('bob@gmail.com', 'Bob');
+    const { post } = await alice.createPost({ text: 'old', files: [], audience: { 'bob@gmail.com': 'view' } });
+    // simulate the previous layout: no likes.json, likes kept in comments.json
+    fake.files.delete(post.ids.lj);
+    const f = fake.files.get(post.id);
+    delete f.properties.lj;
+    const doc = JSON.parse(fake.text(fake.files.get(post.ids.pj)));
+    delete doc.lj;
+    fake.files.get(post.ids.pj).content = new TextEncoder().encode(JSON.stringify(doc));
+    fake.files.get(post.ids.cj).content = new TextEncoder().encode(JSON.stringify({ v: 1, comments: [], likes: ['carol@gmail.com'] }));
+
+    const before = await bob.openPost(post.id);
+    expect(before.ids.lj).toBeFalsy();
+    expect(await likeBy(bob, before)).toBe('forbidden'); // not possible until the owner migrates it
+
+    const mine = await alice.openPost(post.id);
+    expect(mine.ids.lj).toBeTruthy();
+    expect((await alice.loadComments(mine)).likes).toEqual(['carol@gmail.com']);
+    const after = await bob.openPost(post.id);
+    expect(await likeBy(bob, after)).toEqual(['carol@gmail.com', 'bob@gmail.com']);
   });
 });
 

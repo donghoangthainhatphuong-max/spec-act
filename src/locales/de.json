@@ -193,7 +193,7 @@
   "post.forbidden": "Sie haben keinen Zugriff auf diesen Beitrag. Bitten Sie den Eigentümer, ihn mit Ihrem Google-Konto zu teilen.",
   "post.forget": "Aus meiner Liste entfernen",
   "post.forgetConfirm": "Diesen Beitrag aus Ihrer Liste entfernen? Die Kopie des Eigentümers bleibt unberührt.",
-  "post.likeDisabled": "Sie können nur auf Beiträge reagieren, die Sie kommentieren dürfen.",
+  "post.likeDisabled": "Reagieren ist bei diesem Beitrag noch nicht möglich (der Eigentümer muss ihn einmal öffnen).",
   "post.linkOn": "Jeder mit dem Link",
   "post.linkShare": "Jeder mit dem Link",
   "post.linkShareHint": "Jeder, der mit Google angemeldet ist und den Link hat, kann ihn öffnen — ohne einzelne Personen hinzuzufügen.",

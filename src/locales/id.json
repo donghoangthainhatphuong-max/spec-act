@@ -193,7 +193,7 @@
   "post.forbidden": "Anda tidak punya akses ke kiriman ini. Minta pemiliknya membagikannya ke akun Google Anda.",
   "post.forget": "Hapus dari daftar saya",
   "post.forgetConfirm": "Hapus kiriman ini dari daftar Anda? Salinan pemilik tidak terpengaruh.",
-  "post.likeDisabled": "Anda hanya dapat bereaksi pada kiriman yang boleh Anda komentari.",
+  "post.likeDisabled": "Belum bisa bereaksi pada kiriman ini (pemilik perlu membukanya sekali).",
   "post.linkOn": "Siapa pun yang punya tautan",
   "post.linkShare": "Siapa pun yang punya tautan",
   "post.linkShareHint": "Siapa pun yang masuk dengan Google dan punya tautan dapat membukanya, tanpa menambahkan satu per satu.",

@@ -193,7 +193,7 @@
   "post.forbidden": "Vous n’avez pas accès à ce post. Demandez au propriétaire de le partager avec votre compte Google.",
   "post.forget": "Retirer de ma liste",
   "post.forgetConfirm": "Retirer ce post de votre liste ? L’exemplaire du propriétaire n’est pas touché.",
-  "post.likeDisabled": "Vous ne pouvez réagir qu’aux posts que vous pouvez commenter.",
+  "post.likeDisabled": "Réagir n’est pas encore possible pour ce post (le propriétaire doit l’ouvrir une fois).",
   "post.linkOn": "Toute personne avec le lien",
   "post.linkShare": "Toute personne disposant du lien",
   "post.linkShareHint": "Toute personne connectée avec Google et ayant le lien peut l’ouvrir — inutile de l’ajouter une par une.",

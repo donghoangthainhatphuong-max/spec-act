@@ -193,7 +193,7 @@
   "post.forbidden": "Bạn không có quyền xem bài này. Hãy nhờ chủ bài chia sẻ cho tài khoản Google của bạn.",
   "post.forget": "Gỡ khỏi danh sách của tôi",
   "post.forgetConfirm": "Gỡ bài này khỏi danh sách của bạn? Bản của chủ bài không bị ảnh hưởng.",
-  "post.likeDisabled": "Bạn chỉ có thể thả tim bài mà bạn được phép bình luận.",
+  "post.likeDisabled": "Chưa thể thả tim bài này (chủ bài cần mở bài một lần).",
   "post.linkOn": "Ai có liên kết",
   "post.linkShare": "Ai có liên kết đều xem được",
   "post.linkShareHint": "Ai đăng nhập Google và có liên kết đều mở được bài và ảnh. Chỉ mở quyền trên từng tệp — thư mục và bình luận vẫn riêng tư.",

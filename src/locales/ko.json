@@ -193,7 +193,7 @@
   "post.forbidden": "이 글에 접근할 권한이 없습니다. 소유자에게 내 Google 계정으로 공유해 달라고 요청하세요.",
   "post.forget": "내 목록에서 제거",
   "post.forgetConfirm": "이 글을 내 목록에서 제거할까요? 소유자의 사본에는 영향이 없습니다.",
-  "post.likeDisabled": "댓글을 쓸 수 있는 글에만 반응할 수 있습니다.",
+  "post.likeDisabled": "이 글에는 아직 반응할 수 없습니다(소유자가 한 번 열어야 합니다).",
   "post.linkOn": "링크가 있는 누구나",
   "post.linkShare": "링크가 있는 누구나",
   "post.linkShareHint": "Google에 로그인했고 링크가 있으면 누구나 열 수 있습니다. 한 명씩 추가할 필요가 없습니다.",

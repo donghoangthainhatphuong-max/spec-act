@@ -193,7 +193,7 @@
   "post.forbidden": "Bu gönderiye erişiminiz yok. Sahibinden Google hesabınızla paylaşmasını isteyin.",
   "post.forget": "Listemden kaldır",
   "post.forgetConfirm": "Bu gönderi listenizden kaldırılsın mı? Sahibinin kopyası etkilenmez.",
-  "post.likeDisabled": "Yalnızca yorum yapabildiğiniz gönderilere tepki verebilirsiniz.",
+  "post.likeDisabled": "Bu gönderiye henüz tepki verilemiyor (sahibinin bir kez açması gerekir).",
   "post.linkOn": "Bağlantıya sahip herkes",
   "post.linkShare": "Bağlantıya sahip herkes",
   "post.linkShareHint": "Google ile giriş yapmış ve bağlantıya sahip herkes tek tek eklemeden açabilir.",

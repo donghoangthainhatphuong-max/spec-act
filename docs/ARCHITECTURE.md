@@ -16,6 +16,7 @@ SPECACT/                         properties: specact=root
     └── 2026-10-12_ab12cd34ef/   properties: specact=post, rev, pj, cj, mf
         ├── post.json
         ├── comments.json
+        ├── likes.json                {v:1, likes:[email]} — writable by everyone the post is open to
         └── media/
             ├── ab12cd34ef_anh.jpg        ảnh đã thu nhỏ
             └── ab12cd34ef_t.jpg          ảnh thu nhỏ (thumbnail)
@@ -67,6 +68,7 @@ Bài có mật khẩu **không bao giờ** có nội dung trong chỉ mục.
 | Chủ bài | owner của cây thư mục |
 | **Được xem** | `reader` trên thư mục bài (kế thừa xuống `post.json`, `comments.json`, `media/*`) |
 | **Được bình luận** | `reader` trên thư mục + `writer` **chỉ trên `comments.json`** (không bao giờ ghi được `post.json`) |
+| **Thả tim** | `writer` **chỉ trên `likes.json`** cho mọi người được xem bài (mọi chế độ bình luận); `anyone` `writer` trên `likes.json` chỉ khi bài công khai bằng liên kết |
 | Liên kết + mật khẩu | `anyone` `reader` trên thư mục (chỉ cho bài có mật khẩu; nội dung vẫn mã hóa) |
 
 `@email` trong nội dung → người đó được thêm vào danh sách chia sẻ (mức *được xem*). Gỡ `@mention` khỏi văn bản **không** thu hồi quyền — thu hồi luôn là hành động tường minh.

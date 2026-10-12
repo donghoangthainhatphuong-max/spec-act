@@ -48,7 +48,7 @@ export class DemoRepo {
 
   #full(p) {
     const mine = p.owner === DEMO_ME.email;
-    const ids = { pj: `${p.id}:pj`, cj: `${p.id}:cj`, mf: `${p.id}:mf` };
+    const ids = { pj: `${p.id}:pj`, cj: `${p.id}:cj`, mf: `${p.id}:mf`, lj: `${p.id}:lj` };
     return {
       id: p.id, pid: p.id, owner: { email: p.owner, name: p.owner === DEMO_ME.email ? DEMO_ME.name : PEOPLE[p.owner] },
       createdAt: p.at, updatedAt: p.at, protected: !!p.protected, locked: false, linkShare: false, commentMode: p.commentMode || 'shared', cj: null,

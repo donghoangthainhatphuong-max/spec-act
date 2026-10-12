@@ -193,7 +193,7 @@
   "post.forbidden": "You do not have access to this post. Ask the owner to share it with your Google account.",
   "post.forget": "Remove from my list",
   "post.forgetConfirm": "Remove this post from your list? The owner’s copy is not affected.",
-  "post.likeDisabled": "You can only react to posts you are allowed to comment on.",
+  "post.likeDisabled": "Liking is not available for this post yet (the owner needs to open it once).",
   "post.linkOn": "Anyone with the link",
   "post.linkShare": "Anyone with the link",
   "post.linkShareHint": "Anyone signed in with Google who has the link can open this post and its photos. Only those files are opened — the folder and comments stay private.",
