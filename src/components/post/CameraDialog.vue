@@ -137,65 +137,68 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKey));
 </script>
 
 <template>
-  <div v-if="open" class="camera" role="dialog" aria-modal="true" :aria-label="t('camera.title')">
-    <video ref="videoEl" class="feed" :class="{ mirror }" playsinline muted autoplay />
-    <div v-if="flash" class="flash" />
+  <Teleport to="body"><div v-if="open" class="camera" role="dialog" aria-modal="true" :aria-label="t('camera.title')">
+    <video ref="videoEl" class="cam-feed" :class="{ mirror }" playsinline muted autoplay />
+    <div v-if="flash" class="cam-flash" />
 
-    <header class="bar top">
+    <header class="cam-bar cam-top">
       <button class="icon-btn" :aria-label="t('close')" @click="close"><AppIcon name="x" :size="22" /></button>
-      <span v-if="recording" class="rec"><i />{{ clock }}</span>
+      <span v-if="recording" class="cam-rec"><i />{{ clock }}</span>
       <span class="grow" />
       <button class="icon-btn" :aria-label="t('camera.switch')" :disabled="recording || !!error" @click="flip"><AppIcon name="refresh" :size="22" /></button>
     </header>
 
-    <div v-if="error" class="fallback">
+    <div v-if="error" class="cam-fallback">
       <AppIcon name="alert" :size="28" />
       <p>{{ t(error === 'denied' ? 'camera.denied' : 'camera.noCamera') }}</p>
       <label class="btn primary">{{ t('camera.useApp') }} · {{ t('camera.photo') }}<input class="sr" type="file" accept="image/*" capture="environment" @change="fromDevice" /></label>
       <label class="btn">{{ t('camera.useApp') }} · {{ t('camera.video') }}<input class="sr" type="file" accept="video/*" capture="environment" @change="fromDevice" /></label>
     </div>
 
-    <footer class="bar bottom">
-      <div class="modes" role="tablist">
+    <footer class="cam-bar cam-bottom">
+      <div class="cam-modes" role="tablist">
         <button role="tab" :aria-selected="mode === 'photo'" :class="{ on: mode === 'photo' }" :disabled="recording" @click="setMode('photo')">{{ t('camera.photo') }}</button>
         <button role="tab" :aria-selected="mode === 'video'" :class="{ on: mode === 'video' }" :disabled="recording" @click="setMode('video')">{{ t('camera.video') }}</button>
       </div>
-      <div class="row">
-        <span class="count">{{ added ? t('camera.added', { n: added }) : '' }}</span>
+      <div class="cam-row">
+        <span class="cam-count">{{ added ? t('camera.added', { n: added }) : '' }}</span>
         <button class="shutter" :class="[mode, { recording }]" :disabled="!canCapture && !recording" :aria-label="mode === 'photo' ? t('camera.shutter') : recording ? t('camera.stop') : t('camera.record')" @click="onShutter"><i /></button>
-        <button class="btn primary sm done" @click="close">{{ t('camera.done') }}</button>
+        <button class="btn primary sm cam-done" @click="close">{{ t('camera.done') }}</button>
       </div>
-      <p v-if="room <= 0" class="limit">{{ t('camera.full') }}</p>
+      <p v-if="room <= 0" class="cam-limit">{{ t('camera.full') }}</p>
     </footer>
-  </div>
+  </div></Teleport>
 </template>
 
 <style scoped>
-.camera { position: fixed; inset: 0; z-index: 65; background: #000; display: flex; flex-direction: column; color: #fff; }
-.feed { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: #000; }
-.feed.mirror { transform: scaleX(-1); }
-.flash { position: absolute; inset: 0; background: #fff; opacity: .85; animation: fade .16s reverse; pointer-events: none; }
-.bar { position: absolute; left: 0; right: 0; display: flex; align-items: center; gap: 10px; padding: 14px 16px; z-index: 2; }
-.bar.top { top: 0; padding-top: calc(14px + env(safe-area-inset-top)); background: linear-gradient(rgba(0,0,0,.55), transparent); }
-.bar.bottom { bottom: 0; flex-direction: column; gap: 16px; padding-bottom: calc(22px + env(safe-area-inset-bottom)); background: linear-gradient(transparent, rgba(0,0,0,.6)); }
-.bar .icon-btn { color: #fff; background: rgba(255,255,255,.16); }
-.rec { display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px; border-radius: 999px; background: rgba(0,0,0,.5); font-variant-numeric: tabular-nums; font-weight: 600; }
-.rec i { width: 10px; height: 10px; border-radius: 50%; background: #ff4d4d; animation: blink 1s infinite; }
+/* Own stacking context straight under <body> (Teleport) and sized to the VISIBLE viewport (svh), so the controls
+   are never pushed under a phone's browser bar. Layout is a flex column: top bar / camera / controls. */
+.camera { position: fixed; top: 0; left: 0; right: 0; height: 100vh; height: 100svh; z-index: 90; background: #000; color: #fff; display: flex; flex-direction: column; overflow: hidden; }
+.cam-feed { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: #000; }
+.cam-feed.mirror { transform: scaleX(-1); }
+.cam-flash { position: absolute; inset: 0; background: #fff; opacity: .85; animation: fade .16s reverse; pointer-events: none; z-index: 3; }
+.cam-bar { position: relative; z-index: 2; display: flex; align-items: center; gap: 10px; padding: 14px 16px; flex: none; }
+.cam-bar.cam-top { padding-top: calc(14px + env(safe-area-inset-top)); background: linear-gradient(rgba(0,0,0,.55), transparent); }
+.cam-bar.cam-bottom { margin-top: auto; flex-direction: column; gap: 14px; padding-bottom: calc(22px + env(safe-area-inset-bottom)); background: linear-gradient(transparent, rgba(0,0,0,.65)); }
+.cam-bar .icon-btn { color: #fff; background: rgba(255,255,255,.16); }
+.cam-rec { display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px; border-radius: 999px; background: rgba(0,0,0,.5); font-variant-numeric: tabular-nums; font-weight: 600; }
+.cam-rec i { width: 10px; height: 10px; border-radius: 50%; background: #ff4d4d; animation: blink 1s infinite; }
 @keyframes blink { 50% { opacity: .25; } }
-.modes { display: inline-flex; gap: 4px; padding: 4px; border-radius: 999px; background: rgba(0,0,0,.45); }
-.modes button { border: 0; background: transparent; color: rgba(255,255,255,.75); padding: 6px 16px; border-radius: 999px; font-weight: 550; font-size: 14px; }
-.modes button.on { background: #fff; color: #000; }
-.row { width: 100%; max-width: 420px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; }
-.count { font-size: 13px; opacity: .9; }
-.done { justify-self: end; }
-.shutter { width: 74px; height: 74px; border-radius: 50%; border: 4px solid #fff; background: transparent; padding: 0; display: grid; place-items: center; }
+.cam-modes { display: inline-flex; gap: 4px; padding: 4px; border-radius: 999px; background: rgba(0,0,0,.45); }
+.cam-modes button { border: 0; background: transparent; color: rgba(255,255,255,.75); padding: 6px 16px; border-radius: 999px; font-weight: 550; font-size: 14px; }
+.cam-modes button.on { background: #fff; color: #000; }
+.cam-row { width: 100%; max-width: 420px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; }
+.cam-count { font-size: 13px; opacity: .9; }
+.cam-done { justify-self: end; }
+.shutter { width: 74px; height: 74px; flex: none; border-radius: 50%; border: 4px solid #fff; background: transparent; padding: 0; display: grid; place-items: center; }
 .shutter i { width: 56px; height: 56px; border-radius: 50%; background: #fff; transition: all .15s; }
 .shutter.video i { background: #ff4d4d; }
 .shutter.recording i { width: 28px; height: 28px; border-radius: 8px; }
 .shutter:active i { transform: scale(.9); }
-.shutter:disabled { opacity: .4; }
-.limit { font-size: 13px; color: #ffd27a; }
-.fallback { position: absolute; inset: 0; z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 24px; text-align: center; background: rgba(8,10,9,.92); }
-.fallback p { max-width: 36ch; line-height: 1.5; }
-.fallback .btn { cursor: pointer; }
+.shutter:disabled { opacity: .55; }
+.cam-limit { font-size: 13px; color: #ffd27a; }
+.cam-fallback { position: absolute; inset: 0; z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 90px 24px 190px; text-align: center; background: rgba(8,10,9,.92); }
+.cam-fallback p { max-width: 36ch; line-height: 1.5; }
+.cam-fallback .btn { cursor: pointer; }
+@media (max-height: 560px) { .shutter { width: 60px; height: 60px; } .shutter i { width: 44px; height: 44px; } .cam-bar.cam-bottom { gap: 8px; } }
 </style>

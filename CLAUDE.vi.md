@@ -35,6 +35,7 @@
 | `expireSession` chạy bất đồng bộ không `await` → trạng thái UI sai khoảng ngắn (test phát hiện). | Mọi chuyển trạng thái xác thực phải `await` xong trước khi hàm gọi trả về. |
 | vue-i18n coi `@` trong chuỗi là cú pháp liên kết → app crash khi mở trang. | Dùng lớp i18n tự viết (`src/i18n`); chuỗi dịch là JSON phẳng, chỉ có `{name}`. Không đưa vue-i18n trở lại. |
 | Quyền bình luận phụ thuộc nhiều trạng thái (vai trò, chế độ bình luận, liên kết công khai). | Mọi thay đổi ảnh hưởng ai được ghi `comments.json` phải đi qua `#syncCommenting`/`canCommentWith` và có test ở `describe('comment modes')`. Khóa bình luận phải được ép ở **Drive** (gỡ quyền ghi), không chỉ ẩn nút. |
+| Các nút của hộp camera bị ép mất khỏi màn hình: tên lớp chung chung (`.bar`, `.top`, `.row`…) đụng với CSS toàn cục của thiết kế (`.bar` = thanh tiến trình cao 6 px, `.top` = header mobile). | Lớp CSS riêng của component phải có tiền tố (`cam-…`); trước khi đặt tên lớp, `grep` `src/styles/*.css`. Lớp phủ toàn màn hình dùng `Teleport to="body"`, `100svh`, và kiểm tra ở viewport nhỏ (375×640) bằng cách đo mọi nút với `getBoundingClientRect`. |
 | `docker compose` dùng tên container/image `specact` trùng dự án khác của người dùng. | Tên Docker của dự án này luôn là `spec-act`; không động vào container/image khác (`docker ps` trước khi chạy). Cổng mặc định 8088. |
 | Đợt đầu `FakeDrive` dùng `Buffer` → không chạy được trong trình duyệt. | Mã dùng chung giữa Node và trình duyệt không dùng API riêng của Node. |
 
