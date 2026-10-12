@@ -9,10 +9,12 @@ const { t } = useI18n();
 const ui = useUiStore();
 const session = useSessionStore();
 const src = ref('');
+const poster = ref('');
 const loading = ref(false);
 const index = ref(0);
 const v = computed(() => ui.viewer);
 const count = computed(() => v.value?.items.length || 0);
+const isVideo = computed(() => v.value?.items[index.value]?.kind === 'video');
 
 // view transform: zoom, rotation (quarter turns) and pan
 const MIN = 1;
@@ -41,17 +43,20 @@ async function show() {
   if (!v.value) return;
   loading.value = true;
   src.value = '';
+  poster.value = '';
   resetView();
   const item = v.value.items[index.value];
+  const video = item.kind === 'video';
   try {
     const thumb = await session.repo.mediaUrl(v.value.post, item, { thumb: true }).catch(() => '');
-    if (thumb) src.value = thumb; // instant preview while the full size loads
-    src.value = await session.repo.mediaUrl(v.value.post, item);
+    if (video) poster.value = thumb; else if (thumb) src.value = thumb; // instant preview while the full size loads
+    const full = await session.repo.mediaUrl(v.value.post, item);
+    if (v.value?.items[index.value] === item) src.value = full;
   } catch { /* keep preview */ }
   loading.value = false;
-  // warm the neighbours so next/previous feels instant
+  // warm the neighbouring photos so next/previous feels instant (videos are large: loaded only when opened)
   const n = v.value?.items.length || 0;
-  if (n > 1 && v.value) for (const d of [1, -1]) session.repo.mediaUrl(v.value.post, v.value.items[(index.value + d + n) % n]).catch(() => {});
+  if (n > 1 && v.value) for (const d of [1, -1]) { const nb = v.value.items[(index.value + d + n) % n]; if (nb.kind !== 'video') session.repo.mediaUrl(v.value.post, nb).catch(() => {}); }
 }
 watch(v, (val) => { if (val) { index.value = val.index; show(); } }, { immediate: true });
 watch(index, show);
@@ -59,6 +64,7 @@ watch(index, show);
 const step = (d) => { if (count.value > 1) index.value = (index.value + d + count.value) % count.value; };
 function onKey(e) {
   if (!v.value) return;
+  if (e.target?.tagName === 'VIDEO' && (e.key === ' ' || e.key.startsWith('Arrow'))) return;
   if (e.key === 'Escape') ui.closeViewer();
   else if (e.key === 'ArrowRight') step(1);
   else if (e.key === 'ArrowLeft') step(-1);
@@ -110,19 +116,25 @@ function onTouchEnd(e) {
     @click.self="ui.closeViewer()" @wheel="onWheel" @pointerdown="onPointerDown" @pointermove="onPointerMove" @pointerup="onPointerUp" @pointercancel="onPointerUp"
     @touchstart.passive="onTouchStart" @touchmove.passive="onTouchMove" @touchend.passive="onTouchEnd"
   >
-    <img v-if="src" :src="src" alt="" draggable="false" :class="{ dim: loading }" :style="imgStyle" @dblclick="onDbl" />
+    <template v-if="isVideo">
+      <video v-if="src" :key="src" class="vvideo" :src="src" :poster="poster" controls autoplay playsinline />
+      <template v-else-if="poster"><img :src="poster" alt="" class="dim" /><span class="vload">{{ t('viewer.loadingVideo') }}</span></template>
+    </template>
+    <img v-else-if="src" :src="src" alt="" draggable="false" :class="{ dim: loading }" :style="imgStyle" @dblclick="onDbl" />
     <button class="icon-btn vclose" :aria-label="t('close')" @click="ui.closeViewer()"><AppIcon name="x" :size="22" /></button>
     <template v-if="count > 1">
       <button class="icon-btn nav prev" :aria-label="t('viewer.prev')" @click="step(-1)"><AppIcon name="back" :size="22" /></button>
       <button class="icon-btn nav next" :aria-label="t('viewer.next')" @click="step(1)"><AppIcon name="chevron" :size="22" /></button>
     </template>
     <div class="toolbar" role="toolbar" :aria-label="t('viewer.tools')">
+      <template v-if="!isVideo">
       <button class="icon-btn" :aria-label="t('viewer.rotateLeft')" :title="t('viewer.rotateLeft')" @click="rotate(-90)"><AppIcon name="rotate" :size="20" class="flip" /></button>
       <button class="icon-btn" :aria-label="t('viewer.rotateRight')" :title="t('viewer.rotateRight')" @click="rotate(90)"><AppIcon name="rotate" :size="20" /></button>
       <button class="icon-btn" :aria-label="t('viewer.zoomOut')" :title="t('viewer.zoomOut')" :disabled="scale <= MIN" @click="zoomBy(0.8)"><AppIcon name="zoomout" :size="20" /></button>
       <span class="pct">{{ Math.round(scale * 100) }}%</span>
       <button class="icon-btn" :aria-label="t('viewer.zoomIn')" :title="t('viewer.zoomIn')" :disabled="scale >= MAX" @click="zoomBy(1.25)"><AppIcon name="zoomin" :size="20" /></button>
       <button class="icon-btn" :aria-label="t('viewer.reset')" :title="t('viewer.reset')" @click="resetView"><AppIcon name="refresh" :size="20" /></button>
+      </template>
       <span v-if="count > 1" class="counter">{{ index + 1 }} / {{ count }}</span>
     </div>
   </div>
@@ -145,6 +157,8 @@ function onTouchEnd(e) {
 .viewer .toolbar .icon-btn:hover:not(:disabled) { background: rgba(255,255,255,.14); }
 .viewer .toolbar .icon-btn:disabled { opacity: .35; }
 .viewer .toolbar .flip { transform: scaleX(-1); }
+.viewer .vvideo { max-width: 100%; max-height: 100%; border-radius: 12px; background: #000; }
+.viewer .vload { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); padding: 8px 16px; border-radius: 999px; background: rgba(0,0,0,.6); font-size: 14px; }
 .viewer .pct { min-width: 46px; text-align: center; font-size: 12.5px; font-variant-numeric: tabular-nums; opacity: .85; }
 .viewer .counter { margin-inline-start: 6px; padding-inline-start: 10px; border-inline-start: 1px solid rgba(255,255,255,.25); font-size: 13px; white-space: nowrap; }
 </style>

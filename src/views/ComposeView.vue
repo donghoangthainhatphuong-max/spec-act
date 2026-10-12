@@ -1,10 +1,11 @@
 <script setup>
-import { computed, onMounted, ref } from 'vue';
-import { onBeforeRouteLeave, useRouter } from 'vue-router';
+import { computed, onMounted, ref, watch } from 'vue';
+import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
 import { useI18n } from '@/i18n';
 import AppAvatar from '../components/ui/AppAvatar.vue';
 import AppIcon from '../components/ui/AppIcon.vue';
 import SecureImage from '../components/ui/SecureImage.vue';
+import CameraDialog from '../components/post/CameraDialog.vue';
 import MentionTextarea from '../components/post/MentionTextarea.vue';
 import AudienceRow from '../components/post/AudienceRow.vue';
 import { useDraftStore } from '../stores/draft';
@@ -19,6 +20,7 @@ import { isEmail, normEmail } from '../services/mentions';
 const props = defineProps({ id: { type: String, default: '' } });
 const { t } = useI18n();
 const router = useRouter();
+const route = useRoute();
 const draft = useDraftStore();
 const people = usePeopleStore();
 const posts = usePostsStore();
@@ -32,6 +34,7 @@ const submitting = ref(false);
 const done = ref(false);
 const showPw = ref(false);
 const fileInput = ref(null);
+const camera = ref(false);
 const textarea = ref(null);
 const dragging = ref(false);
 const extraEmail = ref('');
@@ -40,9 +43,14 @@ const editing = computed(() => !!props.id);
 const ids = computed(() => Object.keys(draft.audience));
 const line = computed(() => (ids.value.length ? t('post.visibleTo', { names: listOf(ids.value.map((e) => people.nameFor(e))) }) : t('compose.onlyMe')));
 
+// "+" pressed while the composer is already open: the component is reused, so watch the query too
+watch(() => route.query.camera, (q) => { if (q && !props.id) { camera.value = true; router.replace({ name: 'new' }); } });
+
 onMounted(async () => {
   if (!props.id) {
     if (draft.editing) draft.reset();
+    // the phone's "+" opens the camera first
+    if (route.query.camera) { camera.value = true; router.replace({ name: 'new' }); }
     return;
   }
   try {
@@ -56,12 +64,16 @@ onMounted(async () => {
 function pick(e) {
   const skipped = draft.addFiles(e.target.files);
   e.target.value = '';
-  if (skipped) ui.toast(t('compose.skipped', { n: skipped, max: config.maxImagesPerPost, mb: config.maxImageMb }), { kind: 'error' });
+  if (skipped) ui.toast(t('compose.skipped', { n: skipped, max: config.maxImagesPerPost, mb: config.maxImageMb, vmb: config.maxVideoMb }), { kind: 'error' });
+}
+function captured(files) {
+  const skipped = draft.addFiles(files);
+  if (skipped) ui.toast(t('compose.skipped', { n: skipped, max: config.maxImagesPerPost, mb: config.maxImageMb, vmb: config.maxVideoMb }), { kind: 'error' });
 }
 function onDrop(e) {
   dragging.value = false;
   const skipped = draft.addFiles(e.dataTransfer?.files || []);
-  if (skipped) ui.toast(t('compose.skipped', { n: skipped, max: config.maxImagesPerPost, mb: config.maxImageMb }), { kind: 'error' });
+  if (skipped) ui.toast(t('compose.skipped', { n: skipped, max: config.maxImagesPerPost, mb: config.maxImageMb, vmb: config.maxVideoMb }), { kind: 'error' });
 }
 function onPaste(e) {
   const files = Array.from(e.clipboardData?.files || []).filter((f) => f.type.startsWith('image/'));
@@ -112,7 +124,7 @@ async function publish() {
     if (res.warnings?.length) ui.toast(t('toast.shareFailed', { name: res.warnings.map((w) => w.email === '*' ? t('post.linkShare') : people.nameFor(w.email)).join(', ') }), { kind: 'error', ms: 5000 });
     router.push({ name: editing.value ? 'post' : 'mine', params: editing.value ? { id: props.id } : {} });
   } catch (e) {
-    ui.toast(e.code === 'too-many-images' ? t('compose.skipped', { n: 1, max: config.maxImagesPerPost, mb: config.maxImageMb }) : e.status === 0 ? t('banner.offline') : t('error.publish'), { kind: 'error', ms: 4500 });
+    ui.toast(e.code === 'too-many-images' ? t('compose.skipped', { n: 1, max: config.maxImagesPerPost, mb: config.maxImageMb, vmb: config.maxVideoMb }) : e.status === 0 ? t('banner.offline') : t('error.publish'), { kind: 'error', ms: 4500 });
   } finally { submitting.value = false; progress.value = null; }
 }
 
@@ -133,6 +145,7 @@ onBeforeRouteLeave(async () => {
 
 <template>
   <h1 class="page-title">{{ editing ? t('post.edit') : t('compose.title') }}</h1>
+  <CameraDialog :open="camera" :room="draft.room" @close="camera = false" @capture="captured" />
 
   <div v-if="loading" class="write" aria-busy="true"><div class="ph" /></div>
   <template v-else>
@@ -146,12 +159,15 @@ onBeforeRouteLeave(async () => {
       <p class="hint mention-hint"><AppIcon name="at" :size="14" />{{ t('compose.mentionHint') }}</p>
       <div class="thumbs">
         <div v-for="p in draft.photos" :key="p.key" class="thumb">
-          <img v-if="p.url" :src="p.url" alt="" />
+          <video v-if="p.url && p.video" :src="p.url + '#t=0.1'" preload="metadata" muted playsinline />
+          <img v-else-if="p.url" :src="p.url" alt="" />
           <SecureImage v-else :post="original" :item="p.media" thumb eager />
+          <span v-if="p.video || p.media?.kind === 'video'" class="vbadge"><AppIcon name="play" :size="14" fill /></span>
           <button type="button" :aria-label="t('post.remove')" @click="draft.removePhoto(p.key)"><AppIcon name="x" :size="14" /></button>
         </div>
-        <button v-if="draft.room > 0" type="button" class="add-photo" @click="fileInput.click()"><AppIcon name="image" :size="24" /><span>{{ t('compose.addPhoto') }}</span></button>
-        <input ref="fileInput" class="sr" type="file" accept="image/*" multiple tabindex="-1" @change="pick" />
+        <button v-if="draft.room > 0" type="button" class="add-photo" @click="fileInput.click()"><AppIcon name="image" :size="24" /><span>{{ t('compose.addMedia') }}</span></button>
+        <button v-if="draft.room > 0" type="button" class="add-photo" @click="camera = true"><AppIcon name="camera" :size="24" /><span>{{ t('camera.open') }}</span></button>
+        <input ref="fileInput" class="sr" type="file" accept="image/*,video/*" multiple tabindex="-1" @change="pick" />
       </div>
     </form>
 
@@ -227,6 +243,8 @@ onBeforeRouteLeave(async () => {
 </template>
 
 <style scoped>
+.vbadge { position: absolute; left: 6px; bottom: 6px; width: 24px; height: 24px; border-radius: 50%; background: rgba(0,0,0,.55); color: #fff; display: grid; place-items: center; pointer-events: none; }
+.thumb video { width: 100%; height: 100%; object-fit: cover; }
 .write.drop { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
 .mention-hint { display: flex; align-items: center; gap: 6px; margin-top: -4px; }
 .pwrow { display: flex; gap: 6px; align-items: center; }

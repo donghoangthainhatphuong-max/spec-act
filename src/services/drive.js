@@ -148,6 +148,23 @@ export class DriveClient {
     });
   }
 
+  /**
+   * Large files (videos): resumable upload, one PUT of the whole body. Falls back to multipart when the browser
+   * is not allowed to read the session address from the response.
+   */
+  async createFileLarge({ name, parentId, mimeType, data, properties }) {
+    if ((data.size ?? data.length) <= 4 * 1024 * 1024) return this.createFile({ name, parentId, mimeType, data, properties });
+    const init = await this.request(`${UPLOAD}/files?uploadType=resumable&fields=${encodeURIComponent('id,name,mimeType,modifiedTime,version')}`, {
+      method: 'POST', raw: true,
+      headers: { 'Content-Type': 'application/json; charset=UTF-8', 'X-Upload-Content-Type': mimeType },
+      body: JSON.stringify({ name, parents: parentId ? [parentId] : undefined, mimeType, properties }),
+    });
+    const session = init.headers.get('Location');
+    if (!session) return this.createFile({ name, parentId, mimeType, data, properties });
+    const res = await this.request(session, { method: 'PUT', raw: true, retries: 1, headers: { 'Content-Type': mimeType }, body: data });
+    return res.json();
+  }
+
   createJson(name, parentId, value, properties) {
     return this.createFile({ name, parentId, mimeType: 'application/json', data: JSON.stringify(value), properties });
   }

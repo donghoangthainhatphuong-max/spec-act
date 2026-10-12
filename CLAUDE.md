@@ -16,6 +16,7 @@ Read everything before changing code. Each rule below exists because a real mist
 8. Deleting / revoking / overwriting access must be **explicit**: removing an `@mention` does not revoke access; editing must not revoke people shared by hand in Drive (see `updatePost` / `setAccess`).
 9. **Branding:** emphasise personalisation, data sovereignty, decentralisation / cross-platform use. Do **not** claim "no ads / no tracking" in the UI or docs (ads may come later). Never add any mechanism that lets the provider interfere with user data; keep the data format open and versioned ([docs/OPEN_FORMAT.md](docs/OPEN_FORMAT.md)).
 10. When data / privacy / sharing behaviour changes, update `src/locales/pages/*.json` (Terms / Privacy / About, both `en` and `vi`, same structure — `tests/pages.test.js`) in the same commit.
+13. **Media items** carry `kind` (`image` default, `video`) via `publicMedia()`; any code that renders or uploads media must handle both (feed grid, viewer, composer previews, demo repo, protected posts).
 12. **Naming:** everything SPECACT creates in Drive that others can see uses the `__S.P.E.C.T.A.C.T__` prefix (`brandName()` in `postModel.js`). Lookups must accept both prefixed and older plain names.
 11. **Liking follows who can see the post, not who can comment.** Likes live in their own `likes.json` (writer for everyone who can see the post, no other rights). Do not move likes back into `comments.json`.
 

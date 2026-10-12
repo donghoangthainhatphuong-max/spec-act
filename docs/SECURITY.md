@@ -51,6 +51,10 @@ record = AES-256-GCM_{PIN key}( AES-256-GCM_{device key}( JSON ) )
 - "Anyone with the link" grants `anyone` `reader` on **individual files only** (`post.json`, photos). The folder and `comments.json` are never opened, so the folder cannot be browsed.
 - Open comments and likes by link visitors grant `anyone` `writer` on `comments.json` / `likes.json` **only** (never `post.json`). A visitor could tamper with that one file.
 
+## Camera and microphone
+
+The in-app camera asks the browser for camera access (microphone only while filming). The stream is shown locally and never sent anywhere; a captured photo/clip goes into the post draft and then to your Drive like any other file. The shipped `Permissions-Policy` allows camera/microphone for this site only. Tracks are stopped as soon as the camera is closed or the tab is hidden.
+
 ## Photo privacy
 
 Photos are redrawn through a canvas before upload, so **EXIF (GPS, device, capture time) is stripped**. They are also orientation-corrected and size-capped.

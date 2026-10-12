@@ -23,7 +23,8 @@ SPECACT/                         properties: specact=root
         ├── __S.P.E.C.T.A.C.T__ likes.json           {v:1, likes:[email]}
         └── media/
             ├── ab12cd34ef_anh.jpg        ảnh đã thu nhỏ
-            └── ab12cd34ef_t.jpg          ảnh thu nhỏ (thumbnail)
+            ├── ab12cd34ef_t.jpg          ảnh thu nhỏ (thumbnail)
+            └── ab12cd34ef_clip.webm      video (ảnh bìa = thumbnail)
 ```
 
 `properties` (không phải `appProperties`) được dùng vì `appProperties` chỉ thấy được với *cùng OAuth client* — mà mỗi người một client.
@@ -46,6 +47,8 @@ Thư mục bài mang `pj`/`cj`/`lj`/`mf` (id của `post.json`, `comments.json`,
 ```
 
 Bài **có mật khẩu**: `text`, `mentions`, `media` gom vào `payload` (AES-256-GCM, AAD `post:<id>`); `protection` = `{ kdf: "PBKDF2-SHA256", iter, salt, wrap }` với `wrap` là *khóa nội dung ngẫu nhiên* được bọc bằng khóa dẫn xuất từ mật khẩu. Đổi mật khẩu chỉ bọc lại 32 byte, không đụng tới ảnh. Ảnh được mã hóa riêng (AAD `media:<id>`) và đặt tên ngẫu nhiên `*.bin`.
+
+Mục media có `kind: "video"` còn mang `duration` (giây) và `mime` như `video/webm` hay `video/mp4`; `thumb` là ảnh bìa. Video được lưu đúng như lúc quay (không chuyển mã) và tải lên bằng giao thức resumable của Drive khi lớn hơn 4 MB; trong bài có mật khẩu, byte video được mã hóa như ảnh.
 
 ### `comments.json` / `likes.json`
 

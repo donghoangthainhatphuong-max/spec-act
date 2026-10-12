@@ -125,7 +125,8 @@
           "IndexedDB (encrypted twice: device key + your PIN): your OAuth client ID and secret, refresh token, post keys, cached index and contacts.",
           "localStorage (not secret): language, theme, auto-lock and notification preferences.",
           "sessionStorage: a short-lived sign-in state and code during the Google redirect.",
-          "No cookies are set. Access tokens are kept only in memory."
+          "No cookies are set. Access tokens are kept only in memory.",
+          "Camera and microphone: only when you open the in-app camera (microphone only while filming). Captures go into your post draft and then to your Drive; nothing else receives them."
         ]
       },
       {

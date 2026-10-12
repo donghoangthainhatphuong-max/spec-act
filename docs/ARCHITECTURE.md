@@ -23,7 +23,8 @@ SPECACT/                         properties: specact=root
         ├── __S.P.E.C.T.A.C.T__ likes.json           {v:1, likes:[email]}
         └── media/
             ├── ab12cd34ef_photo.jpg      resized photo
-            └── ab12cd34ef_t.jpg          thumbnail
+            ├── ab12cd34ef_t.jpg          thumbnail
+            └── ab12cd34ef_clip.webm      video (poster = its thumbnail)
 ```
 
 `properties` (not `appProperties`) are used because `appProperties` are only visible to the *same OAuth client* — and every person has their own.
@@ -46,6 +47,8 @@ A post folder carries `pj`/`cj`/`lj`/`mf` (ids of `post.json`, `comments.json`, 
 ```
 
 For **password-protected** posts `text`, `mentions` and `media` move into `payload` (AES-256-GCM, AAD `post:<id>`); `protection` = `{ kdf: "PBKDF2-SHA256", iter, salt, wrap }` where `wrap` is the random *content key* wrapped by a password-derived key. Changing the password re-wraps 32 bytes and never touches the photos. Photo bytes are encrypted separately (AAD `media:<id>`) and stored under random `*.bin` names.
+
+A media item with `kind: "video"` also carries `duration` (seconds) and a `mime` such as `video/webm` or `video/mp4`; its `thumb` is a poster frame. Videos are stored as recorded (no transcoding) and uploaded with Drive's resumable protocol above 4 MB; in protected posts their bytes are sealed like photos.
 
 ### `comments.json` / `likes.json`
 

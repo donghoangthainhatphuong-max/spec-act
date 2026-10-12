@@ -164,6 +164,26 @@ export class FakeDrive {
       this.files.set(f.id, f);
       return json(200, this.#view(f, user));
     }
+    if (path === '/upload/drive/v3/files' && u.searchParams.get('uploadType') === 'resumable') {
+      if (method === 'POST') {
+        const meta = JSON.parse(init.body);
+        const uploadId = `up${++this.n}`;
+        (this.sessions ||= new Map()).set(uploadId, { meta, user: user.email });
+        this.resumableStarts = (this.resumableStarts || 0) + 1;
+        return new Response('', { status: 200, headers: { Location: `https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable&upload_id=${uploadId}` } });
+      }
+      if (method === 'PUT') {
+        const s = this.sessions?.get(u.searchParams.get('upload_id'));
+        if (!s) return err(404, 'notFound');
+        const parent = s.meta.parents?.[0] || `root:${user.email}`;
+        const pf = this.files.get(parent);
+        if (!pf || !['owner', 'writer'].includes(this.#role(pf, user))) return err(403, 'insufficientFilePermissions');
+        const content = new Uint8Array(await (init.body.arrayBuffer ? init.body.arrayBuffer() : new Response(init.body).arrayBuffer()));
+        const file = this.#blank({ id: this.#id(), name: s.meta.name, mimeType: s.meta.mimeType || 'application/octet-stream', owner: user.email, parents: [parent], content, properties: s.meta.properties || {} });
+        this.files.set(file.id, file);
+        return json(200, this.#view(file, user));
+      }
+    }
     if (path === '/upload/drive/v3/files' && method === 'POST') {
       const { meta, data } = await this.#parseMultipart({ headers, body: init.body });
       const parent = meta.parents?.[0] || `root:${user.email}`;

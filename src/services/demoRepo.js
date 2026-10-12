@@ -23,6 +23,7 @@ const PEOPLE = {
 };
 const IMG = { lanterns, river, wall, desk, mountains };
 const H = 3600e3;
+const POSTER = `data:image/svg+xml;utf8,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="480" height="270"><rect width="480" height="270" fill="#2a302c"/></svg>')}`;
 const tick = (ms = 120) => new Promise((r) => setTimeout(r, ms));
 const media = (...keys) => keys.map((k) => ({ id: `img:${k}`, thumb: `img:${k}`, name: `${k}.jpg`, mime: 'image/jpeg', w: 1200, h: 800, size: 0 }));
 
@@ -55,6 +56,14 @@ export class DemoRepo {
       text: p.text, media: p.media, mentions: extractMentions(p.text), audience: p.audience, protection: p.protected ? { demo: true } : null,
       mine, role: mine ? 'owner' : (p.commentMode === 'locked' ? 'view' : p.commentMode === 'open' || p.audience[DEMO_ME.email] === 'comment' ? 'comment' : 'view'), ids, rev: String(p.at), doc: {},
     };
+  }
+
+  /** A picked photo/video becomes a media item that lives only in this page. */
+  #upload(f, id) {
+    const video = String(f.type).startsWith('video/');
+    const item = { id, thumb: id, url: URL.createObjectURL(f), name: f.name, mime: f.type, w: 1200, h: 800, size: f.size };
+    if (video) Object.assign(item, { kind: 'video', duration: 0, poster: POSTER });
+    return item;
   }
 
   #entry(p) {
@@ -92,7 +101,8 @@ export class DemoRepo {
     this.keys.add(id);
     return this.openPost(id);
   }
-  async mediaUrl(_post, item) {
+  async mediaUrl(_post, item, { thumb = false } = {}) {
+    if (thumb && item.poster) return item.poster;
     if (item.url) return item.url;
     return IMG[String(item.id).replace('img:', '')] || '';
   }
@@ -104,7 +114,7 @@ export class DemoRepo {
     for (let i = 0; i < total; i++) { onProgress({ stage: 'upload', done: i, total }); await tick(250); }
     onProgress({ stage: 'share' });
     await tick(300);
-    const files = (input.files || []).map((f, i) => { const url = URL.createObjectURL(f); return { id: `u${id}${i}`, thumb: `u${id}${i}`, url, name: f.name, mime: f.type, w: 1200, h: 800, size: f.size }; });
+    const files = (input.files || []).map((f, i) => this.#upload(f, `u${id}${i}`));
     const text = input.text || '';
     const prot = !!input.password;
     const p = this.#full({ id, owner: DEMO_ME.email, at: Date.now(), text, media: files, audience: cleanAudience(input.audience, DEMO_ME.email), protected: prot });
@@ -122,7 +132,7 @@ export class DemoRepo {
     onProgress({ stage: 'save' });
     const cur = this.posts.get(post.id);
     const keep = new Set(input.keepMedia || cur.media.map((m) => m.id));
-    const added = (input.files || []).map((f, i) => ({ id: `u${post.id}${Date.now()}${i}`, thumb: `u${post.id}${Date.now()}${i}`, url: URL.createObjectURL(f), name: f.name, mime: f.type, w: 1200, h: 800, size: f.size }));
+    const added = (input.files || []).map((f, i) => this.#upload(f, `u${post.id}${Date.now()}${i}`));
     const text = input.text ?? cur.text;
     Object.assign(cur, {
       text, media: [...cur.media.filter((m) => keep.has(m.id)), ...added], mentions: extractMentions(text), updatedAt: Date.now(),

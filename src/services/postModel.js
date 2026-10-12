@@ -64,7 +64,9 @@ export function cleanAudience(aud, ownerEmail) {
 }
 
 export function publicMedia(m) {
-  return { id: m.id, thumb: m.thumb || null, name: m.name || '', mime: m.mime || 'image/jpeg', w: m.w || 0, h: m.h || 0, size: m.size || 0 };
+  const out = { id: m.id, thumb: m.thumb || null, name: m.name || '', mime: m.mime || 'image/jpeg', w: m.w || 0, h: m.h || 0, size: m.size || 0 };
+  if (m.kind === 'video' || String(m.mime).startsWith('video/')) { out.kind = 'video'; out.duration = m.duration || 0; }
+  return out;
 }
 
 /** The JSON written to post.json. For protected posts the sensitive part is sealed in `payload`. */

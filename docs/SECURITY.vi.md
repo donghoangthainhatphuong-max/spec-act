@@ -51,6 +51,10 @@ bản ghi = AES-256-GCM_{khóa PIN}( AES-256-GCM_{khóa thiết bị}( JSON ) )
 - “Ai có liên kết” cấp `anyone` `reader` **chỉ trên từng tệp** (`post.json`, ảnh). Thư mục và `comments.json` không bao giờ được mở, nên không duyệt được thư mục.
 - Bình luận mở và thả tim của người qua liên kết cấp `anyone` `writer` **chỉ** trên `comments.json` / `likes.json` (không bao giờ `post.json`). Người truy cập có thể phá hoại đúng tệp đó.
 
+## Camera và micro
+
+Camera trong app xin trình duyệt quyền dùng camera (micro chỉ khi quay video). Luồng hình chỉ hiển thị tại chỗ và không gửi đi đâu; ảnh/clip vừa quay đi vào bản nháp bài rồi lên Drive của bạn như mọi tệp khác. `Permissions-Policy` đi kèm chỉ cho phép camera/micro với chính trang này. Camera tắt ngay khi đóng hộp quay hoặc khi tab bị ẩn.
+
 ## Quyền riêng tư ảnh
 
 Ảnh được vẽ lại qua canvas trước khi tải lên → **EXIF (GPS, thiết bị, thời gian chụp) bị loại bỏ**. Ảnh được xoay đúng chiều và giới hạn kích thước.

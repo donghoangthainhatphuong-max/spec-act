@@ -52,8 +52,11 @@ export const useDraftStore = defineStore('draft', () => {
   function addFiles(list) {
     let skipped = 0;
     for (const f of Array.from(list)) {
-      if (!f.type.startsWith('image/') || f.type === 'image/svg+xml' || f.size > config.maxImageMb * 1024 * 1024 || room.value <= 0) { skipped++; continue; }
-      photos.value = [...photos.value, { key: `n${++seq}`, kind: 'new', file: f, url: URL.createObjectURL(f) }];
+      const video = f.type.startsWith('video/');
+      const okType = video || (f.type.startsWith('image/') && f.type !== 'image/svg+xml');
+      const limit = (video ? config.maxVideoMb : config.maxImageMb) * 1024 * 1024;
+      if (!okType || f.size > limit || room.value <= 0) { skipped++; continue; }
+      photos.value = [...photos.value, { key: `n${++seq}`, kind: 'new', file: f, url: URL.createObjectURL(f), video }];
     }
     return skipped;
   }

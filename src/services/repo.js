@@ -10,7 +10,7 @@ import { b64d, b64e, createProtection, decryptBytes, decryptJson, encryptBytes, 
 import { DriveError, MIME_FOLDER, MIME_SHORTCUT, qs } from './drive';
 import { normEmail, extractMentions, prettyName } from './mentions';
 import { ROLE_COMMENT, ROLE_VIEW, buildPostDoc, canCommentWith, normMode, byNewest, cleanAudience, emptyIndex, folderNameFor, isBranded, brandName, shortcutNameFor, openPostDoc, toEntry } from './postModel';
-import { prepareImage } from './image';
+import { prepareMedia } from './image';
 import { debounce, mapLimit } from './util';
 
 export class RepoError extends Error {
@@ -371,18 +371,23 @@ export class DriveRepo {
 
   /* ================= media ================= */
   async #uploadImage(file, mediaFolderId, key, pid) {
-    const img = await prepareImage(file);
+    const img = await prepareMedia(file);
     const base = randomId(5);
-    const put = async (blob, stem) => {
-      if (!key) return this.drive.createFile({ name: `${stem}.jpg`, parentId: mediaFolderId, mimeType: 'image/jpeg', data: blob });
+    const put = async (blob, stem, mime, large = false) => {
+      const ext = mime === 'image/jpeg' ? 'jpg' : (mime.split('/')[1] || 'bin');
+      const create = (args) => (large ? this.drive.createFileLarge(args) : this.drive.createFile(args));
+      if (!key) return create({ name: `${stem}.${ext}`, parentId: mediaFolderId, mimeType: mime, data: blob });
       // Protected posts: bytes are sealed before upload and carry an opaque name.
       const sealed = await encryptBytes(key, new Uint8Array(await blob.arrayBuffer()), `media:${pid}`);
-      return this.drive.createFile({ name: `${stem}.bin`, parentId: mediaFolderId, mimeType: 'application/octet-stream', data: sealed });
+      return create({ name: `${stem}.bin`, parentId: mediaFolderId, mimeType: 'application/octet-stream', data: new Blob([sealed]) });
     };
-    const stem = key ? base : `${base}_${img.name.replace(/\.jpg$/, '')}`;
-    const main = await put(img.main.blob, stem);
-    const thumb = await put(img.thumb.blob, `${base}_t`);
-    return { id: main.id, thumb: thumb.id, name: img.name, mime: 'image/jpeg', w: img.main.w, h: img.main.h, size: img.main.blob.size };
+    const clean = img.name.replace(/\.[^.]+$/, '');
+    const stem = key ? base : `${base}_${clean}`;
+    const main = await put(img.main.blob, stem, img.mime, img.kind === 'video');
+    const thumb = await put(img.thumb.blob, `${base}_t`, 'image/jpeg');
+    const item = { id: main.id, thumb: thumb.id, name: img.name, mime: img.mime, w: img.main.w, h: img.main.h, size: img.main.blob.size };
+    if (img.kind === 'video') { item.kind = 'video'; item.duration = img.main.duration || 0; }
+    return item;
   }
 
   /** Object URL for a media file (decrypted when the post is protected). */

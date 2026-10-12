@@ -6,7 +6,14 @@ vi.mock('../src/config', async (orig) => {
   return { ...mod, config: { ...mod.config, pbkdf2Iterations: 1000, postKdfIterations: 1000, syncIntervalSeconds: 0 } };
 });
 vi.mock('../src/services/image', () => ({
-  prepareImage: async (file) => ({
+  prepareMedia: async (file) => (file.type.startsWith('video/')
+    ? {
+      kind: 'video', mime: file.type, name: file.name,
+      main: { blob: new Blob([new Uint8Array(6 * 1024 * 1024).fill(7)], { type: file.type }), w: 640, h: 360, duration: 12 },
+      thumb: { blob: new Blob([new Uint8Array([0xff, 0xd8, 1, 2, 3])], { type: 'image/jpeg' }), w: 480, h: 270 },
+    }
+    : {
+    kind: 'image', mime: 'image/jpeg',
     name: `${(file.name || 'p').replace(/\.[^.]+$/, '')}.jpg`,
     main: { blob: new Blob([new Uint8Array([0xff, 0xd8, ...new TextEncoder().encode(`MAIN-${file.name}`)])], { type: 'image/jpeg' }), w: 1600, h: 1200 },
     thumb: { blob: new Blob([new Uint8Array([0xff, 0xd8, ...new TextEncoder().encode(`THUMB-${file.name}`)])], { type: 'image/jpeg' }), w: 480, h: 360 },
@@ -464,6 +471,39 @@ describe('grouping shared posts under SPECACT/shared', () => {
     await bob.syncIndex();
     expect(list()).toHaveLength(1);
     expect(fake.find((f) => f.name === 'my own folder')).toHaveLength(1);
+  });
+});
+
+describe('videos', () => {
+  const video = (name = 'clip.webm') => ({ name, type: 'video/webm', size: 6 * 1024 * 1024 });
+
+  it('are uploaded resumably with a poster, kept in post.json and played back', async () => {
+    const alice = mk('alice@gmail.com', 'Alice');
+    const bob = mk('bob@gmail.com', 'Bob');
+    const { post } = await alice.createPost({ text: 'clip', files: [file('a.jpg'), video()], audience: { 'bob@gmail.com': 'view' } });
+    const v = post.media[1];
+    expect(v).toMatchObject({ kind: 'video', mime: 'video/webm', duration: 12, w: 640, h: 360 });
+    expect(post.media[0].kind).toBeUndefined();
+    expect(fake.resumableStarts).toBe(1); // only the big file needs a resumable session
+    expect(fake.files.get(v.id).content.length).toBe(6 * 1024 * 1024);
+    expect(fake.files.get(v.thumb).mimeType).toBe('image/jpeg');
+    const seen = await bob.openPost(post.id);
+    expect(seen.media[1]).toMatchObject({ kind: 'video', duration: 12 });
+    expect(await bob.mediaUrl(seen, seen.media[1])).toBeTruthy();
+    expect((await bob.loadIndex()).shared[0].media[1].kind).toBe('video');
+  });
+
+  it('stay sealed in password-protected posts', async () => {
+    const alice = mk('alice@gmail.com', 'Alice');
+    const bob = mk('bob@gmail.com', 'Bob');
+    const { post } = await alice.createPost({ text: 'secret clip', files: [video('holiday.webm')], audience: { 'bob@gmail.com': 'view' }, password: 'pw-1234' });
+    const raw = fake.files.get(post.media[0].id);
+    expect(raw.mimeType).toBe('application/octet-stream');
+    expect(raw.name.endsWith('.bin')).toBe(true);
+    expect(fake.allBytesContain('holiday')).toBe(false);
+    const open = await bob.unlockAndOpen(post.id, 'pw-1234');
+    expect(open.media[0].kind).toBe('video');
+    expect(await bob.mediaUrl(open, open.media[0])).toBeTruthy();
   });
 });
 

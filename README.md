@@ -32,6 +32,7 @@ SPECACT is a Vue 3 PWA for **sharing posts and photos with exactly the people yo
 | | |
 |---|---|
 | **Posts** | Create, edit, delete (Drive trash or permanent — configurable); photo upload (orientation-corrected, resized, **EXIF/GPS stripped**, thumbnails). Photo viewer with slideshow, zoom, rotate and pan. |
+| **Camera & video** | Take photos and record video inside the app (front/back camera, up to `VITE_MAX_VIDEO_SECONDS`) or pick files; on a phone the **+** tab opens the camera first, on a computer it opens the picker. Videos get a poster frame, play in the viewer, and are encrypted too in password-protected posts. |
 | **Sharing** | Type `@email` to mention a connected friend and grant access. Roles: *can view*, *can comment*. Pick friends from a grid, enter an e-mail, revoke any time. |
 | **Public link** | "Anyone with the link" opens **only the post's files** (`post.json` + photos), never the folder. |
 | **Passwords** | Password-protect a post: text and photos are **encrypted in the browser** (AES-256-GCM) before they reach Drive. Combine with a public link if you like. |
@@ -90,6 +91,7 @@ docker compose up -d --build
 | `VITE_AUTO_LOCK_MINUTES` | `5` | Auto-lock after N idle minutes (0 = off) |
 | `VITE_POST_KDF_ITERATIONS` | `310000` | Cost of deriving the key from a post password |
 | `VITE_MAX_IMAGES_PER_POST` / `VITE_MAX_IMAGE_MB` | `10` / `25` | Photo limits |
+| `VITE_MAX_VIDEO_MB` / `VITE_MAX_VIDEO_SECONDS` | `200` / `180` | Video size limit; max length when recording in the app |
 | `VITE_IMAGE_MAX_DIMENSION` / `VITE_IMAGE_QUALITY` / `VITE_THUMB_DIMENSION` | `2048` / `0.86` / `480` | Photo quality |
 
 > **Never put a Google client secret in `.env`.** Each person enters their own in the browser.
@@ -141,6 +143,7 @@ docker/           nginx, security headers, env-config.js generator
 - Drive logic is tested against an in-repo simulation of the Drive API (`tests/fakeDrive.js`: permission inheritance, `sharedWithMe`, `properties`, multipart uploads), not live Google. Try it with a throw-away account before trusting it with important data.
 - The `drive` scope is restricted: OAuth clients in *Testing* mode get refresh tokens that expire after 7 days (just sign in again) and are limited to 100 test users — each person uses their own client, so this is per person.
 - Commenters hold writer permission on `comments.json` only; technically they could edit others' comments through Drive. Simultaneous comments or likes can, rarely, overwrite each other.
+- Videos are stored exactly as recorded (WebM on Chrome/Firefox, MP4 on Safari), so playback depends on the viewer's browser, and a video is downloaded whole before it plays. Large uploads use Drive's resumable upload; that path is covered by the fake Drive but not yet by real Drive. The in-app camera could not be tried on a real device (the fallback to the device camera app was).
 - Revoking access cannot un-download what someone already saw. Password protection is only as strong as the password.
 
 Rules for contributors (human or AI): [CLAUDE.md](CLAUDE.md).

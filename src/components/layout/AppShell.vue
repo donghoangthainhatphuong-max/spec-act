@@ -30,6 +30,12 @@ const nav = computed(() => [
 ]);
 const dark = computed(() => prefs.resolvedTheme() === 'dark');
 
+// On a phone the "+" goes straight to the camera; on a computer it opens the composer with the file picker as before.
+function newPost() {
+  const phone = matchMedia('(pointer: coarse)').matches && innerWidth <= 860;
+  router.push(phone ? { name: 'new', query: { camera: '1' } } : { name: 'new' });
+}
+
 function onSearch(e) {
   ui.search = e.target.value;
   if (!['home', 'shared', 'mine'].includes(name.value)) router.push('/');
@@ -80,7 +86,7 @@ function onSearch(e) {
   <nav class="tabbar" aria-label="Menu">
     <RouterLink to="/" :class="{ on: name === 'home' }"><AppIcon name="home" :size="22" />{{ t('nav.home') }}</RouterLink>
     <RouterLink to="/shared" :class="{ on: name === 'shared' }"><AppIcon name="inbox" :size="22" />{{ t('nav.sharedShort') }}</RouterLink>
-    <RouterLink to="/new" class="plus" :aria-label="t('nav.new')"><AppIcon name="plus" :size="24" /></RouterLink>
+    <RouterLink to="/new" class="plus" :aria-label="t('nav.new')" @click.prevent="newPost"><AppIcon name="plus" :size="24" /></RouterLink>
     <RouterLink to="/friends" :class="{ on: name === 'friends' }"><AppIcon name="users" :size="22" />{{ t('nav.friends') }}</RouterLink>
     <RouterLink to="/settings" :class="{ on: name === 'settings' }"><AppIcon name="gear" :size="22" />{{ t('nav.settings') }}</RouterLink>
   </nav>
