@@ -28,7 +28,11 @@ export const useUiStore = defineStore('ui', () => {
   function flash(email) { fresh.value = email; setTimeout(() => { if (fresh.value === email) fresh.value = null; }, 900); }
 
   function openViewer({ post, items }, index = 0) { viewer.value = { post, items, index }; }
+  /** Swap in the complete photo list once it has been loaded (the viewer is already open on the first few). */
+  function extendViewer(post, items) {
+    if (viewer.value && viewer.value.post?.id === post.id) { viewer.value.post = post; viewer.value.items = items; } // in place: the open photo and position are kept
+  }
   function closeViewer() { viewer.value = null; }
 
-  return { toasts, toast, confirmState, confirm, answer, viewer, openViewer, closeViewer, search, fresh, flash, updateReady, setUpdater, applyUpdate };
+  return { toasts, toast, confirmState, confirm, answer, viewer, openViewer, extendViewer, closeViewer, search, fresh, flash, updateReady, setUpdater, applyUpdate };
 });

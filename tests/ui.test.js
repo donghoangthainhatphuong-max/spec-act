@@ -16,3 +16,19 @@ describe('ui store viewer', () => {
     expect(ui.viewer).toBeNull();
   });
 });
+
+describe('ui store viewer extension', () => {
+  beforeEach(() => setActivePinia(createPinia()));
+  it('adds the rest of the photos to an open viewer, keeping the position', () => {
+    const ui = useUiStore();
+    ui.openViewer({ post: { id: 'p' }, items: [{ id: 'a' }, { id: 'b' }, { id: 'c' }] }, 1);
+    ui.extendViewer({ id: 'p' }, [{ id: 'a' }, { id: 'b' }, { id: 'c' }, { id: 'd' }, { id: 'e' }]);
+    expect(ui.viewer.items).toHaveLength(5);
+    expect(ui.viewer.index).toBe(1);
+    ui.extendViewer({ id: 'other' }, []); // a different post is ignored
+    expect(ui.viewer.items).toHaveLength(5);
+    ui.closeViewer();
+    ui.extendViewer({ id: 'p' }, [{ id: 'z' }]); // a closed viewer stays closed
+    expect(ui.viewer).toBeNull();
+  });
+});

@@ -67,9 +67,11 @@ const scope = computed(() => {
 const mediaTotal = computed(() => view.value.mediaCount ?? view.value.media.length);
 
 function openPhoto(i) {
-  // a feed card only knows its first photos; the detail page has them all
-  if (!props.detail && mediaTotal.value > view.value.media.length) { router.push({ name: 'post', params: { id: view.value.id } }); return; }
   ui.openViewer({ post: view.value, items: view.value.media }, i);
+  // a feed card only knows its first photos: open the slideshow right away, then add the rest as soon as they are loaded
+  if (!props.detail && mediaTotal.value > view.value.media.length) {
+    posts.open(view.value.id).then((full) => ui.extendViewer(full, full.media)).catch(() => {});
+  }
 }
 
 async function like() {
