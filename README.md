@@ -139,4 +139,6 @@ docker/           nginx, header bảo mật, script sinh env-config.js
 - Người được quyền bình luận có quyền ghi trên `comments.json` (và chỉ file đó): về mặt kỹ thuật họ có thể sửa bình luận của người khác qua Drive. Hai người bình luận cùng lúc có thể (hiếm) ghi đè nhau.
 - Thu hồi quyền không thể “lấy lại” những gì người xem đã tải/chụp. Bài có mật khẩu chỉ an toàn khi mật khẩu đủ mạnh.
 
+Quy tắc làm việc cho người/AI đóng góp: [CLAUDE.md](CLAUDE.md).
+
 Giấy phép: MIT.
