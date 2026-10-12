@@ -1,30 +1,32 @@
-# Kiến trúc / Architecture
+# Architecture
 
-## Nguyên tắc
+[Tiếng Việt](ARCHITECTURE.vi.md)
 
-1. **Không có backend.** Trang là file tĩnh. Sau khi tải, trình duyệt chỉ gọi `accounts.google.com`, `oauth2.googleapis.com`, `www.googleapis.com` (CSP trong `docker/security-headers.conf` ép điều này).
-2. **Google Drive là nguồn sự thật** cho dữ liệu *và* quyền truy cập. Ứng dụng không tự phát minh hệ thống quyền riêng.
-3. **Mọi thứ nhạy cảm trên thiết bị** nằm trong vault mã hóa hai lớp (xem [SECURITY.md](SECURITY.md)).
+## Principles
 
-## Cây thư mục trên Drive
+1. **No backend.** The page is static. After loading, the browser only calls `accounts.google.com`, `oauth2.googleapis.com` and `www.googleapis.com` (the CSP in `docker/security-headers.conf` enforces this).
+2. **Google Drive is the source of truth** for data *and* access. The app does not invent a separate permission system.
+3. **Everything sensitive on the device** lives in the doubly-encrypted vault (see [SECURITY.md](SECURITY.md)).
+
+## Drive layout
 
 ```
 SPECACT/                         properties: specact=root
-├── index.json                   chỉ mục cá nhân (bài của tôi + được chia sẻ)
-├── contacts.json                người đã kết nối
+├── index.json                   personal index (my posts + shared with me)
+├── contacts.json                connected people
 └── posts/                       properties: specact=posts
-    └── 2026-10-12_ab12cd34ef/   properties: specact=post, rev, pj, cj, mf
+    └── 2026-10-12_ab12cd34ef/   properties: specact=post, rev, pj, cj, lj, mf
         ├── post.json
         ├── comments.json
-        ├── likes.json                {v:1, likes:[email]} — writable by everyone the post is open to
+        ├── likes.json           {v:1, likes:[email]}
         └── media/
-            ├── ab12cd34ef_anh.jpg        ảnh đã thu nhỏ
-            └── ab12cd34ef_t.jpg          ảnh thu nhỏ (thumbnail)
+            ├── ab12cd34ef_photo.jpg      resized photo
+            └── ab12cd34ef_t.jpg          thumbnail
 ```
 
-`properties` (không phải `appProperties`) được dùng vì `appProperties` chỉ thấy được với *cùng OAuth client* — mà mỗi người một client.
+`properties` (not `appProperties`) are used because `appProperties` are only visible to the *same OAuth client* — and every person has their own.
 
-Thư mục bài mang `pj`/`cj`/`mf` (id của `post.json`, `comments.json`, `media/`) và `rev` (mốc cập nhật). Nhờ vậy chỉ cần **một lần liệt kê metadata** là biết bài nào đổi, và tải thẳng file cần thiết mà không phải duyệt từng thư mục.
+A post folder carries `pj`/`cj`/`lj`/`mf` (ids of `post.json`, `comments.json`, `likes.json`, `media/`) and `rev` (update stamp). One metadata listing tells which posts changed, and the needed files are fetched directly.
 
 ### `post.json` (v1)
 
@@ -35,59 +37,58 @@ Thư mục bài mang `pj`/`cj`/`mf` (id của `post.json`, `comments.json`, `med
   "createdAt": 1790000000000, "updatedAt": 1790000000000,
   "text": "…", "mentions": ["binh@gmail.com"],
   "media": [{ "id": "<fileId>", "thumb": "<fileId>", "name": "a.jpg", "mime": "image/jpeg", "w": 2048, "h": 1365, "size": 412345 }],
-  "audience": { "binh@gmail.com": "view", "chi@gmail.com": "comment" },   // bản sao; sự thật là quyền trên Drive
-  "linkShare": false,
+  "audience": { "binh@gmail.com": "view", "chi@gmail.com": "comment" },  // mirror; the truth is the Drive permissions
+  "linkShare": false, "commentMode": "shared", "cj": "<fileId>", "lj": "<fileId>",
   "protection": null
 }
 ```
 
-Bài **có mật khẩu**: `text`, `mentions`, `media` được gom vào `payload` (AES-256-GCM, AAD `post:<id>`); `protection` = `{ kdf: "PBKDF2-SHA256", iter, salt, wrap }` với `wrap` là *khóa nội dung ngẫu nhiên* đã được bọc bằng khóa dẫn xuất từ mật khẩu. Đổi mật khẩu chỉ bọc lại 32 byte, không đụng tới ảnh. Ảnh được mã hóa riêng (`media:<id>` làm AAD) và đặt tên ngẫu nhiên `*.bin`.
+For **password-protected** posts `text`, `mentions` and `media` move into `payload` (AES-256-GCM, AAD `post:<id>`); `protection` = `{ kdf: "PBKDF2-SHA256", iter, salt, wrap }` where `wrap` is the random *content key* wrapped by a password-derived key. Changing the password re-wraps 32 bytes and never touches the photos. Photo bytes are encrypted separately (AAD `media:<id>`) and stored under random `*.bin` names.
 
-### `comments.json`
+### `comments.json` / `likes.json`
 
 ```jsonc
-{ "v": 1, "comments": [{ "id": "…", "by": "chi@gmail.com", "name": "Chi", "at": 1790000000000, "text": "…" }], "likes": ["chi@gmail.com"] }
+{ "v": 1, "comments": [{ "id": "…", "by": "chi@gmail.com", "name": "Chi", "at": 1790000000000, "text": "…" }], "likes": [] }
+{ "v": 1, "likes": ["chi@gmail.com"] }
 ```
-Với bài có mật khẩu, mỗi bình luận mang `enc` thay cho `text`.
+Comments of protected posts carry `enc` instead of `text`. Likes live in `likes.json`; older posts get the file (carrying their old likes over) the first time the owner opens them.
 
 ### `index.json`
 
 ```jsonc
-{ "v": 1, "owner": "an@gmail.com", "updatedAt": …, "syncedAt": …,
-  "mine":   [ /* entry */ ],
-  "shared": [ /* entry */ ] }
-// entry = id(folderId), pid, owner, createdAt, updatedAt, rev, protected, linkShare,
-//         text(snippet ≤600), truncated, mediaCount, media(≤3), audience(≤12), ids{pj,cj,mf}, via?
+{ "v": 1, "owner": "an@gmail.com", "updatedAt": …, "syncedAt": …, "mine": [ /* entry */ ], "shared": [ /* entry */ ] }
+// entry = id(folderId), pid, owner, createdAt, updatedAt, rev, protected, linkShare, commentMode,
+//         text(snippet ≤600), truncated, mediaCount, media(≤3), audience(≤12), ids{pj,cj,lj,mf}, via?
 ```
-Bài có mật khẩu **không bao giờ** có nội dung trong chỉ mục.
+Protected posts **never** have content in the index.
 
-## Mô hình quyền
+## Permission model
 
-| Vai trò | Quyền trên Drive |
+| Who | Drive permission |
 |---|---|
-| Chủ bài | owner của cây thư mục |
-| **Được xem** | `reader` trên thư mục bài (kế thừa xuống `post.json`, `comments.json`, `media/*`) |
-| **Được bình luận** | `reader` trên thư mục + `writer` **chỉ trên `comments.json`** (không bao giờ ghi được `post.json`) |
-| **Thả tim** | `writer` **chỉ trên `likes.json`** cho mọi người được xem bài (mọi chế độ bình luận); `anyone` `writer` trên `likes.json` chỉ khi bài công khai bằng liên kết |
-| Liên kết + mật khẩu | `anyone` `reader` trên thư mục (chỉ cho bài có mật khẩu; nội dung vẫn mã hóa) |
+| Owner | owner of the tree |
+| **Can view** | `reader` on the post folder (inherited by `post.json`, `comments.json`, `media/*`) |
+| **Can comment** | `reader` on the folder + `writer` **on `comments.json` only** (never `post.json`) |
+| **Like** | `writer` **on `likes.json` only** for everyone who can see the post, in every comment mode; `anyone` `writer` on it only when the post is public by link |
+| **Anyone with the link** | `anyone` `reader` **on the files** (`post.json`, photos) — never on the folder or `comments.json` |
 
-`@email` trong nội dung → người đó được thêm vào danh sách chia sẻ (mức *được xem*). Gỡ `@mention` khỏi văn bản **không** thu hồi quyền — thu hồi luôn là hành động tường minh.
+Comment modes: **open** (everyone who can see the post, link visitors included when public), **shared** (default: only "can comment" people), **locked** (nobody; writer permissions on `comments.json` are removed in Drive).
 
-Trước mỗi thay đổi chia sẻ, ứng dụng đọc quyền *thực tế* từ Drive (`readAudience`) nên người được thêm tay trong giao diện Drive không bị gỡ nhầm, và `post.json.audience` không bao giờ ghi quyền mà Drive từ chối cấp.
+An `@email` in the text adds that person to the audience (*can view*). Removing a mention does **not** revoke access — revocation is always an explicit action. Before every sharing change the app reads the *real* permissions from Drive, so people added by hand in the Drive UI are not revoked by accident and `post.json.audience` never records access Drive refused.
 
-## Luồng đồng bộ chỉ mục
+## Index sync
 
-1. Mở ứng dụng → hiển thị ngay `index` từ bộ nhớ đệm mã hóa (hoặc `index.json` trên Drive nếu thiết bị mới).
-2. Nền: liệt kê metadata thư mục của `posts/` (bài của tôi) và `sharedWithMe = true` lọc `properties has {specact=post}` (bài được chia sẻ) — 1 request / ~200 bài.
-3. So `rev` với chỉ mục; **chỉ tải `post.json` của bài mới/đổi** (tối đa 4 song song).
-4. Bài biến mất (bị gỡ quyền / thùng rác) bị loại; bài mở bằng liên kết được giữ nếu còn truy cập được.
-5. Ghi lại cache cục bộ (mã hóa) và đẩy `index.json` lên Drive (debounce, bỏ qua nếu không đổi).
+1. On open, paint the index from the encrypted cache (or `index.json` from Drive on a new device).
+2. In the background list folder metadata of `posts/` (mine) and `sharedWithMe = true` filtered by `properties has {specact=post}` — one request per ~200 posts.
+3. Compare `rev` with the index; **download `post.json` only for new/changed posts** (4 in parallel).
+4. Posts that disappeared (access removed / trashed) are dropped; link-opened posts are kept while they resolve.
+5. Save the local cache (encrypted) and push `index.json` to Drive (debounced, skipped when unchanged).
 
-Bình luận/tim **không** tăng `rev`; thẻ bài tải `comments.json` lười khi hiện ra trong màn hình.
+Comments and likes do **not** bump `rev`; cards lazily load them when they scroll into view.
 
-## Mã nguồn
+## Code map
 
-- `services/repo.js` — toàn bộ nghiệp vụ Drive (`DriveRepo`). `services/demoRepo.js` có cùng giao diện cho chế độ demo.
-- `services/drive.js` — client REST: bearer token, tự refresh 1 lần khi 401, backoff với 429/5xx, giới hạn đồng thời 6.
-- `services/googleAuth.js` — OAuth *authorization code + PKCE (S256)*, `state` chống CSRF, trao đổi mã trực tiếp với `oauth2.googleapis.com` bằng client secret của người dùng.
-- `stores/session.js` — máy trạng thái `booting → no-vault | locked → signed-out → ready`.
+- `services/repo.js` — all Drive business logic (`DriveRepo`); `services/demoRepo.js` has the same interface for demo mode.
+- `services/drive.js` — REST client: bearer token, one refresh on 401, back-off on 429/5xx, concurrency cap 6.
+- `services/googleAuth.js` — OAuth *authorization code + PKCE (S256)*, `state` against CSRF, code exchange directly with `oauth2.googleapis.com` using the user's own secret.
+- `stores/session.js` — state machine `booting → no-vault | locked → signed-out → ready`.

@@ -1,59 +1,66 @@
-# Bảo mật / Security
+# Security
 
-## Ai thấy được gì
+[Tiếng Việt](SECURITY.vi.md)
 
-| Bên | Thấy |
+## Who sees what
+
+| Party | Sees |
 |---|---|
-| Người chủ trang web (host file tĩnh) | Chỉ log truy cập tệp tĩnh. Không bao giờ thấy token, khóa, nội dung (trình duyệt không gọi về host sau khi tải). |
-| Google | Dữ liệu bạn lưu trên Drive như mọi file Drive (nội dung bài **có mật khẩu** thì chỉ là bản mã). |
-| Người được chia sẻ | Chỉ thư mục bài được cấp. Bài có mật khẩu còn cần mật khẩu. |
-| Người khác | Không gì cả (Drive từ chối). |
+| Whoever hosts the static site | Only static-file access logs. Never tokens, keys or content (the browser does not call back to the host after loading). |
+| Google | Your data as with any Drive file (password-protected posts are only ciphertext). |
+| People you share with | Only the post folders/files you granted. Protected posts also need the password. |
+| Everyone else | Nothing (Drive refuses). |
 
-## Kho khóa cục bộ (vault)
+## Local vault
 
-Mọi bí mật trên thiết bị — client ID/secret, refresh token, khóa của bài, bộ nhớ đệm chỉ mục, danh bạ — nằm trong IndexedDB, mỗi bản ghi được **mã hóa hai lớp**:
+Every secret on the device — client ID/secret, refresh token, post keys, cached index, contacts — lives in IndexedDB, each record **encrypted twice**:
 
 ```
-bản ghi = AES-256-GCM_{khóa PIN}( AES-256-GCM_{khóa thiết bị}( JSON ) )
+record = AES-256-GCM_{PIN key}( AES-256-GCM_{device key}( JSON ) )
 ```
 
-- **Khóa thiết bị**: khóa AES ngẫu nhiên `extractable: false` sinh bằng WebCrypto, gắn với hồ sơ trình duyệt này; JavaScript không đọc/xuất được.
-- **Khóa PIN**: PBKDF2-SHA256 (mặc định 600 000 vòng, salt ngẫu nhiên 16 byte) từ mã PIN.
-- Mỗi lớp có *additional data* gắn với tên bản ghi → không thể hoán đổi bản ghi.
-- Đoán sai PIN: 3 lần miễn phí, sau đó chờ 5 s, 10 s, 20 s … tối đa 15 phút (lưu bền, sống sót qua tải lại); sai `VITE_PIN_MAX_ATTEMPTS` lần thì **xóa vault**.
-- Access token chỉ ở **bộ nhớ**. Khóa ứng dụng (tự động sau N phút không thao tác / khi tab ẩn lâu / bấm khóa) xóa mọi khóa khỏi bộ nhớ.
-- Ảnh tải về chỉ giữ trong bộ nhớ dưới dạng blob URL; không ghi đĩa.
+- **Device key**: a random AES key created with WebCrypto as `extractable: false`, bound to this browser profile; JavaScript cannot read or export it.
+- **PIN key**: PBKDF2-SHA256 (600,000 iterations by default, random 16-byte salt) from the PIN.
+- Each layer binds the record name as additional data, so records cannot be swapped.
+- Wrong PIN: 3 free tries, then 5 s, 10 s, 20 s … up to 15 min (persisted, survives reloads); after `VITE_PIN_MAX_ATTEMPTS` failures the **vault is erased**.
+- The access token lives **in memory only**. Locking (auto after N idle minutes / long hidden tab / manual) drops every key from memory.
+- Downloaded photos are kept only as in-memory blob URLs.
 
-### Giới hạn thật thà
+### Honest limits
 
-- PIN 6 số chỉ có 10⁶ khả năng. PBKDF2 làm mỗi lần đoán tốn thời gian, nhưng nếu kẻ tấn công **sao chép được toàn bộ hồ sơ trình duyệt** *và* lấy được khóa thiết bị, họ có thể dò PIN ngoại tuyến. Bộ đếm sai/xóa vault chỉ chặn kẻ dùng giao diện. Dùng khóa màn hình/mã hóa ổ đĩa của hệ điều hành; PIN không thay thế chúng.
-- Nếu máy chủ phát file tĩnh bị chiếm, nó có thể phát mã độc ở lần tải sau. Tự host, ghim phiên bản, và dùng HTTPS + CSP mặc định kèm theo.
-- Script bên thứ ba bị chặn bởi CSP (`script-src 'self'`); không có CDN, không analytics, font được đóng gói.
+- A 6-digit PIN has only 10⁶ possibilities. PBKDF2 makes each guess cost time, but an attacker who copies the **whole browser profile** *and* obtains the device key could brute-force the PIN offline. The attempt counter only stops people using the UI. Use the OS screen lock / disk encryption; the PIN does not replace them.
+- If the static host is compromised it can serve malicious code on a later load. Self-host, pin versions, and use the strict CSP shipped here.
+- Third-party scripts are blocked by the CSP (`script-src 'self'`); no CDN, no analytics, fonts are bundled.
 
 ## OAuth
 
-- *Authorization code + PKCE (S256)*, `state` ngẫu nhiên kiểm tra lúc quay lại, mã chỉ dùng một lần và xóa khỏi thanh địa chỉ ngay.
-- Client secret do chính người dùng tạo; Google yêu cầu secret cho client “Web application” nên nó được lưu **mã hóa trong vault** và gửi **chỉ** tới `oauth2.googleapis.com`.
-- Đăng xuất gọi `oauth2.googleapis.com/revoke` rồi xóa refresh token.
+- *Authorization code + PKCE (S256)*, random `state` verified on return, the code is used once and removed from the address bar immediately.
+- The client secret is created by the user; Google requires it for "Web application" clients, so it is stored **encrypted in the vault** and sent **only** to `oauth2.googleapis.com`.
+- Signing out calls `oauth2.googleapis.com/revoke` and deletes the refresh token. With "Remember on this device" off, the refresh token is never written to disk.
 
-## Bài viết có mật khẩu
+## Password-protected posts
 
-- Khóa nội dung 256-bit ngẫu nhiên; bọc bằng khóa dẫn xuất từ mật khẩu (PBKDF2-SHA256, mặc định 310 000 vòng).
-- Văn bản, danh sách ảnh, bình luận và **cả byte ảnh** được mã hóa AES-256-GCM trên trình duyệt trước khi lên Drive.
-- Còn lộ ra: chủ bài, thời điểm, danh sách người được chia sẻ, kích thước tệp, số tệp ảnh. Nội dung chỉ mục của bài này luôn rỗng.
-- Mật khẩu yếu có thể bị dò ngoại tuyến nếu ai đó có file. Hãy dùng cụm từ dài. Mất mật khẩu = mất nội dung (người chủ trên thiết bị đã mở còn khóa trong vault).
-- Liên kết + mật khẩu: bất kỳ ai đăng nhập Google có liên kết đọc được **bản mã**; không có mật khẩu thì vô nghĩa.
+- A random 256-bit content key, wrapped by a password-derived key (PBKDF2-SHA256, 310,000 iterations by default).
+- Text, photo list, comments **and photo bytes** are AES-256-GCM encrypted in the browser before reaching Drive.
+- Still visible: owner, timestamps, the list of people shared with, file sizes and counts. The index entry of such a post is always empty.
+- A weak password can be brute-forced offline by anyone who has the files — use a long passphrase. A lost password cannot be recovered.
+- Public link + password: anyone signed in with Google who has the link can fetch the **ciphertext**; without the password it is meaningless.
 
-## Quyền riêng tư ảnh
+## Public links and comment/like files
 
-Ảnh được vẽ lại qua canvas trước khi tải lên → **EXIF (GPS, thiết bị, thời gian chụp) bị loại bỏ**. Ảnh được xoay đúng chiều và giới hạn kích thước.
+- "Anyone with the link" grants `anyone` `reader` on **individual files only** (`post.json`, photos). The folder and `comments.json` are never opened, so the folder cannot be browsed.
+- Open comments and likes by link visitors grant `anyone` `writer` on `comments.json` / `likes.json` **only** (never `post.json`). A visitor could tamper with that one file.
 
-## Giới hạn mô hình chia sẻ
+## Photo privacy
 
-- Người có quyền bình luận có quyền `writer` trên `comments.json`, nên về mặt kỹ thuật có thể sửa/xóa bình luận người khác trực tiếp qua Drive. Ứng dụng chỉ cho xóa bình luận của mình (hoặc chủ bài xóa mọi bình luận).
-- Hai người ghi `comments.json` cùng lúc: bản ghi sau thắng (đọc–sửa–ghi, không khóa).
-- Người xem có thể sao chép/chụp màn hình — thu hồi quyền không xóa được điều đã thấy.
+Photos are redrawn through a canvas before upload, so **EXIF (GPS, device, capture time) is stripped**. They are also orientation-corrected and size-capped.
 
-## Báo lỗi bảo mật
+## Limits of the sharing model
 
-Mở issue riêng tư trên kho mã hoặc liên hệ người duy trì dự án. Vui lòng không đưa khóa thật vào báo cáo.
+- People who can comment hold `writer` on `comments.json`, so technically they can edit or delete others' comments directly via Drive. The app only lets you delete your own comments (or the owner delete any).
+- Two people writing `comments.json`/`likes.json` at once: the last write wins (read–modify–write, no locking).
+- Viewers can copy or screenshot — revoking access does not un-see.
+
+## Reporting a vulnerability
+
+Open a private issue on the repository or contact the maintainer. Please do not include real keys in reports.

@@ -1,23 +1,25 @@
-# Dữ liệu mở & phân tán / Open, portable data
+# Open, portable data
 
-SPECACT không giữ dữ liệu của bạn — **Google Drive của bạn là nơi duy nhất lưu dữ liệu**, theo định dạng mở dưới đây. Bất kỳ website hay ứng dụng nào bạn tin tưởng đều có thể đọc/ghi cùng nguồn dữ liệu này (với OAuth client và quyền Drive của chính bạn), nên bạn đổi nơi hiển thị mà không phải di cư dữ liệu, và không bị khóa vào một nhà cung cấp.
+[Tiếng Việt](OPEN_FORMAT.vi.md)
 
-## Nguyên tắc chủ quyền
+SPECACT does not keep your data — **your Google Drive is the only place it is stored**, in the open format below. Any website or app you trust can read and write the same data source (with your own OAuth client and Drive permissions), so you can change *where you view* your content without migrating it and without lock-in.
 
-1. **Không có bên trung gian.** Trình duyệt ↔ Google Drive trực tiếp; không có máy chủ SPECACT để lưu, đọc, kiểm duyệt hay sửa dữ liệu.
-2. **Quyền truy cập là của bạn.** Ai xem/bình luận do quyền Drive của bạn quyết định; bạn thu hồi bất cứ lúc nào.
-3. **Khóa là của bạn.** Bài có mật khẩu được mã hóa ở client; nhà cung cấp trang web không có khóa.
-4. **Định dạng mở, có phiên bản** (`v`), tài liệu ở đây và trong [ARCHITECTURE.md](ARCHITECTURE.md). Ứng dụng khác tuân theo đặc tả này sẽ tương thích.
-5. **Tự host được.** Mã nguồn MIT; chạy bằng Docker/Nginx tĩnh trên máy của bạn.
+## Sovereignty principles
 
-> Giới hạn thật thà: nhà cung cấp *trang web* chỉ phát file JS; một nhà cung cấp xấu có thể phát mã bị sửa ở lần tải sau. Cách loại bỏ rủi ro này là **tự host** (hoặc dùng bản build bạn đã kiểm tra) — xem [SECURITY.md](SECURITY.md). Dữ liệu lưu trên Google Drive vẫn tuân theo điều khoản của Google.
+1. **No middleman.** Browser ↔ Google Drive directly; there is no SPECACT server to store, read, moderate or alter data.
+2. **Access is yours.** Who can see or comment is decided by your Drive permissions; revoke any time.
+3. **Keys are yours.** Password-protected posts are encrypted client-side; the site host has no key.
+4. **Open, versioned format** (`v`), documented here and in [ARCHITECTURE.md](ARCHITECTURE.md). Other apps that follow it are compatible.
+5. **Self-hostable.** MIT source; run it from a static Nginx/Docker on your own machine.
 
-## Đặc tả tối thiểu cho ứng dụng khác
+> Honest limit: the *website* host serves the JavaScript; a malicious host could serve altered code on a later load. The remedy is to **self-host** (or use a build you verified) — see [SECURITY.md](SECURITY.md). Data stored on Google Drive remains subject to Google's terms.
 
-- Thư mục gốc `SPECACT/` (properties `specact=root`), bài ở `SPECACT/posts/<ngày>_<id>/` (properties `specact=post`, `rev`, `pj`, `cj`, `mf`).
-- `post.json` (`v: 1`): `id, owner, createdAt, updatedAt, text, media[], mentions[], audience{}, linkShare, commentMode, cj, protection`. Bài có mật khẩu mang `payload` AES-256-GCM (AAD `post:<id>`), khóa nội dung bọc bằng PBKDF2-SHA256.
-- `likes.json`: `{ v:1, likes[] }` — thả tim đi theo quyền xem bài, không phụ thuộc chế độ bình luận. `post.json.lj` / property `lj` giữ id tệp.
-- `comments.json`: `{ v:1, comments[], likes[] }` (bình luận bài có mật khẩu mang `enc`).
-- Chia sẻ = quyền Drive: *được xem* = `reader` trên thư mục; *được bình luận* = thêm `writer` **chỉ trên `comments.json`**; công khai bằng liên kết = `anyone` `reader` **chỉ trên các tệp** (`post.json`, ảnh), không trên thư mục.
-- Bài được định danh bằng id thư mục (người được chia sẻ) hoặc id `post.json` (liên kết công khai).
-- Ứng dụng khác **phải** giữ nguyên các trường không biết khi ghi lại `post.json`, và không được mở quyền rộng hơn người dùng đã chọn.
+## Minimal spec for other apps
+
+- Root folder `SPECACT/` (property `specact=root`); posts in `SPECACT/posts/<date>_<id>/` (properties `specact=post`, `rev`, `pj`, `cj`, `lj`, `mf`).
+- `post.json` (`v: 1`): `id, owner, createdAt, updatedAt, text, media[], mentions[], audience{}, linkShare, commentMode, cj, lj, protection`. Password-protected posts carry an AES-256-GCM `payload` (AAD `post:<id>`) with the content key wrapped by a PBKDF2-SHA256 key.
+- `comments.json`: `{ v:1, comments[], likes[] }` (comments of protected posts carry `enc`; the `likes` array is legacy).
+- `likes.json`: `{ v:1, likes[] }` — liking follows who may *see* the post, independent of the comment mode.
+- Sharing = Drive permissions: *can view* = `reader` on the folder; *can comment* = also `writer` **on `comments.json` only**; liking = `writer` on `likes.json` for everyone who can see the post; public by link = `anyone` `reader` **on the files only** (`post.json`, photos), never on the folder.
+- A post is identified by its folder id (people it was shared with) or by its `post.json` id (public link).
+- Other apps **must** preserve unknown fields when rewriting `post.json` and must never open wider access than the user chose.

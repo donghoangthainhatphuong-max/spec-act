@@ -1,60 +1,59 @@
-# CLAUDE.md — quy tắc làm việc trong dự án SPECACT
+# CLAUDE.md — working rules for the SPECACT project
 
-Đọc hết trước khi sửa code. Mỗi quy tắc bên dưới tồn tại vì một lỗi đã xảy ra thật. Khi gặp lỗi mới, **thêm quy tắc vào đây trong cùng commit sửa lỗi**.
+[Tiếng Việt](CLAUDE.vi.md) — keep both files in sync (the English one is the reference).
 
-## 1. Bất biến của sản phẩm (không được phá)
+Read everything before changing code. Each rule below exists because a real mistake happened. When you meet a new mistake, **add a rule here in the same commit that fixes it**.
 
-1. **Không có backend.** Trình duyệt chỉ nói chuyện với `accounts.google.com`, `oauth2.googleapis.com`, `www.googleapis.com`. Không thêm CDN, analytics, font ngoài, hay endpoint nào khác (CSP trong `docker/security-headers.conf` sẽ chặn; sửa CSP chỉ khi thật sự cần và phải nêu lý do).
-2. **Drive là nguồn sự thật cho dữ liệu và quyền truy cập.** Không tự phát minh hệ thống quyền riêng. `post.json.audience` chỉ là bản sao để hiển thị.
-3. **Mọi bí mật phía client** (client ID/secret, refresh token, khóa bài, cache chỉ mục) chỉ nằm trong `services/secureStore.js` (mã hóa 2 lớp: khóa thiết bị + PIN). Không bao giờ ghi chúng vào `localStorage`, URL, log, hay `.env`. Access token chỉ ở bộ nhớ.
-4. **Công khai bằng liên kết chỉ cấp quyền trên TỆP** (`post.json` + ảnh), **không bao giờ trên thư mục** và không trên `comments.json`. Mọi thay đổi liên quan phải giữ test "link sharing opens FILES only".
-5. **Người có quyền bình luận chỉ được `writer` trên `comments.json`**, không bao giờ trên thư mục hay `post.json`.
-6. Bài có mật khẩu: nội dung, bình luận và byte ảnh mã hóa ở client; **không đưa nội dung vào `index.json`**.
-7. Không `v-html`, không `innerHTML` với dữ liệu người dùng. Văn bản hiển thị qua `RichText.vue` (đoạn text/mention/link an toàn).
-8. Việc xóa/thu hồi/ghi đè quyền phải **tường minh**: gỡ `@mention` khỏi văn bản không thu hồi quyền; chỉnh sửa không được thu hồi người được chia sẻ tay trong Drive (xem `updatePost`/`setAccess`).
+## 1. Product invariants (never break)
 
-9. **Định hướng thương hiệu:** nhấn mạnh cá nhân hóa, chủ quyền dữ liệu, phân tán/xuyên nền tảng. **Không** dùng tuyên bố "không quảng cáo/không theo dõi" trong giao diện hay tài liệu (sau này có thể có quảng cáo). Không thêm bất cứ cơ chế nào cho nhà cung cấp can thiệp vào dữ liệu người dùng; giữ định dạng dữ liệu mở và có phiên bản ([docs/OPEN_FORMAT.md](docs/OPEN_FORMAT.md)).
+1. **No backend.** The browser only talks to `accounts.google.com`, `oauth2.googleapis.com`, `www.googleapis.com`. Do not add CDNs, analytics, external fonts or any other endpoint (the CSP in `docker/security-headers.conf` blocks them; change the CSP only when truly needed and say why).
+2. **Drive is the source of truth for data and access.** Do not invent a separate permission system. `post.json.audience` is only a mirror for display.
+3. **Every client-side secret** (client ID/secret, refresh token, post keys, index cache) lives only in `services/secureStore.js` (two layers: device key + PIN). Never write them to `localStorage`, URLs, logs or `.env`. The access token stays in memory.
+4. **Public-by-link grants permission on FILES only** (`post.json` + photos) — **never on the folder** and never on `comments.json`. Keep the test "link sharing opens FILES only" green.
+5. **People who may comment get `writer` on `comments.json` only**, never on the folder or `post.json`.
+6. Password-protected posts: content, comments and photo bytes are encrypted on the client; **never put content in `index.json`**.
+7. No `v-html` / `innerHTML` with user data. Text is rendered through `RichText.vue` (safe text/mention/link segments).
+8. Deleting / revoking / overwriting access must be **explicit**: removing an `@mention` does not revoke access; editing must not revoke people shared by hand in Drive (see `updatePost` / `setAccess`).
+9. **Branding:** emphasise personalisation, data sovereignty, decentralisation / cross-platform use. Do **not** claim "no ads / no tracking" in the UI or docs (ads may come later). Never add any mechanism that lets the provider interfere with user data; keep the data format open and versioned ([docs/OPEN_FORMAT.md](docs/OPEN_FORMAT.md)).
+10. When data / privacy / sharing behaviour changes, update `src/locales/pages/*.json` (Terms / Privacy / About, both `en` and `vi`, same structure — `tests/pages.test.js`) in the same commit.
+11. **Liking follows who can see the post, not who can comment.** Likes live in their own `likes.json` (writer for everyone who can see the post, no other rights). Do not move likes back into `comments.json`.
 
-10. Đổi hành vi dữ liệu/quyền riêng tư/chia sẻ → cập nhật `src/locales/pages/*.json` (Terms/Privacy/About, cả en và vi, cùng cấu trúc — `tests/pages.test.js`) trong cùng commit.
+## 2. Mistakes made → rules
 
-11. **Thả tim đi theo quyền xem bài, không theo quyền bình luận.** Tim nằm ở `likes.json` riêng (writer cho mọi người được xem, không có quyền gì khác). Không đưa tim trở lại `comments.json`.
-
-## 2. Lỗi đã gặp → quy tắc
-
-| Lỗi từng xảy ra | Quy tắc |
+| What went wrong | Rule |
 |---|---|
-| `ui.openViewer(items, index)` bị gọi với object `{post, items}` → khung xem ảnh **trống**, không có slide. Chỉ test demo bằng mắt nên sót. | Khi đổi chữ ký hàm dùng chung, `grep` mọi nơi gọi và cập nhật. Mỗi store action phải có test đơn vị (`tests/ui.test.js` là ví dụ). Khi sửa UI, **mở trình duyệt và thao tác thật** (bấm ảnh, next/prev, zoom), không chỉ build/test. |
-| Nút next/prev bị CSS thiết kế cũ `.viewer .icon-btn {top:16px}` đẩy lên góc trùng nút đóng. | CSS toàn cục của thiết kế (`src/styles/*.css`) có độ ưu tiên cao hơn CSS scoped. Style lớp phủ/overlay phải dùng selector đủ cụ thể (`.viewer .icon-btn.nav`) và **đo vị trí bằng `getBoundingClientRect`** sau khi sửa. |
-| Công khai bài ban đầu yêu cầu mật khẩu, rồi cấp quyền `anyone` trên **thư mục** → lộ cấu trúc/bình luận. | Cấp quyền công khai ở mức tối thiểu cần thiết (từng tệp). Trước khi thêm bất kỳ quyền Drive nào, ghi rõ ai/đối tượng nào/cấp nào, và viết test kiểm tra thứ KHÔNG được mở. |
-| Chức năng chỉ thêm ở màn hình chi tiết, quên màn hình tạo bài. | Tính năng ảnh hưởng nhiều luồng (tạo / sửa / chi tiết / demo) phải được thêm ở **cả** `ComposeView`, `PostView`, `repo.js` **và** `demoRepo.js`, rồi liệt kê trong mô tả commit. |
-| Thao tác sửa audience từ form bị thu hồi người được chia sẻ tay trong Drive. | Không suy ra quyền từ bản sao `post.json`; đọc thực tế bằng `readAudience`. Chỉ đụng quyền khi caller truyền `audience`. |
-| `expireSession` chạy bất đồng bộ không `await` → trạng thái UI sai khoảng ngắn (test phát hiện). | Mọi chuyển trạng thái xác thực phải `await` xong trước khi hàm gọi trả về. |
-| vue-i18n coi `@` trong chuỗi là cú pháp liên kết → app crash khi mở trang. | Dùng lớp i18n tự viết (`src/i18n`); chuỗi dịch là JSON phẳng, chỉ có `{name}`. Không đưa vue-i18n trở lại. |
-| Quyền bình luận phụ thuộc nhiều trạng thái (vai trò, chế độ bình luận, liên kết công khai). | Mọi thay đổi ảnh hưởng ai được ghi `comments.json` phải đi qua `#syncCommenting`/`canCommentWith` và có test ở `describe('comment modes')`. Khóa bình luận phải được ép ở **Drive** (gỡ quyền ghi), không chỉ ẩn nút. |
-| `docker compose` dùng tên container/image `specact` trùng dự án khác của người dùng. | Tên Docker của dự án này luôn là `spec-act`; không động vào container/image khác (`docker ps` trước khi chạy). Cổng mặc định 8088. |
-| Đợt đầu `FakeDrive` dùng `Buffer` → không chạy được trong trình duyệt. | Mã dùng chung giữa Node và trình duyệt không dùng API riêng của Node. |
+| `ui.openViewer(items, index)` was called with an object `{post, items}` → the photo viewer opened **empty**, no slideshow. Only the demo was eyeballed, so it slipped through. | When changing the signature of a shared function, `grep` every caller and update them. Every store action needs a unit test (`tests/ui.test.js` is an example). When touching UI, **open the browser and use it** (click a photo, next/prev, zoom), don't just build/test. |
+| Next/prev buttons were pushed to the top corner by the old design CSS `.viewer .icon-btn {top:16px}`. | The design's global CSS (`src/styles/*.css`) outranks scoped CSS. Overlay styles need specific selectors (`.viewer .icon-btn.nav`) and **positions must be measured with `getBoundingClientRect`** after the change. |
+| Public sharing first required a password and then granted `anyone` on the **folder** → exposed structure/comments. | Grant public access at the minimum scope (individual files). Before adding any Drive permission, state who / which object / which level, and write a test for what must NOT be opened. |
+| A feature was added to the detail screen but forgotten on the compose screen. | A feature touching several flows (create / edit / detail / demo) must be added to **all** of `ComposeView`, `PostView`, `repo.js` **and** `demoRepo.js`, and listed in the commit message. |
+| Saving the audience from a form revoked people shared by hand in Drive. | Never infer permissions from the `post.json` mirror; read the truth with `readAudience`. Only touch permissions when the caller passes `audience`. |
+| `expireSession` ran asynchronously without `await` → briefly wrong UI state (a test caught it). | Every auth state transition must be awaited before the calling function returns. |
+| vue-i18n treats `@` in a message as link syntax → the app crashed on load. | Use the in-house i18n layer (`src/i18n`); translations are flat JSON with `{name}` only. Do not bring vue-i18n back. |
+| Comment permissions depend on several states (role, comment mode, public link). | Any change that affects who may write `comments.json` must go through `#syncCommenting` / `canCommentWith` and be covered by `describe('comment modes')`. Locking comments must be enforced in **Drive** (remove write access), not just by hiding a button. |
+| `docker compose` used the container/image name `specact`, clashing with another project of the user. | This project's Docker names are always `spec-act`; never touch other containers/images (`docker ps` first). Default port 8088. |
+| `FakeDrive` first used `Buffer` → it could not run in a browser. | Code shared between Node and the browser must not use Node-only APIs. |
 
-## 3. Quy trình bắt buộc cho mỗi thay đổi
+## 3. Required workflow for every change
 
-1. **Hiểu trước, sửa sau**: đọc file liên quan và nơi gọi (`grep`), không đoán.
-2. **Viết/cập nhật test** cùng lúc với code. Logic Drive/quyền → thêm ca vào `tests/repo.test.js` (dùng `tests/fakeDrive.js`). Nếu hành vi thật của Drive khác giả lập, sửa giả lập trước.
-3. Chạy đủ: `npm run lint && npm test && npm run build`. Không commit khi đỏ.
-4. **Kiểm tra bằng giao diện thật** (`npm run dev`): demo ở `#/demo`; luồng Drive dùng `tests/browserHarness.js`. Kiểm tra cả sáng/tối, mobile (390px) và desktop. Đợi ~1–2 giây trước khi chụp màn hình (ảnh có animation/tải lười).
-5. **i18n**: thêm khóa vào `src/locales/en.json` **và đủ 14 ngôn ngữ** (`tests/i18n.test.js` bắt thiếu khóa, thừa khóa, sai placeholder). Đổi ý nghĩa một chuỗi → cập nhật bản dịch của mọi ngôn ngữ, không để chuỗi cũ sai nghĩa.
-6. **Cấu hình**: tham số mới đi qua `src/config.js` + `.env.example` + `.env` + README. Không hard-code.
-7. Cập nhật tài liệu (`README*.md`, `docs/`) khi đổi hành vi/giới hạn. Không hứa điều chưa kiểm chứng; nói rõ phần nào chưa thử với Google Drive thật.
-8. Commit nhỏ, thông điệp tiếng Anh nêu **vì sao**. Không push khi chưa được yêu cầu; không commit `.env` chứa bí mật, `node_modules`, `dist`.
+1. **Understand first**: read the files and their callers (`grep`); don't guess.
+2. **Write / update tests together with the code.** Drive / permission logic → add cases to `tests/repo.test.js` (using `tests/fakeDrive.js`). If real Drive behaves differently from the fake, fix the fake first.
+3. Run everything: `npm run lint && npm test && npm run build`. Never commit red.
+4. **Check the real UI** (`npm run dev`): demo at `#/demo`; Drive flows via `tests/browserHarness.js`. Check light/dark, mobile (390 px) and desktop. Wait 1–2 s before screenshots (animations / lazy loading).
+5. **i18n**: add keys to `src/locales/en.json` **and all 14 languages** (`tests/i18n.test.js` catches missing / extra keys and wrong placeholders). If a string's meaning changes, update every language — never leave a stale meaning.
+6. **Configuration**: new parameters go through `src/config.js` + `.env.example` + `.env` + README. No hard-coding.
+7. **Docs**: every document exists in English and Vietnamese (`README.md` + `README.<lang>.md`, `docs/X.md` + `docs/X.vi.md`, `CLAUDE.md` + `CLAUDE.vi.md`). Update both when behaviour or limits change. Don't promise what hasn't been verified; say clearly what has not been tried against real Google Drive.
+8. Small commits, English messages explaining **why**. Don't push unless asked; never commit secrets, `node_modules` or `dist`.
 
-## 4. Quy ước mã
+## 4. Code conventions
 
-- Vue 3 `<script setup>`, Pinia (setup stores), JS thuần (không TypeScript). Tên tệp component `PascalCase.vue`.
-- Mọi gọi Drive đi qua `services/drive.js`; mọi nghiệp vụ qua `services/repo.js` (và `demoRepo.js` có **cùng giao diện**). Component không gọi `fetch` trực tiếp.
-- Mọi chuỗi hiển thị qua `t('...')`; không hard-code tiếng Anh/Việt trong template.
-- Lỗi nghiệp vụ dùng `RepoError(code)`; UI ánh xạ `code` sang chuỗi i18n, không hiển thị `error.message` thô.
-- Giữ giao diện theo thiết kế v3 (token màu trong `styles/base.css`, phông Bricolage/Newsreader, accent xanh lục). Thêm CSS mới vào `styles/extra.css` hoặc scoped; không viết lại CSS thiết kế.
-- Hỗ trợ RTL (dùng thuộc tính logic `inset-inline-*`, `margin-inline-*`).
+- Vue 3 `<script setup>`, Pinia setup stores, plain JS (no TypeScript). Component files `PascalCase.vue`.
+- All Drive calls go through `services/drive.js`; all business logic through `services/repo.js` (`demoRepo.js` has the **same interface**). Components never call `fetch` directly.
+- Every visible string goes through `t('...')`; no hard-coded English/Vietnamese in templates.
+- Business errors use `RepoError(code)`; the UI maps `code` to an i18n string and never shows raw `error.message`.
+- Keep to design v3 (colour tokens in `styles/base.css`, Bricolage/Newsreader fonts, evergreen accent). New CSS goes in `styles/extra.css` or scoped; don't rewrite the design CSS.
+- Support RTL (use logical properties `inset-inline-*`, `margin-inline-*`).
 
-## 5. Dọn dẹp sau khi làm
+## 5. Clean up afterwards
 
-- Dừng dev server (`pkill -f "vite --port"`) và container tự bật (`docker compose down`); không dừng container của dự án khác.
-- Không để file tạm trong repo.
+- Stop the dev server (`pkill -f "vite --port"`) and any container you started (`docker compose down`); never stop another project's container.
+- Leave no temporary files in the repo.

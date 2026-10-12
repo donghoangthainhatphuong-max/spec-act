@@ -4,149 +4,142 @@
 
 **S**ecure **P**ersonal **E**cosystem for **C**ontent, **A**ccess, and **C**ontrol **T**rust
 
-*Không phải mạng xã hội. Là mạng lưới nội dung cá nhân có kiểm soát — nội dung có chủ quyền, có bản quyền, có kiểm soát.*
+*Not a social network — a network of personal content under your control: sovereign, owned and controlled.*
 
-[English](README.en.md) · [Kiến trúc](docs/ARCHITECTURE.md) · [Bảo mật](docs/SECURITY.md) · [Thiết lập Google](docs/GOOGLE_SETUP.md)
+[English](README.md) · [Tiếng Việt](README.vi.md) · [中文](README.zh.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Русский](README.ru.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Español](README.es.md) · [ไทย](README.th.md) · [Bahasa Indonesia](README.id.md) · [हिन्दी](README.hi.md) · [العربية](README.ar.md) · [Türkçe](README.tr.md)
+
+[Architecture](docs/ARCHITECTURE.md) · [Security](docs/SECURITY.md) · [Google setup](docs/GOOGLE_SETUP.md) · [Open format](docs/OPEN_FORMAT.md)
 
 </div>
 
 ---
 
-SPECACT là một ứng dụng web (Vue 3, PWA) để **chia sẻ bài viết và ảnh chỉ với những người bạn chọn**. Không có máy chủ, không có cơ sở dữ liệu của chúng tôi:
+SPECACT is a Vue 3 PWA for **sharing posts and photos with exactly the people you choose**. There is no server and no database of ours:
 
-- Mọi dữ liệu nằm trong **thư mục `SPECACT` trên Google Drive của chính bạn**.
-- Ai được xem là do **quyền truy cập của Google Drive** quyết định — người không có quyền thì không thể đọc, kể cả khi có đường dẫn.
-- Sau khi tải HTML/JS về, trình duyệt **chỉ nói chuyện với Google** (CSP chặn mọi đích khác). Máy chủ web chỉ là nơi phát file tĩnh.
-- Mỗi người dùng tự tạo **Google OAuth client của riêng mình**; client ID / secret, token và khóa chỉ nằm trên thiết bị, **mã hóa hai lớp** và khóa bằng **mã PIN 6 số**.
+- All data lives in a **`SPECACT` folder in your own Google Drive**.
+- Who can see a post is decided by **Google Drive permissions** — no permission, no access, even with the link.
+- After the HTML/JS is loaded the browser **talks only to Google** (the CSP blocks every other destination). The web host just serves static files.
+- Every user brings **their own Google OAuth client**. Client ID/secret, tokens and keys never leave the device, are **encrypted twice**, and are guarded by a **6-digit PIN**.
 
-## Cá nhân hóa · Chủ quyền · Phân tán
+## Personal · Sovereign · Decentralised
 
-- **Chủ quyền dữ liệu:** dữ liệu nằm trong Drive của bạn, không có nhà cung cấp ở giữa — không máy chủ nào của dự án lưu, đọc hay can thiệp được vào nội dung, quyền truy cập hay khóa của bạn.
-- **Cá nhân hóa:** bạn tự chọn ai xem, ai bình luận, bài nào có mật khẩu, bài nào công khai bằng liên kết; giao diện, ngôn ngữ, mức khóa là của riêng bạn.
-- **Phân tán & xuyên nền tảng:** dữ liệu theo [định dạng mở](docs/OPEN_FORMAT.md); nhiều website/ứng dụng khác nhau có thể cùng dùng một nguồn dữ liệu cá nhân của bạn mà không phải sao chép hay di cư.
+- **Data sovereignty:** your data lives in your Drive with no provider in the middle — none of the project's servers can store, read or alter your content, access rules or keys.
+- **Personalisation:** you decide who sees, who comments, which posts are password-protected or public by link.
+- **Decentralised & cross-platform:** the data uses an [open format](docs/OPEN_FORMAT.md), so many websites and apps can share one personal data source of yours without copying or migrating it.
 
-## Tính năng
+## Features
 
 | | |
 |---|---|
-| **Bài viết** | Tạo, sửa, xóa (vào thùng rác Drive hoặc xóa hẳn — cấu hình được); tải ảnh (tự xoay đúng chiều, thu nhỏ, **xóa EXIF/GPS**, tạo ảnh thu nhỏ). |
-| **Chia sẻ** | Gõ `@email` để *tag* một người bạn đã kết nối → họ được cấp quyền xem. Hai mức: *được xem* và *được bình luận*. Chọn bạn từ lưới, nhập email, hoặc thu hồi bất kỳ lúc nào. |
-| **Mật khẩu** | Bài có thể **bảo vệ bằng mật khẩu**: nội dung và ảnh được mã hóa ngay trên trình duyệt (AES-256-GCM) trước khi lên Drive. Có thể thêm **mở bằng liên kết + mật khẩu**. |
-| **Bình luận & tim** | Lưu trong `comments.json` của bài; người chỉ-xem không ghi được. |
-| **Chỉ mục nhanh** | Mỗi người có `index.json` trong thư mục SPECACT của mình tổng hợp bài của mình và bài được chia sẻ — hiển thị tức thì từ bộ nhớ đệm mã hóa, rồi tự đồng bộ nền (chỉ tải lại bài có thay đổi). |
-| **Bạn bè** | Danh sách người đã kết nối (`contacts.json`) dùng cho tag/chia sẻ; gợi ý từ những người đã chia sẻ cho bạn. |
-| **Bảo mật cục bộ** | PIN 6 số, khóa tự động, giới hạn thử sai (làm chậm rồi xóa kho khóa), đổi PIN, xóa dữ liệu thiết bị. |
-| **Đa ngôn ngữ** | 14 ngôn ngữ: vi, en, zh, ja, ko, ru, fr, de, es, th, id, hi, ar (RTL), tr. |
-| **Giao diện** | Sáng/tối/tự động, responsive từ điện thoại đến máy tính, PWA cài được. |
-| **Trang thông tin** | Giới thiệu (mục tiêu cốt lõi, nguyên tắc), Điều khoản sử dụng, Chính sách quyền riêng tư tại `#/about`, `#/terms`, `#/privacy` — xem được cả khi chưa đăng nhập. Nội dung ở `src/locales/pages/` (en, vi; ngôn ngữ khác hiện bản tiếng Anh). Người vận hành nên rà soát theo luật địa phương và điền `VITE_LEGAL_CONTACT`. |
-| **Dùng thử** | Chế độ demo với dữ liệu mẫu (không cần Google) tại `#/demo`. |
+| **Posts** | Create, edit, delete (Drive trash or permanent — configurable); photo upload (orientation-corrected, resized, **EXIF/GPS stripped**, thumbnails). Photo viewer with slideshow, zoom, rotate and pan. |
+| **Sharing** | Type `@email` to mention a connected friend and grant access. Roles: *can view*, *can comment*. Pick friends from a grid, enter an e-mail, revoke any time. |
+| **Public link** | "Anyone with the link" opens **only the post's files** (`post.json` + photos), never the folder. |
+| **Passwords** | Password-protect a post: text and photos are **encrypted in the browser** (AES-256-GCM) before they reach Drive. Combine with a public link if you like. |
+| **Comments** | Three modes per post: **open** (everyone who can see it), **shared people only**, **locked**. Enforced in Drive, not just in the UI. |
+| **Likes** | Own `likes.json`: everyone the post is open to can like, regardless of the comment mode. |
+| **Fast index** | Each user's `index.json` summarises own + shared posts; the feed paints instantly from an encrypted local cache and syncs in the background, downloading only changed posts. |
+| **Friends** | A list of connected people (`contacts.json`) for mentions/sharing, with suggestions from people who shared with you. |
+| **Local security** | PIN, auto-lock, throttled then wiping brute-force protection, PIN change, device wipe. |
+| **Languages & UI** | 14 languages (incl. RTL Arabic), light/dark/system, responsive, installable PWA. About / Terms / Privacy pages at `#/about`, `#/terms`, `#/privacy`. |
+| **Demo** | Sample-data mode (no Google needed) at `#/demo`. |
 
-## Chạy nhanh
+## Quick start
 
 ```bash
 npm install
-npm run dev          # http://localhost:5173
+npm run dev            # http://localhost:5173  (open #/demo for a no-setup preview)
 ```
 
-Mở `http://localhost:5173/#/demo` để xem thử ngay không cần cấu hình gì.
-
-Để dùng thật, bạn cần một Google OAuth client của riêng mình — xem **[docs/GOOGLE_SETUP.md](docs/GOOGLE_SETUP.md)** (khoảng 5 phút). Redirect URI chính là địa chỉ trang, ví dụ `http://localhost:5173/`.
+For real use create your own Google OAuth client — see **[docs/GOOGLE_SETUP.md](docs/GOOGLE_SETUP.md)** (about 5 minutes). The redirect URI is the page address, e.g. `http://localhost:5173/`.
 
 ## Docker
 
 ```bash
-cp .env.example .env        # chỉnh nếu cần
+cp .env.example .env        # edit if needed
 docker compose up -d --build
-# → http://localhost:8088   (đổi cổng bằng SPECACT_PORT trong .env)
+# → http://localhost:8088   (change the port with SPECACT_PORT in .env)
 ```
 
-- Image: Node build → `nginx-unprivileged` (chạy không root, root filesystem chỉ-đọc, bỏ hết capabilities).
-- Header bảo mật (CSP chỉ cho phép `googleapis.com`/`oauth2.googleapis.com`, `X-Frame-Options`, `Referrer-Policy: no-referrer`, …) nằm trong [docker/security-headers.conf](docker/security-headers.conf).
-- **Đổi cấu hình không cần build lại**: sửa `.env` rồi `docker compose up -d`. Mọi biến `VITE_*` được ghi vào `/env-config.js` khi container khởi động (riêng `VITE_BASE_PATH` được nhúng lúc build).
-- Chạy sau reverse proxy HTTPS (bắt buộc cho tên miền thật vì Google chỉ chấp nhận `http://` với `localhost`).
+- Node build → `nginx-unprivileged` (non-root, read-only root filesystem, all capabilities dropped).
+- Security headers (CSP allowing only `www.googleapis.com` / `oauth2.googleapis.com`, `X-Frame-Options`, `Referrer-Policy: no-referrer` …) live in [docker/security-headers.conf](docker/security-headers.conf).
+- **Change settings without rebuilding**: edit `.env` and run `docker compose up -d`. Every `VITE_*` variable is written to `/env-config.js` at container start (`VITE_BASE_PATH` is baked in at build time).
+- Put it behind HTTPS for a real domain — Google only accepts plain `http://` for `localhost`, and WebCrypto needs a secure context.
 
-## Cấu hình (`.env`)
+## Configuration (`.env`)
 
-| Biến | Mặc định | Ý nghĩa |
+| Variable | Default | Meaning |
 |---|---|---|
-| `SPECACT_PORT` | `8088` | Cổng publish của docker compose |
-| `VITE_APP_NAME` | `SPECACT` | Tên hiển thị (manifest PWA) |
-| `VITE_BASE_PATH` | `/` | Đường dẫn gốc nếu host ở thư mục con (*lúc build*) |
-| `VITE_DEFAULT_LANG` / `VITE_DETECT_LANG` / `VITE_DEFAULT_THEME` | `vi` / `true` / `system` | Ngôn ngữ mặc định, có tự nhận ngôn ngữ trình duyệt không, giao diện mặc định |
-| `VITE_LEGAL_CONTACT` | *(trống)* | Email liên hệ hiển thị ở trang Điều khoản/Quyền riêng tư (người vận hành điền) |
-| `VITE_ENABLE_DEMO` | `true` | Bật chế độ dùng thử |
-| `VITE_DRIVE_ROOT_FOLDER` / `VITE_DRIVE_POSTS_FOLDER` | `SPECACT` / `posts` | Tên thư mục trên Drive |
-| `VITE_OAUTH_SCOPES` | `…/auth/drive` | Phạm vi OAuth (cần `drive` đầy đủ để mở bài người khác chia sẻ) |
-| `VITE_OAUTH_REDIRECT_URI` | *(tự động)* | Ghi đè redirect URI nếu cần |
-| `VITE_DELETE_MODE` | `trash` | `trash` (khôi phục được) hoặc `permanent` |
-| `VITE_NOTIFY_EMAIL` | `false` | Có để Google gửi email thông báo khi chia sẻ không |
-| `VITE_SYNC_INTERVAL_SECONDS` | `180` | Chu kỳ tự đồng bộ chỉ mục (0 = tắt) |
-| `VITE_PIN_LENGTH` | `6` | Số chữ số PIN |
-| `VITE_PBKDF2_ITERATIONS` | `600000` | Độ nặng khi dẫn xuất khóa từ PIN |
-| `VITE_PIN_MAX_ATTEMPTS` | `10` | Sai quá số lần này thì xóa kho khóa cục bộ |
-| `VITE_AUTO_LOCK_MINUTES` | `5` | Tự khóa sau N phút không thao tác (0 = tắt) |
-| `VITE_POST_KDF_ITERATIONS` | `310000` | Độ nặng khi dẫn xuất khóa từ mật khẩu bài viết |
-| `VITE_MAX_IMAGES_PER_POST` / `VITE_MAX_IMAGE_MB` | `10` / `25` | Giới hạn ảnh |
-| `VITE_IMAGE_MAX_DIMENSION` / `VITE_IMAGE_QUALITY` / `VITE_THUMB_DIMENSION` | `2048` / `0.86` / `480` | Chất lượng ảnh |
+| `SPECACT_PORT` | `8088` | Port published by docker compose |
+| `VITE_APP_NAME` | `SPECACT` | Display name (PWA manifest) |
+| `VITE_BASE_PATH` | `/` | Base path when hosted in a sub-folder (*build time*) |
+| `VITE_DEFAULT_LANG` / `VITE_DETECT_LANG` / `VITE_DEFAULT_THEME` | `vi` / `true` / `system` | Default language, whether to follow the browser language, default theme |
+| `VITE_LEGAL_CONTACT` | *(empty)* | Contact e-mail shown on the Terms/Privacy pages (operator fills in) |
+| `VITE_ENABLE_DEMO` | `true` | Enable demo mode |
+| `VITE_DRIVE_ROOT_FOLDER` / `VITE_DRIVE_POSTS_FOLDER` | `SPECACT` / `posts` | Folder names in Drive |
+| `VITE_OAUTH_SCOPES` | `…/auth/drive` | OAuth scopes (full `drive` is needed to open posts others shared) |
+| `VITE_OAUTH_REDIRECT_URI` | *(auto)* | Override the redirect URI if needed |
+| `VITE_DELETE_MODE` | `trash` | `trash` (recoverable) or `permanent` |
+| `VITE_NOTIFY_EMAIL` | `false` | Let Google send its share e-mail |
+| `VITE_SYNC_INTERVAL_SECONDS` | `180` | Background index refresh (0 = off) |
+| `VITE_PIN_LENGTH` | `6` | PIN digits |
+| `VITE_PBKDF2_ITERATIONS` | `600000` | Cost of deriving the key from the PIN |
+| `VITE_PIN_MAX_ATTEMPTS` | `10` | After this many wrong PINs the local vault is erased |
+| `VITE_AUTO_LOCK_MINUTES` | `5` | Auto-lock after N idle minutes (0 = off) |
+| `VITE_POST_KDF_ITERATIONS` | `310000` | Cost of deriving the key from a post password |
+| `VITE_MAX_IMAGES_PER_POST` / `VITE_MAX_IMAGE_MB` | `10` / `25` | Photo limits |
+| `VITE_IMAGE_MAX_DIMENSION` / `VITE_IMAGE_QUALITY` / `VITE_THUMB_DIMENSION` | `2048` / `0.86` / `480` | Photo quality |
 
-> **Không đặt Google client secret trong `.env`.** Mỗi người nhập khóa của họ trong trình duyệt.
+> **Never put a Google client secret in `.env`.** Each person enters their own in the browser.
 
-## Dữ liệu trên Drive
+## Data in Drive
 
 ```
 SPECACT/
-├── index.json                  chỉ mục nhanh của riêng bạn
-├── contacts.json               bạn bè / người đã kết nối
+├── index.json                  your personal fast index
+├── contacts.json               friends / connected people
 └── posts/
-    └── 2026-10-12_ab12cd34ef/  mỗi bài một thư mục
-        ├── post.json           nội dung + metadata (hoặc payload đã mã hóa)
-        ├── comments.json       bình luận + tim
-        └── media/              ảnh (+ ảnh thu nhỏ)
+    └── 2026-10-12_ab12cd34ef/  one folder per post
+        ├── post.json           content + metadata (or an encrypted payload)
+        ├── comments.json       comments
+        ├── likes.json          likes
+        └── media/              photos (+ thumbnails)
 ```
 
-Chi tiết lược đồ, mô hình quyền và luồng đồng bộ: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). Mô hình đe dọa và giới hạn: [docs/SECURITY.md](docs/SECURITY.md).
+Schema, permission model and sync flow: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). Threat model and limits: [docs/SECURITY.md](docs/SECURITY.md). Format for other apps: [docs/OPEN_FORMAT.md](docs/OPEN_FORMAT.md).
 
-## Phát triển
+## Development
 
 ```bash
 npm run dev        # dev server
-npm test           # 70+ test (mã hóa, vault, OAuth, Drive giả lập đa người dùng, i18n…)
+npm test           # 90+ tests (crypto, vault, OAuth, multi-user fake Drive, i18n, …)
 npm run lint
-npm run build      # dist/ (kèm service worker PWA)
-npm run icons      # sinh lại icon PWA từ logo
+npm run build      # dist/ (with the PWA service worker)
+npm run icons      # regenerate PWA icons from the logo
 ```
 
-Thử giao diện thật với **Drive giả lập** (không cần tài khoản Google): chạy `npm run dev`, mở console của trình duyệt và gõ
-
-```js
-const h = await (await import('/tests/browserHarness.js')).bootstrap();   // đăng nhập an@gmail.com (PIN 482916)
-await h.binh.createPost({ text: 'Chào An', files: [], audience: { 'an@gmail.com': 'comment' } });  // người dùng thứ hai
-await h.posts.sync();
-```
-
-Cấu trúc mã nguồn:
+To drive the real UI against the fake Drive (no Google account needed) run `npm run dev` and, in the browser console, `const h = await (await import('/tests/browserHarness.js')).bootstrap()` — it signs `an@gmail.com` in (PIN 482916) and gives you a second user, `h.binh`.
 
 ```
 src/
-├── services/     crypto · secureStore (vault 2 lớp) · googleAuth (OAuth PKCE) · drive (REST) ·
-│                 repo (miền: bài viết/bình luận/chia sẻ/chỉ mục) · demoRepo · mentions · image
+├── services/     crypto · secureStore (two-layer vault) · googleAuth (OAuth PKCE) · drive (REST) ·
+│                 repo (domain: posts/comments/sharing/index) · demoRepo · mentions · image
 ├── stores/       Pinia: session · posts · people · draft · prefs · ui
-├── views/        Welcome · Feed · Post · Compose · Friends · Settings
+├── views/        Welcome · Feed · Post · Compose · Friends · Settings · Legal
 ├── components/   ui/ · layout/ · post/ · auth/
-├── i18n/         lớp dịch nhỏ gọn (JSON phẳng, fallback tiếng Anh)
-├── locales/      14 ngôn ngữ
-└── styles/       CSS theo thiết kế v3
-tests/            vitest (Drive giả lập trong tests/fakeDrive.js)
-docker/           nginx, header bảo mật, script sinh env-config.js
+├── i18n/         tiny in-house i18n (flat JSON, English fallback)
+├── locales/      14 languages (+ pages/ for About/Terms/Privacy)
+└── styles/       CSS from design v3
+tests/            vitest (fake Drive in tests/fakeDrive.js)
+docker/           nginx, security headers, env-config.js generator
 ```
 
-## Giới hạn đã biết
+## Known limitations
 
-- Chưa thử với Google Drive thật trong CI — logic Drive được kiểm thử bằng một Drive giả lập mô phỏng quyền kế thừa, `sharedWithMe`, `properties`, upload multipart (xem `tests/fakeDrive.js`). Hãy thử với tài khoản thật của bạn trước khi dùng cho dữ liệu quan trọng.
-- Phạm vi `drive` là *restricted scope*: với OAuth client ở chế độ **Testing**, refresh token hết hạn sau 7 ngày (đăng nhập lại là xong) và tối đa 100 test user. Mỗi người dùng client riêng của mình nên giới hạn này tính theo từng người.
-- Người được quyền bình luận có quyền ghi trên `comments.json` (và chỉ file đó): về mặt kỹ thuật họ có thể sửa bình luận của người khác qua Drive. Hai người bình luận cùng lúc có thể (hiếm) ghi đè nhau.
-- Thu hồi quyền không thể “lấy lại” những gì người xem đã tải/chụp. Bài có mật khẩu chỉ an toàn khi mật khẩu đủ mạnh.
+- Drive logic is tested against an in-repo simulation of the Drive API (`tests/fakeDrive.js`: permission inheritance, `sharedWithMe`, `properties`, multipart uploads), not live Google. Try it with a throw-away account before trusting it with important data.
+- The `drive` scope is restricted: OAuth clients in *Testing* mode get refresh tokens that expire after 7 days (just sign in again) and are limited to 100 test users — each person uses their own client, so this is per person.
+- Commenters hold writer permission on `comments.json` only; technically they could edit others' comments through Drive. Simultaneous comments or likes can, rarely, overwrite each other.
+- Revoking access cannot un-download what someone already saw. Password protection is only as strong as the password.
 
-Quy tắc làm việc cho người/AI đóng góp: [CLAUDE.md](CLAUDE.md).
+Rules for contributors (human or AI): [CLAUDE.md](CLAUDE.md).
 
-Giấy phép: MIT.
+License: MIT.

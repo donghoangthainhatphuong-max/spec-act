@@ -1,46 +1,46 @@
-# Thiết lập Google OAuth / Google OAuth setup
+# Google OAuth setup
 
-SPECACT không có “app chung”: **mỗi người tự tạo OAuth client của mình** (miễn phí, ~5 phút). Nhờ vậy khóa của bạn không bao giờ rời thiết bị và không ai khác (kể cả người triển khai trang) giữ được quyền truy cập Drive của bạn.
+[Tiếng Việt](GOOGLE_SETUP.vi.md)
 
-*SPECACT has no shared app: each person creates their own OAuth client (free, ~5 minutes), so your keys never leave your device.*
+SPECACT has no shared app: **each person creates their own OAuth client** (free, about 5 minutes). Your keys therefore never leave your device, and nobody else — not even whoever hosts the site — can hold access to your Drive.
 
-## 1. Tạo dự án và bật Drive API
+## 1. Create a project and enable the Drive API
 
-1. Vào <https://console.cloud.google.com/projectcreate> → tạo một dự án (tên tùy ý).
-2. Vào <https://console.cloud.google.com/apis/library/drive.googleapis.com> → **Enable** *Google Drive API*.
+1. Open <https://console.cloud.google.com/projectcreate> and create a project (any name).
+2. Open <https://console.cloud.google.com/apis/library/drive.googleapis.com> and **Enable** *Google Drive API*.
 
-## 2. Màn hình đồng ý (OAuth consent screen)
+## 2. OAuth consent screen
 
-1. **APIs & Services → OAuth consent screen** → User type **External** → điền tên ứng dụng và email.
-2. Ở bước *Scopes* không cần thêm gì (SPECACT sẽ yêu cầu phạm vi `https://www.googleapis.com/auth/drive` khi đăng nhập).
-3. Ở bước *Test users*: thêm **Gmail của bạn và của từng người bạn muốn chia sẻ** *nếu họ dùng chung dự án này*. Nếu mỗi người tự tạo dự án của mình (khuyến nghị) thì chỉ cần thêm chính họ vào dự án của họ.
+1. **APIs & Services → OAuth consent screen** → user type **External** → fill in an app name and e-mail.
+2. No scopes need to be added here (SPECACT requests `https://www.googleapis.com/auth/drive` when you sign in).
+3. *Test users*: add **your own Gmail** (and the Gmail of anyone who will sign in through this same project). If every person creates their own project (recommended) each only adds themselves.
 
-> Khi ở trạng thái **Testing**, refresh token hết hạn sau 7 ngày — bạn chỉ cần bấm *Tiếp tục với Google* lần nữa; PIN và khóa vẫn còn trên thiết bị. Chuyển sang **In production** (không cần xác minh nếu chỉ bạn dùng, Google sẽ hiện cảnh báo “chưa xác minh”) để token không hết hạn sau 7 ngày.
+> While the app is in **Testing**, refresh tokens expire after 7 days — just press *Continue with Google* again; your PIN and keys stay on the device. Switch to **In production** to avoid the 7-day expiry (Google shows an "unverified app" warning, which is fine for personal use).
 
-## 3. Tạo OAuth client
+## 3. Create the OAuth client
 
 1. **Credentials → Create credentials → OAuth client ID**.
 2. Application type: **Web application**.
-3. **Authorized JavaScript origins**: địa chỉ gốc của trang, ví dụ `http://localhost:5173` hoặc `https://specact.example.com` (SPECACT hiển thị sẵn giá trị đúng trong màn hình nhập khóa — có nút sao chép).
-4. **Authorized redirect URIs**: đúng địa chỉ trang, **có dấu `/` cuối**, ví dụ `http://localhost:5173/` hoặc `https://specact.example.com/`.
-5. Bấm **Create**, sao chép **Client ID** (`…apps.googleusercontent.com`) và **Client secret** (`GOCSPX-…`).
+3. **Authorized JavaScript origins**: the site origin, e.g. `http://localhost:5173` or `https://specact.example.com` (SPECACT shows the exact value on the keys screen, with a copy button).
+4. **Authorized redirect URIs**: exactly the page address **with a trailing `/`**, e.g. `http://localhost:5173/` or `https://specact.example.com/`.
+5. **Create**, then copy the **Client ID** (`…apps.googleusercontent.com`) and **Client secret** (`GOCSPX-…`).
 
-## 4. Nhập vào SPECACT
+## 4. Enter them in SPECACT
 
-Mở ứng dụng → **Tiếp tục với Google** → tạo mã PIN 6 số → dán Client ID / Client secret → **Lưu và tiếp tục với Google**. Google hỏi quyền truy cập Drive → đồng ý. SPECACT tự tạo thư mục `SPECACT` trong Drive của bạn.
+Open the app → **Continue with Google** → create a 6-digit PIN → paste the Client ID / Client secret → **Save and continue with Google** → approve Drive access. SPECACT creates the `SPECACT` folder in your Drive.
 
-Khóa được lưu **mã hóa hai lớp trên thiết bị này** và không gửi đi đâu. Có thể sửa lại trong *Cài đặt → Bảo mật → Khóa Google*.
+The keys are stored **encrypted twice on this device only**. Edit them later in *Settings → Security → Google keys*.
 
-## Vì sao cần phạm vi `drive` đầy đủ?
+## Why the full `drive` scope?
 
-Phạm vi `drive.file` chỉ cho thấy file do *chính OAuth client này* tạo ra. Vì mỗi người có client riêng, bài của người khác chia sẻ cho bạn sẽ không thấy được. Phạm vi `drive` là cách duy nhất để mở thư mục được chia sẻ. (Chỉ ghi/sửa trong cây `SPECACT` và các thư mục bài được chia sẻ; ứng dụng không đụng vào file khác.)
+`drive.file` only sees files created by *this very OAuth client*. Because every person has their own client, posts that others share with you would be invisible. `drive` is the only way to open shared folders. (SPECACT only reads/writes inside the `SPECACT` tree and post folders shared with you; it does not touch other files.)
 
-## Sự cố thường gặp
+## Troubleshooting
 
-| Triệu chứng | Nguyên nhân |
+| Symptom | Cause |
 |---|---|
-| `redirect_uri_mismatch` | Redirect URI trong Google khác địa chỉ trang (thiếu `/` cuối, sai cổng, `http`/`https`). |
-| `Error 403: access_denied` | Email chưa được thêm làm *test user* khi ứng dụng còn ở trạng thái Testing. |
-| `invalid_client` | Client ID hoặc secret sai / đã bị xóa. |
-| Không nhận được refresh token | Đã từng cấp quyền trước đó: vào <https://myaccount.google.com/permissions>, gỡ SPECACT rồi đăng nhập lại. |
-| Hết phiên sau 7 ngày | Dự án đang ở *Testing* — đăng nhập lại hoặc chuyển *In production*. |
+| `redirect_uri_mismatch` | The redirect URI in Google differs from the page address (missing trailing `/`, wrong port, `http` vs `https`). |
+| `Error 403: access_denied` | The e-mail is not a *test user* while the app is in Testing. |
+| `invalid_client` | Wrong or deleted client ID / secret. |
+| No refresh token | You granted access before: remove SPECACT at <https://myaccount.google.com/permissions> and sign in again. |
+| Signed out after 7 days | The project is in *Testing* — sign in again or switch to *In production*. |
