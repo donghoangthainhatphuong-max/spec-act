@@ -19,6 +19,12 @@ SPECACT là một ứng dụng web (Vue 3, PWA) để **chia sẻ bài viết v�
 - Sau khi tải HTML/JS về, trình duyệt **chỉ nói chuyện với Google** (CSP chặn mọi đích khác). Máy chủ web chỉ là nơi phát file tĩnh.
 - Mỗi người dùng tự tạo **Google OAuth client của riêng mình**; client ID / secret, token và khóa chỉ nằm trên thiết bị, **mã hóa hai lớp** và khóa bằng **mã PIN 6 số**.
 
+## Cá nhân hóa · Chủ quyền · Phân tán
+
+- **Chủ quyền dữ liệu:** dữ liệu nằm trong Drive của bạn, không có nhà cung cấp ở giữa — không máy chủ nào của dự án lưu, đọc hay can thiệp được vào nội dung, quyền truy cập hay khóa của bạn.
+- **Cá nhân hóa:** bạn tự chọn ai xem, ai bình luận, bài nào có mật khẩu, bài nào công khai bằng liên kết; giao diện, ngôn ngữ, mức khóa là của riêng bạn.
+- **Phân tán & xuyên nền tảng:** dữ liệu theo [định dạng mở](docs/OPEN_FORMAT.md); nhiều website/ứng dụng khác nhau có thể cùng dùng một nguồn dữ liệu cá nhân của bạn mà không phải sao chép hay di cư.
+
 ## Tính năng
 
 | | |

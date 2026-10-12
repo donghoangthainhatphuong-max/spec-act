@@ -7,7 +7,7 @@
   "welcome.clientId": "Client ID",
   "welcome.secret": "Client secret",
   "welcome.remember": "Remember on this device",
-  "welcome.foot": "No ads · No tracking · Your data stays yours",
+  "welcome.foot": "Personal · You own your data · Open & portable",
   "welcome.quote": "Small moments, shared with the right people.",
   "nav.home": "Home",
   "nav.shared": "Shared with me",
@@ -264,5 +264,6 @@
   "comments.hintOpen": "Everyone who can see this post can comment — including people with the link, if it is public.",
   "comments.hintShared": "Only people you shared with at “Can comment” level. Link visitors can only read.",
   "comments.hintLocked": "Nobody can comment or react. Existing comments stay visible.",
-  "comments.lockedNotice": "Comments are turned off for this post."
+  "comments.lockedNotice": "Comments are turned off for this post.",
+  "about.sovereignty": "Your data is yours alone. It lives in your own Google Drive in an open, documented format, so any website or app you trust can use the same personal data source. There is no provider in the middle: no server of ours stores, reads or can change it."
 }

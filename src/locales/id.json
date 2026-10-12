@@ -7,7 +7,7 @@
   "welcome.clientId": "Client ID",
   "welcome.secret": "Client secret (opsional)",
   "welcome.remember": "Ingat di perangkat ini",
-  "welcome.foot": "Tanpa iklan · Tanpa pelacakan · Datamu milikmu",
+  "welcome.foot": "Personal · Data milik Anda · Terbuka & portabel",
   "welcome.quote": "Momen kecil, dibagikan ke orang yang tepat.",
   "nav.home": "Beranda",
   "nav.shared": "Dibagikan denganku",
@@ -264,5 +264,6 @@
   "comments.hintOpen": "Siapa pun yang dapat melihat kiriman ini boleh berkomentar — termasuk pemegang tautan jika kiriman publik.",
   "comments.hintShared": "Hanya orang yang dibagikan dengan level “Boleh berkomentar”. Pengunjung tautan hanya bisa membaca.",
   "comments.hintLocked": "Tidak ada yang bisa berkomentar atau bereaksi. Komentar yang ada tetap terlihat.",
-  "comments.lockedNotice": "Komentar dimatikan untuk kiriman ini."
+  "comments.lockedNotice": "Komentar dimatikan untuk kiriman ini.",
+  "about.sovereignty": "Data Anda hanya milik Anda. Data tersimpan di Google Drive Anda sendiri dalam format terbuka yang terdokumentasi, sehingga situs atau aplikasi tepercaya mana pun dapat memakai sumber data pribadi yang sama. Tidak ada penyedia di tengah: tidak ada server kami yang menyimpan, membaca, atau mengubahnya."
 }

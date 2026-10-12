@@ -13,6 +13,8 @@
 7. Không `v-html`, không `innerHTML` với dữ liệu người dùng. Văn bản hiển thị qua `RichText.vue` (đoạn text/mention/link an toàn).
 8. Việc xóa/thu hồi/ghi đè quyền phải **tường minh**: gỡ `@mention` khỏi văn bản không thu hồi quyền; chỉnh sửa không được thu hồi người được chia sẻ tay trong Drive (xem `updatePost`/`setAccess`).
 
+9. **Định hướng thương hiệu:** nhấn mạnh cá nhân hóa, chủ quyền dữ liệu, phân tán/xuyên nền tảng. **Không** dùng tuyên bố "không quảng cáo/không theo dõi" trong giao diện hay tài liệu (sau này có thể có quảng cáo). Không thêm bất cứ cơ chế nào cho nhà cung cấp can thiệp vào dữ liệu người dùng; giữ định dạng dữ liệu mở và có phiên bản ([docs/OPEN_FORMAT.md](docs/OPEN_FORMAT.md)).
+
 ## 2. Lỗi đã gặp → quy tắc
 
 | Lỗi từng xảy ra | Quy tắc |

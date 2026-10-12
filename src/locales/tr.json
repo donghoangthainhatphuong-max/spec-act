@@ -7,7 +7,7 @@
   "welcome.clientId": "İstemci kimliği",
   "welcome.secret": "İstemci gizli anahtarı (isteğe bağlı)",
   "welcome.remember": "Bu cihazda hatırla",
-  "welcome.foot": "Reklam yok · Takip yok · Verilerin senin",
+  "welcome.foot": "Kişisel · Verileriniz sizin · Açık ve taşınabilir",
   "welcome.quote": "Küçük anlar, doğru insanlarla.",
   "nav.home": "Ana sayfa",
   "nav.shared": "Benimle paylaşılanlar",
@@ -264,5 +264,6 @@
   "comments.hintOpen": "Bu gönderiyi görebilen herkes yorum yapabilir — herkese açıksa bağlantıya sahip olanlar da.",
   "comments.hintShared": "Yalnızca “Yorum yapabilir” düzeyinde paylaştığınız kişiler. Bağlantıyla gelenler sadece okur.",
   "comments.hintLocked": "Kimse yorum yapamaz veya tepki veremez. Mevcut yorumlar görünmeye devam eder.",
-  "comments.lockedNotice": "Bu gönderide yorumlar kapalı."
+  "comments.lockedNotice": "Bu gönderide yorumlar kapalı.",
+  "about.sovereignty": "Verileriniz yalnızca size aittir. Açık ve belgelenmiş bir biçimde kendi Google Drive'ınızda durur; böylece güvendiğiniz her web sitesi veya uygulama aynı kişisel veri kaynağını kullanabilir. Aracı sağlayıcı yoktur: hiçbir sunucumuz bunu saklamaz, okumaz veya değiştiremez."
 }

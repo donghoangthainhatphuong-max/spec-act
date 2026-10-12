@@ -7,7 +7,7 @@
   "welcome.clientId": "클라이언트 ID",
   "welcome.secret": "클라이언트 보안 비밀(선택)",
   "welcome.remember": "이 기기에서 기억하기",
-  "welcome.foot": "광고 없음 · 추적 없음 · 데이터는 당신의 것",
+  "welcome.foot": "개인화 · 데이터 주권 · 개방과 이동성",
   "welcome.quote": "작은 순간을, 소중한 사람과.",
   "nav.home": "홈",
   "nav.shared": "나와 공유됨",
@@ -264,5 +264,6 @@
   "comments.hintOpen": "이 글을 볼 수 있는 모든 사람이 댓글을 쓸 수 있습니다. 공개 링크라면 링크가 있는 사람도 포함됩니다.",
   "comments.hintShared": "“댓글 가능” 수준으로 공유한 사람만 쓸 수 있습니다. 링크로 보는 사람은 읽기만 가능합니다.",
   "comments.hintLocked": "아무도 댓글이나 반응을 남길 수 없습니다. 기존 댓글은 계속 보입니다.",
-  "comments.lockedNotice": "이 글은 댓글이 꺼져 있습니다."
+  "comments.lockedNotice": "이 글은 댓글이 꺼져 있습니다.",
+  "about.sovereignty": "데이터는 오직 당신의 것입니다. 공개된 형식으로 당신의 Google 드라이브에 저장되어, 신뢰하는 여러 웹사이트·앱이 같은 개인 데이터 원본을 쓸 수 있습니다. 중간 사업자는 없습니다. 저희 서버가 데이터를 저장·열람·변경하지 않습니다."
 }

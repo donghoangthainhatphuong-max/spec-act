@@ -7,7 +7,7 @@
   "welcome.clientId": "Client ID",
   "welcome.secret": "Client secret",
   "welcome.remember": "Ghi nhớ trên thiết bị này",
-  "welcome.foot": "Không quảng cáo · Không theo dõi · Dữ liệu là của bạn",
+  "welcome.foot": "Cá nhân hóa · Chủ quyền dữ liệu · Mở & phân tán",
   "welcome.quote": "Những khoảnh khắc nhỏ, dành cho đúng người.",
   "nav.home": "Trang chủ",
   "nav.shared": "Chia sẻ với tôi",
@@ -264,5 +264,6 @@
   "comments.hintOpen": "Ai xem được bài này đều bình luận được — kể cả người có liên kết nếu bài công khai.",
   "comments.hintShared": "Chỉ người được chia sẻ ở mức “Được bình luận”. Người lạ qua liên kết chỉ đọc.",
   "comments.hintLocked": "Không ai bình luận hay thả tim được. Bình luận cũ vẫn hiển thị.",
-  "comments.lockedNotice": "Bài này đã tắt bình luận."
+  "comments.lockedNotice": "Bài này đã tắt bình luận.",
+  "about.sovereignty": "Dữ liệu là của riêng bạn. Nó nằm trong Google Drive của bạn theo định dạng mở, có tài liệu, nên nhiều website/ứng dụng bạn tin tưởng có thể cùng dùng một nguồn dữ liệu cá nhân. Không có nhà cung cấp ở giữa: không máy chủ nào của chúng tôi lưu, đọc hay can thiệp được."
 }

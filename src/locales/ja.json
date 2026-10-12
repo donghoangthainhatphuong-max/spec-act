@@ -7,7 +7,7 @@
   "welcome.clientId": "クライアント ID",
   "welcome.secret": "クライアントシークレット（任意）",
   "welcome.remember": "この端末に保存する",
-  "welcome.foot": "広告なし · 追跡なし · データはあなたのもの",
+  "welcome.foot": "パーソナル · データは自分のもの · オープンで持ち運び可能",
   "welcome.quote": "小さな瞬間を、大切な人と。",
   "nav.home": "ホーム",
   "nav.shared": "共有アイテム",
@@ -264,5 +264,6 @@
   "comments.hintOpen": "この投稿を見られる人は誰でもコメントできます（リンク公開ならリンクを知る人も）。",
   "comments.hintShared": "「コメント可」で共有した人だけがコメントできます。リンクで見る人は閲覧のみです。",
   "comments.hintLocked": "誰もコメントやリアクションができません。既存のコメントは表示されます。",
-  "comments.lockedNotice": "この投稿はコメントがオフです。"
+  "comments.lockedNotice": "この投稿はコメントがオフです。",
+  "about.sovereignty": "データはあなただけのものです。公開仕様の形式であなた自身の Google ドライブに保存されるため、信頼できる複数のサイトやアプリが同じ個人データを利用できます。間に事業者はいません。当方のサーバーが保存・閲覧・改変することはありません。"
 }

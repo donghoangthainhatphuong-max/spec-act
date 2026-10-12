@@ -19,6 +19,12 @@ SPECACT is a Vue 3 PWA for **sharing posts and photos with exactly the people yo
 - After the HTML/JS is loaded the browser **talks only to Google** (the CSP blocks every other destination). The web host just serves static files.
 - Every user brings **their own Google OAuth client**. Client ID/secret, tokens and keys never leave the device, are **encrypted twice**, and are guarded by a **6-digit PIN**.
 
+## Personal · Sovereign · Decentralised
+
+- **Data sovereignty:** your data lives in your Drive with no provider in the middle — none of the project's servers can store, read or alter your content, access rules or keys.
+- **Personalisation:** you decide who sees, who comments, which posts are password-protected or public by link.
+- **Decentralised & cross-platform:** the data uses an [open format](docs/OPEN_FORMAT.md), so many websites and apps can share one personal data source of yours without copying or migrating it.
+
 ## Features
 
 - **Posts**: create, edit, delete (Drive trash or permanent — configurable), upload photos (orientation-corrected, resized, **EXIF/GPS stripped**, thumbnails).

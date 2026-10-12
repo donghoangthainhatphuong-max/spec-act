@@ -7,7 +7,7 @@
   "welcome.clientId": "ID client",
   "welcome.secret": "Secret client (facultatif)",
   "welcome.remember": "Mémoriser sur cet appareil",
-  "welcome.foot": "Sans pub · Sans pistage · Vos données restent à vous",
+  "welcome.foot": "Personnel · Vos données vous appartiennent · Ouvert et portable",
   "welcome.quote": "De petits moments, partagés avec les bonnes personnes.",
   "nav.home": "Accueil",
   "nav.shared": "Partagés avec moi",
@@ -264,5 +264,6 @@
   "comments.hintOpen": "Toute personne qui voit ce post peut commenter — y compris celles ayant le lien s’il est public.",
   "comments.hintShared": "Seulement les personnes partagées au niveau « Peut commenter ». Les visiteurs par lien ne peuvent que lire.",
   "comments.hintLocked": "Personne ne peut commenter ni réagir. Les commentaires existants restent visibles.",
-  "comments.lockedNotice": "Les commentaires sont désactivés pour ce post."
+  "comments.lockedNotice": "Les commentaires sont désactivés pour ce post.",
+  "about.sovereignty": "Vos données n’appartiennent qu’à vous. Elles vivent dans votre propre Google Drive dans un format ouvert et documenté : tout site ou application de confiance peut ainsi utiliser la même source de données personnelle. Aucun intermédiaire : aucun de nos serveurs ne les stocke, ne les lit ni ne peut les modifier."
 }

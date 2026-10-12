@@ -7,7 +7,7 @@
   "welcome.clientId": "客户端 ID",
   "welcome.secret": "客户端密钥（可选）",
   "welcome.remember": "在此设备上记住",
-  "welcome.foot": "无广告 · 无追踪 · 数据归你所有",
+  "welcome.foot": "个性化 · 数据主权 · 开放可迁移",
   "welcome.quote": "小小时刻，与对的人分享。",
   "nav.home": "首页",
   "nav.shared": "与我共享",
@@ -264,5 +264,6 @@
   "comments.hintOpen": "所有能看到此帖的人都可以评论——如果帖子通过链接公开，也包括持有链接的人。",
   "comments.hintShared": "仅限以“可评论”级别分享的人。链接访问者只能阅读。",
   "comments.hintLocked": "任何人都不能评论或点赞，已有评论仍可见。",
-  "comments.lockedNotice": "此帖已关闭评论。"
+  "comments.lockedNotice": "此帖已关闭评论。",
+  "about.sovereignty": "数据只属于你。它以开放、有文档的格式保存在你自己的 Google Drive 中，因此任何你信任的网站或应用都可以共用同一个个人数据源。中间没有服务商：我们没有任何服务器存储、读取或修改它。"
 }

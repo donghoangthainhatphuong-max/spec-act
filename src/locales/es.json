@@ -7,7 +7,7 @@
   "welcome.clientId": "ID de cliente",
   "welcome.secret": "Secreto de cliente (opcional)",
   "welcome.remember": "Recordar en este dispositivo",
-  "welcome.foot": "Sin anuncios · Sin rastreo · Tus datos son tuyos",
+  "welcome.foot": "Personal · Tus datos son tuyos · Abierto y portable",
   "welcome.quote": "Pequeños momentos, compartidos con las personas correctas.",
   "nav.home": "Inicio",
   "nav.shared": "Compartido conmigo",
@@ -264,5 +264,6 @@
   "comments.hintOpen": "Cualquiera que vea esta publicación puede comentar, incluidas las personas con el enlace si es público.",
   "comments.hintShared": "Solo las personas con nivel «Puede comentar». Quienes entran por enlace solo leen.",
   "comments.hintLocked": "Nadie puede comentar ni reaccionar. Los comentarios existentes siguen visibles.",
-  "comments.lockedNotice": "Los comentarios están desactivados en esta publicación."
+  "comments.lockedNotice": "Los comentarios están desactivados en esta publicación.",
+  "about.sovereignty": "Tus datos son solo tuyos. Viven en tu propio Google Drive en un formato abierto y documentado, de modo que cualquier web o app de confianza puede usar la misma fuente de datos personal. No hay proveedor en medio: ningún servidor nuestro los guarda, lee ni puede modificar."
 }
