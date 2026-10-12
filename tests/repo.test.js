@@ -327,11 +327,14 @@ describe('password protected posts', () => {
     expect(next.protected).toBe(true);
   });
 
-  it('link sharing needs a password and lets anyone with the link plus password in', async () => {
+  it('link sharing lets anyone with the link in (plus the password when the post has one)', async () => {
     const alice = mk('alice@gmail.com', 'Alice');
     const dave = mk('dave@gmail.com', 'Dave');
     const plain = await alice.createPost({ text: 'plain', files: [], audience: {}, linkShare: true });
-    expect(plain.post.linkShare).toBe(false);
+    expect(plain.post.linkShare).toBe(true); // public-by-link works without a password too
+    expect((await dave.openPost(plain.post.id)).text).toBe('plain');
+    const closed = await alice.setLinkShare(plain.post, false);
+    expect(closed.linkShare).toBe(false);
     await expect(dave.openPost(plain.post.id)).rejects.toMatchObject({ code: 'forbidden' });
 
     const { post } = await alice.createPost({ text: 'via link', files: [], audience: {}, password: 'pw', linkShare: true });

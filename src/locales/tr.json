@@ -194,10 +194,9 @@
   "post.forget": "Listemden kaldır",
   "post.forgetConfirm": "Bu gönderi listenizden kaldırılsın mı? Sahibinin kopyası etkilenmez.",
   "post.likeDisabled": "Yalnızca yorum yapabildiğiniz gönderilere tepki verebilirsiniz.",
-  "post.linkOn": "Bağlantı ve parolaya sahip herkes",
-  "post.linkShare": "Bağlantı + parola ile aç",
-  "post.linkShareHint": "Google ile giriş yapmış, bağlantıya ve parolaya sahip herkes okuyabilir.",
-  "post.linkShareNeedsPassword": "Bunu kullanmak için gönderiyi yazarken parola korumasını açın.",
+  "post.linkOn": "Bağlantıya sahip herkes",
+  "post.linkShare": "Bağlantıya sahip herkes",
+  "post.linkShareHint": "Google ile giriş yapmış ve bağlantıya sahip herkes tek tek eklemeden açabilir.",
   "post.newPassword": "Yeni parola",
   "post.notFound": "Bu gönderi artık yok.",
   "post.readMore": "Devamını oku",
@@ -236,7 +235,7 @@
   "toast.keysChangedSignIn": "Anahtarlar kaydedildi. Google ile yeniden giriş yapın.",
   "toast.linkCopied": "Bağlantı kopyalandı. Yalnızca erişimi olanlar açabilir.",
   "toast.linkOff": "Bağlantıyla erişim kapatıldı",
-  "toast.linkOn": "Bağlantı ve parolaya sahip herkes bu gönderiyi açabilir",
+  "toast.linkOn": "Bağlantıya sahip herkes bu gönderiyi açabilir",
   "toast.passwordChanged": "Parola değiştirildi",
   "toast.pinChanged": "PIN değiştirildi",
   "toast.saved": "Kaydedildi",
@@ -250,5 +249,6 @@
   "welcome.flow3": "Google ile giriş yapın. Gönderiler Drive'ınızdaki SPECACT klasöründe saklanır.",
   "update.ready": "SPECACT'ın yeni bir sürümü hazır.",
   "update.reload": "Yeniden yükle",
-  "error.insecure": "SPECACT'ın tarayıcınızın verilerinizi şifreleyebilmesi için güvenli bir bağlantıya (HTTPS veya http://localhost) ihtiyacı var. Lütfen https:// adresinden açın."
+  "error.insecure": "SPECACT'ın tarayıcınızın verilerinizi şifreleyebilmesi için güvenli bir bağlantıya (HTTPS veya http://localhost) ihtiyacı var. Lütfen https:// adresinden açın.",
+  "post.linkShareHintPw": "Google ile giriş yapmış ve bağlantıya sahip herkes açabilir, ancak parola da gerekir."
 }

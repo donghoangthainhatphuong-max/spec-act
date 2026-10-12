@@ -376,7 +376,7 @@ export class DriveRepo {
       const cj = await this.drive.createJson('comments.json', folder.id, { v: 1, comments: [], likes: [] });
       const doc = await buildPostDoc({
         id, owner: this.me, createdAt, updatedAt: createdAt, text, media, mentions, audience,
-        linkShare: !!(input.linkShare && prot), protection: prot?.protection || null, key: prot?.key,
+        linkShare: !!input.linkShare, protection: prot?.protection || null, key: prot?.key,
       });
       const pj = await this.drive.createJson('post.json', folder.id, doc);
       await this.drive.updateMeta(folder.id, { properties: { specact: 'post', v: '1', rev: String(createdAt), pj: pj.id, cj: cj.id, mf: mf.id } });
@@ -442,7 +442,7 @@ export class DriveRepo {
       if (!raw) throw new RepoError('locked');
       protection = await rewrapProtection(raw, input.newPassword, config.postKdfIterations);
     }
-    const linkShare = post.protected ? (input.linkShare ?? post.linkShare) : false;
+    const linkShare = input.linkShare ?? post.linkShare;
     const doc = await buildPostDoc({
       id: post.pid, owner: post.owner, createdAt: post.createdAt, updatedAt,
       text, media: [...kept, ...added], mentions: extractMentions(text), audience, linkShare, protection, key,
@@ -455,7 +455,7 @@ export class DriveRepo {
     for (const m of dropped) for (const fid of [m.id, m.thumb]) if (fid) { try { await this.drive.remove(fid); } catch { /* already gone */ } this.#forgetBlob(fid); }
 
     const warnings = touchAudience ? await this.#applyAudience(post, audience, truth?.audience) : [];
-    if (post.protected && linkShare !== post.linkShare) {
+    if (linkShare !== post.linkShare) {
       try { await this.#applyLink(post.id, linkShare); } catch (e) { doc.linkShare = post.linkShare; warnings.push({ email: '*', error: e }); }
     }
     if (warnings.length) {

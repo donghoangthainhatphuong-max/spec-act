@@ -194,10 +194,9 @@
   "post.forget": "Retirer de ma liste",
   "post.forgetConfirm": "Retirer ce post de votre liste ? L’exemplaire du propriétaire n’est pas touché.",
   "post.likeDisabled": "Vous ne pouvez réagir qu’aux posts que vous pouvez commenter.",
-  "post.linkOn": "Toute personne avec le lien et le mot de passe",
-  "post.linkShare": "Ouvrir avec lien + mot de passe",
-  "post.linkShareHint": "Toute personne connectée avec Google qui a le lien et le mot de passe peut le lire.",
-  "post.linkShareNeedsPassword": "Activez la protection par mot de passe lors de la rédaction du post pour utiliser cette option.",
+  "post.linkOn": "Toute personne avec le lien",
+  "post.linkShare": "Toute personne disposant du lien",
+  "post.linkShareHint": "Toute personne connectée avec Google et ayant le lien peut l’ouvrir — inutile de l’ajouter une par une.",
   "post.newPassword": "Nouveau mot de passe",
   "post.notFound": "Ce post n’existe plus.",
   "post.readMore": "Lire la suite",
@@ -236,7 +235,7 @@
   "toast.keysChangedSignIn": "Clés enregistrées. Reconnectez-vous avec Google.",
   "toast.linkCopied": "Lien copié. Seules les personnes ayant accès peuvent l’ouvrir.",
   "toast.linkOff": "Accès par lien désactivé",
-  "toast.linkOn": "Toute personne avec le lien et le mot de passe peut ouvrir ce post",
+  "toast.linkOn": "Toute personne avec le lien peut ouvrir ce post",
   "toast.passwordChanged": "Mot de passe modifié",
   "toast.pinChanged": "PIN modifié",
   "toast.saved": "Enregistré",
@@ -250,5 +249,6 @@
   "welcome.flow3": "Connectez-vous avec Google. Les posts sont enregistrés dans un dossier SPECACT de votre Drive.",
   "update.ready": "Une nouvelle version de SPECACT est disponible.",
   "update.reload": "Recharger",
-  "error.insecure": "SPECACT nécessite une connexion sécurisée (HTTPS ou http://localhost) pour que votre navigateur puisse chiffrer vos données. Ouvrez-le depuis une adresse https://."
+  "error.insecure": "SPECACT nécessite une connexion sécurisée (HTTPS ou http://localhost) pour que votre navigateur puisse chiffrer vos données. Ouvrez-le depuis une adresse https://.",
+  "post.linkShareHintPw": "Toute personne connectée avec Google et ayant le lien peut l’ouvrir, mais le mot de passe reste nécessaire."
 }

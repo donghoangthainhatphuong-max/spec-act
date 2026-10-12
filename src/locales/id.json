@@ -194,10 +194,9 @@
   "post.forget": "Hapus dari daftar saya",
   "post.forgetConfirm": "Hapus kiriman ini dari daftar Anda? Salinan pemilik tidak terpengaruh.",
   "post.likeDisabled": "Anda hanya dapat bereaksi pada kiriman yang boleh Anda komentari.",
-  "post.linkOn": "Siapa pun yang punya tautan dan kata sandi",
-  "post.linkShare": "Buka dengan tautan + kata sandi",
-  "post.linkShareHint": "Siapa pun yang masuk dengan Google dan memiliki tautan serta kata sandi dapat membacanya.",
-  "post.linkShareNeedsPassword": "Aktifkan perlindungan kata sandi saat menulis kiriman untuk memakai fitur ini.",
+  "post.linkOn": "Siapa pun yang punya tautan",
+  "post.linkShare": "Siapa pun yang punya tautan",
+  "post.linkShareHint": "Siapa pun yang masuk dengan Google dan punya tautan dapat membukanya, tanpa menambahkan satu per satu.",
   "post.newPassword": "Kata sandi baru",
   "post.notFound": "Kiriman ini sudah tidak ada.",
   "post.readMore": "Baca selengkapnya",
@@ -236,7 +235,7 @@
   "toast.keysChangedSignIn": "Kunci disimpan. Masuk lagi dengan Google.",
   "toast.linkCopied": "Tautan disalin. Hanya orang yang punya akses yang dapat membukanya.",
   "toast.linkOff": "Akses lewat tautan dimatikan",
-  "toast.linkOn": "Siapa pun yang punya tautan dan kata sandi dapat membuka kiriman ini",
+  "toast.linkOn": "Siapa pun yang punya tautan dapat membuka kiriman ini",
   "toast.passwordChanged": "Kata sandi diubah",
   "toast.pinChanged": "PIN diubah",
   "toast.saved": "Tersimpan",
@@ -250,5 +249,6 @@
   "welcome.flow3": "Masuk dengan Google. Kiriman disimpan di folder SPECACT pada Drive Anda.",
   "update.ready": "Versi baru SPECACT tersedia.",
   "update.reload": "Muat ulang",
-  "error.insecure": "SPECACT memerlukan koneksi aman (HTTPS atau http://localhost) agar peramban dapat mengenkripsi data Anda. Silakan buka dari alamat https://."
+  "error.insecure": "SPECACT memerlukan koneksi aman (HTTPS atau http://localhost) agar peramban dapat mengenkripsi data Anda. Silakan buka dari alamat https://.",
+  "post.linkShareHintPw": "Siapa pun yang masuk dengan Google dan punya tautan dapat membukanya, tetapi tetap perlu kata sandi."
 }

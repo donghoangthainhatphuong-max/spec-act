@@ -101,10 +101,10 @@ async function publish() {
     if (editing.value) {
       res = await posts.update(original.value, {
         text: draft.text, files, keepMedia: draft.photos.filter((p) => p.kind === 'old').map((p) => p.media.id),
-        audience: draft.audience, linkShare: draft.protect && draft.linkShare, newPassword: pw || undefined,
+        audience: draft.audience, linkShare: draft.linkShare, newPassword: pw || undefined,
       }, (p) => { progress.value = p; });
     } else {
-      res = await posts.create({ text: draft.text, files, audience: draft.audience, password: draft.protect ? pw : undefined, linkShare: draft.protect && draft.linkShare }, (p) => { progress.value = p; });
+      res = await posts.create({ text: draft.text, files, audience: draft.audience, password: draft.protect ? pw : undefined, linkShare: draft.linkShare }, (p) => { progress.value = p; });
     }
     done.value = true;
     draft.reset();
@@ -194,11 +194,7 @@ onBeforeRouteLeave(async () => {
         </div>
         <p class="hint">{{ t('compose.passwordHint') }}</p>
       </div>
-      <div v-if="draft.protect" class="row-between linkrow">
-        <div><b style="font-weight:600">{{ t('post.linkShare') }}</b><p class="hint">{{ t('post.linkShareHint') }}</p></div>
-        <button type="button" class="switch" role="switch" :aria-checked="draft.linkShare" :aria-label="t('post.linkShare')" @click="draft.linkShare = !draft.linkShare"><span /></button>
-      </div>
-    </section>
+</section>
 
     <div class="footer-actions">
       <button type="button" class="btn lg" :disabled="submitting" @click="cancel">{{ t('compose.cancel') }}</button>

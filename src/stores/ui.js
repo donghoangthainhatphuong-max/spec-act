@@ -27,7 +27,7 @@ export const useUiStore = defineStore('ui', () => {
 
   function flash(email) { fresh.value = email; setTimeout(() => { if (fresh.value === email) fresh.value = null; }, 900); }
 
-  function openViewer(items, index = 0) { viewer.value = { items, index }; }
+  function openViewer({ post, items }, index = 0) { viewer.value = { post, items, index }; }
   function closeViewer() { viewer.value = null; }
 
   return { toasts, toast, confirmState, confirm, answer, viewer, openViewer, closeViewer, search, fresh, flash, updateReady, setUpdater, applyUpdate };

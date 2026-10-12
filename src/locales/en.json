@@ -194,10 +194,9 @@
   "post.forget": "Remove from my list",
   "post.forgetConfirm": "Remove this post from your list? The owner’s copy is not affected.",
   "post.likeDisabled": "You can only react to posts you are allowed to comment on.",
-  "post.linkOn": "Anyone with the link and the password",
-  "post.linkShare": "Open with link + password",
-  "post.linkShareHint": "Anyone signed in with Google who has the link and the password can read it.",
-  "post.linkShareNeedsPassword": "Turn on password protection when writing the post to enable this.",
+  "post.linkOn": "Anyone with the link",
+  "post.linkShare": "Anyone with the link",
+  "post.linkShareHint": "Anyone signed in with Google who has the link can open it — no need to add them one by one.",
   "post.newPassword": "New password",
   "post.notFound": "This post no longer exists.",
   "post.readMore": "Read more",
@@ -236,7 +235,7 @@
   "toast.keysChangedSignIn": "Keys saved. Sign in with Google again.",
   "toast.linkCopied": "Link copied. Only people with access can open it.",
   "toast.linkOff": "Link access turned off",
-  "toast.linkOn": "Anyone with the link and password can open this post",
+  "toast.linkOn": "Anyone with the link can open this post",
   "toast.passwordChanged": "Password changed",
   "toast.pinChanged": "PIN changed",
   "toast.saved": "Saved",
@@ -250,5 +249,6 @@
   "welcome.flow3": "Sign in with Google. Posts are saved in a SPECACT folder in your Drive.",
   "update.ready": "A new version of SPECACT is ready.",
   "update.reload": "Reload",
-  "error.insecure": "SPECACT needs a secure connection (HTTPS, or http://localhost) so your browser can encrypt your data. Please open it from an https:// address."
+  "error.insecure": "SPECACT needs a secure connection (HTTPS, or http://localhost) so your browser can encrypt your data. Please open it from an https:// address.",
+  "post.linkShareHintPw": "Anyone signed in with Google who has the link can open it, but still needs the password."
 }

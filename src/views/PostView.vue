@@ -167,9 +167,9 @@ const inIndex = computed(() => !!posts.entryById(props.id));
         <div class="linkrow">
           <div>
             <b>{{ t('post.linkShare') }}</b>
-            <p class="hint">{{ post.protected ? t('post.linkShareHint') : t('post.linkShareNeedsPassword') }}</p>
+            <p class="hint">{{ post.protected ? t('post.linkShareHintPw') : t('post.linkShareHint') }}</p>
           </div>
-          <button class="switch" role="switch" :aria-checked="linkShare" :aria-label="t('post.linkShare')" :disabled="!post.protected || busy" @click="toggleLink"><span /></button>
+          <button class="switch" role="switch" :aria-checked="linkShare" :aria-label="t('post.linkShare')" :disabled="busy" @click="toggleLink"><span /></button>
         </div>
         <div v-if="post.protected && !post.locked" class="linkrow">
           <div><b>{{ t('post.changePassword') }}</b><p class="hint">{{ t('post.changePasswordHint') }}</p></div>

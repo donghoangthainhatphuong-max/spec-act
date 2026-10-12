@@ -108,7 +108,7 @@ export class DemoRepo {
     const text = input.text || '';
     const prot = !!input.password;
     const p = this.#full({ id, owner: DEMO_ME.email, at: Date.now(), text, media: files, audience: cleanAudience(input.audience, DEMO_ME.email), protected: prot });
-    p.linkShare = !!(prot && input.linkShare);
+    p.linkShare = !!input.linkShare;
     this.posts.set(id, p);
     this.comments.set(id, { comments: [], likes: [] });
     if (prot) this.keys.add(id);
@@ -125,7 +125,7 @@ export class DemoRepo {
     const text = input.text ?? cur.text;
     Object.assign(cur, {
       text, media: [...cur.media.filter((m) => keep.has(m.id)), ...added], mentions: extractMentions(text), updatedAt: Date.now(),
-      audience: cleanAudience(input.audience ?? cur.audience, DEMO_ME.email), linkShare: cur.protected ? (input.linkShare ?? cur.linkShare) : false,
+      audience: cleanAudience(input.audience ?? cur.audience, DEMO_ME.email), linkShare: input.linkShare ?? cur.linkShare,
     });
     this.#buildIndex();
     return { post: { ...cur }, warnings: [] };

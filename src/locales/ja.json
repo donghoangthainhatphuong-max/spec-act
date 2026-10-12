@@ -194,10 +194,9 @@
   "post.forget": "自分のリストから削除",
   "post.forgetConfirm": "この投稿を自分のリストから削除しますか？所有者のコピーには影響しません。",
   "post.likeDisabled": "リアクションできるのは、コメント権限のある投稿だけです。",
-  "post.linkOn": "リンクとパスワードを知っている人",
-  "post.linkShare": "リンク + パスワードで開く",
-  "post.linkShareHint": "Google にログインしていて、リンクとパスワードを知っていれば誰でも読めます。",
-  "post.linkShareNeedsPassword": "この機能を使うには、投稿作成時にパスワード保護をオンにしてください。",
+  "post.linkOn": "リンクを知っている全員",
+  "post.linkShare": "リンクを知っている全員",
+  "post.linkShareHint": "Google にログインしていてリンクを知っていれば誰でも開けます。1 人ずつ追加する必要はありません。",
   "post.newPassword": "新しいパスワード",
   "post.notFound": "この投稿は存在しません。",
   "post.readMore": "続きを読む",
@@ -236,7 +235,7 @@
   "toast.keysChangedSignIn": "キーを保存しました。もう一度 Google でログインしてください。",
   "toast.linkCopied": "リンクをコピーしました。アクセス権のある人だけが開けます。",
   "toast.linkOff": "リンクでのアクセスをオフにしました",
-  "toast.linkOn": "リンクとパスワードを知っている人はこの投稿を開けます",
+  "toast.linkOn": "リンクを知っている人は誰でもこの投稿を開けます",
   "toast.passwordChanged": "パスワードを変更しました",
   "toast.pinChanged": "PIN を変更しました",
   "toast.saved": "保存しました",
@@ -250,5 +249,6 @@
   "welcome.flow3": "Google でログインします。投稿はあなたのドライブの SPECACT フォルダに保存されます。",
   "update.ready": "SPECACT の新しいバージョンが利用できます。",
   "update.reload": "再読み込み",
-  "error.insecure": "ブラウザがデータを暗号化できるよう、SPECACT には安全な接続（HTTPS または http://localhost）が必要です。https:// のアドレスから開いてください。"
+  "error.insecure": "ブラウザがデータを暗号化できるよう、SPECACT には安全な接続（HTTPS または http://localhost）が必要です。https:// のアドレスから開いてください。",
+  "post.linkShareHintPw": "Google にログインしていてリンクを知っていれば開けますが、パスワードも必要です。"
 }

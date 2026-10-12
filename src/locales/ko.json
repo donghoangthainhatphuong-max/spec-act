@@ -194,10 +194,9 @@
   "post.forget": "내 목록에서 제거",
   "post.forgetConfirm": "이 글을 내 목록에서 제거할까요? 소유자의 사본에는 영향이 없습니다.",
   "post.likeDisabled": "댓글을 쓸 수 있는 글에만 반응할 수 있습니다.",
-  "post.linkOn": "링크와 비밀번호를 아는 누구나",
-  "post.linkShare": "링크 + 비밀번호로 열기",
-  "post.linkShareHint": "Google에 로그인했고 링크와 비밀번호를 아는 누구나 읽을 수 있습니다.",
-  "post.linkShareNeedsPassword": "이 기능을 쓰려면 글을 쓸 때 비밀번호 보호를 켜세요.",
+  "post.linkOn": "링크가 있는 누구나",
+  "post.linkShare": "링크가 있는 누구나",
+  "post.linkShareHint": "Google에 로그인했고 링크가 있으면 누구나 열 수 있습니다. 한 명씩 추가할 필요가 없습니다.",
   "post.newPassword": "새 비밀번호",
   "post.notFound": "이 글은 더 이상 존재하지 않습니다.",
   "post.readMore": "더 보기",
@@ -236,7 +235,7 @@
   "toast.keysChangedSignIn": "키를 저장했습니다. Google로 다시 로그인하세요.",
   "toast.linkCopied": "링크를 복사했습니다. 접근 권한이 있는 사람만 열 수 있습니다.",
   "toast.linkOff": "링크 접근을 껐습니다",
-  "toast.linkOn": "링크와 비밀번호를 아는 누구나 이 글을 열 수 있습니다",
+  "toast.linkOn": "링크가 있는 누구나 이 글을 열 수 있습니다",
   "toast.passwordChanged": "비밀번호를 변경했습니다",
   "toast.pinChanged": "PIN을 변경했습니다",
   "toast.saved": "저장했습니다",
@@ -250,5 +249,6 @@
   "welcome.flow3": "Google로 로그인하세요. 글은 내 드라이브의 SPECACT 폴더에 저장됩니다.",
   "update.ready": "SPECACT 새 버전을 사용할 수 있습니다.",
   "update.reload": "새로고침",
-  "error.insecure": "브라우저가 데이터를 암호화할 수 있도록 SPECACT에는 보안 연결(HTTPS 또는 http://localhost)이 필요합니다. https:// 주소로 열어 주세요."
+  "error.insecure": "브라우저가 데이터를 암호화할 수 있도록 SPECACT에는 보안 연결(HTTPS 또는 http://localhost)이 필요합니다. https:// 주소로 열어 주세요.",
+  "post.linkShareHintPw": "Google에 로그인했고 링크가 있으면 열 수 있지만 비밀번호도 필요합니다."
 }

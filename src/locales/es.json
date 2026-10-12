@@ -194,10 +194,9 @@
   "post.forget": "Quitar de mi lista",
   "post.forgetConfirm": "¿Quitar esta publicación de tu lista? La copia del propietario no se ve afectada.",
   "post.likeDisabled": "Solo puedes reaccionar a las publicaciones que puedes comentar.",
-  "post.linkOn": "Cualquiera con el enlace y la contraseña",
-  "post.linkShare": "Abrir con enlace + contraseña",
-  "post.linkShareHint": "Cualquiera que haya iniciado sesión con Google y tenga el enlace y la contraseña puede leerla.",
-  "post.linkShareNeedsPassword": "Activa la protección con contraseña al escribir la publicación para usar esto.",
+  "post.linkOn": "Cualquiera con el enlace",
+  "post.linkShare": "Cualquiera con el enlace",
+  "post.linkShareHint": "Cualquiera que haya iniciado sesión con Google y tenga el enlace puede abrirla, sin añadirlo uno por uno.",
   "post.newPassword": "Contraseña nueva",
   "post.notFound": "Esta publicación ya no existe.",
   "post.readMore": "Leer más",
@@ -236,7 +235,7 @@
   "toast.keysChangedSignIn": "Claves guardadas. Inicia sesión con Google de nuevo.",
   "toast.linkCopied": "Enlace copiado. Solo quien tenga acceso puede abrirlo.",
   "toast.linkOff": "Acceso por enlace desactivado",
-  "toast.linkOn": "Cualquiera con el enlace y la contraseña puede abrir esta publicación",
+  "toast.linkOn": "Cualquiera con el enlace puede abrir esta publicación",
   "toast.passwordChanged": "Contraseña cambiada",
   "toast.pinChanged": "PIN cambiado",
   "toast.saved": "Guardado",
@@ -250,5 +249,6 @@
   "welcome.flow3": "Inicia sesión con Google. Las publicaciones se guardan en una carpeta SPECACT de tu Drive.",
   "update.ready": "Hay una nueva versión de SPECACT.",
   "update.reload": "Recargar",
-  "error.insecure": "SPECACT necesita una conexión segura (HTTPS o http://localhost) para que tu navegador pueda cifrar tus datos. Ábrelo desde una dirección https://."
+  "error.insecure": "SPECACT necesita una conexión segura (HTTPS o http://localhost) para que tu navegador pueda cifrar tus datos. Ábrelo desde una dirección https://.",
+  "post.linkShareHintPw": "Cualquiera con sesión de Google y el enlace puede abrirla, pero sigue necesitando la contraseña."
 }

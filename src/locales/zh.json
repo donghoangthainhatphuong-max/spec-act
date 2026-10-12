@@ -194,10 +194,9 @@
   "post.forget": "从我的列表中移除",
   "post.forgetConfirm": "从你的列表中移除此帖？所有者的副本不受影响。",
   "post.likeDisabled": "只能对你有权评论的帖子做出回应。",
-  "post.linkOn": "任何拥有链接和密码的人",
-  "post.linkShare": "通过链接 + 密码打开",
-  "post.linkShareHint": "任何已登录 Google 且拥有链接和密码的人都可以阅读。",
-  "post.linkShareNeedsPassword": "撰写帖子时开启密码保护后才能使用此功能。",
+  "post.linkOn": "任何拥有链接的人",
+  "post.linkShare": "任何拥有链接的人",
+  "post.linkShareHint": "任何已登录 Google 且拥有链接的人都可以打开，无需逐个添加。",
   "post.newPassword": "新密码",
   "post.notFound": "此帖已不存在。",
   "post.readMore": "阅读更多",
@@ -236,7 +235,7 @@
   "toast.keysChangedSignIn": "密钥已保存，请重新使用 Google 登录。",
   "toast.linkCopied": "链接已复制，只有拥有权限的人才能打开。",
   "toast.linkOff": "已关闭链接访问",
-  "toast.linkOn": "任何拥有链接和密码的人都可以打开此帖",
+  "toast.linkOn": "任何拥有链接的人都可以打开此帖",
   "toast.passwordChanged": "密码已更改",
   "toast.pinChanged": "PIN 已更改",
   "toast.saved": "已保存",
@@ -250,5 +249,6 @@
   "welcome.flow3": "使用 Google 登录。帖子会保存在你 Drive 中的 SPECACT 文件夹里。",
   "update.ready": "SPECACT 有新版本可用。",
   "update.reload": "重新加载",
-  "error.insecure": "SPECACT 需要安全连接（HTTPS 或 http://localhost），浏览器才能加密你的数据。请通过 https:// 地址打开。"
+  "error.insecure": "SPECACT 需要安全连接（HTTPS 或 http://localhost），浏览器才能加密你的数据。请通过 https:// 地址打开。",
+  "post.linkShareHintPw": "任何已登录 Google 且拥有链接的人都可以打开，但仍需密码。"
 }

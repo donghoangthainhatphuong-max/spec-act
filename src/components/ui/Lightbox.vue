@@ -26,6 +26,9 @@ async function show() {
     src.value = await session.repo.mediaUrl(v.value.post, item);
   } catch { /* keep preview */ }
   loading.value = false;
+  // warm the neighbours so next/previous feels instant
+  const n = v.value?.items.length || 0;
+  if (n > 1 && v.value) for (const d of [1, -1]) session.repo.mediaUrl(v.value.post, v.value.items[(index.value + d + n) % n]).catch(() => {});
 }
 watch(v, (val) => { if (val) { index.value = val.index; show(); } }, { immediate: true });
 watch(index, show);

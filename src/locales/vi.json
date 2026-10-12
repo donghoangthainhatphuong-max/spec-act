@@ -194,10 +194,9 @@
   "post.forget": "Gỡ khỏi danh sách của tôi",
   "post.forgetConfirm": "Gỡ bài này khỏi danh sách của bạn? Bản của chủ bài không bị ảnh hưởng.",
   "post.likeDisabled": "Bạn chỉ có thể thả tim bài mà bạn được phép bình luận.",
-  "post.linkOn": "Ai có liên kết và mật khẩu",
-  "post.linkShare": "Mở bằng liên kết + mật khẩu",
-  "post.linkShareHint": "Bất kỳ ai đăng nhập Google có liên kết và mật khẩu đều đọc được.",
-  "post.linkShareNeedsPassword": "Hãy bật bảo vệ bằng mật khẩu khi viết bài để dùng tính năng này.",
+  "post.linkOn": "Ai có liên kết",
+  "post.linkShare": "Ai có liên kết đều xem được",
+  "post.linkShareHint": "Bất kỳ ai đăng nhập Google và có liên kết đều mở được, không cần thêm từng người.",
   "post.newPassword": "Mật khẩu mới",
   "post.notFound": "Bài viết này không còn tồn tại.",
   "post.readMore": "Xem thêm",
@@ -236,7 +235,7 @@
   "toast.keysChangedSignIn": "Đã lưu khóa. Hãy đăng nhập Google lại.",
   "toast.linkCopied": "Đã sao chép liên kết. Chỉ người có quyền mới mở được.",
   "toast.linkOff": "Đã tắt truy cập bằng liên kết",
-  "toast.linkOn": "Ai có liên kết và mật khẩu đều mở được bài này",
+  "toast.linkOn": "Ai có liên kết đều mở được bài này",
   "toast.passwordChanged": "Đã đổi mật khẩu",
   "toast.pinChanged": "Đã đổi mã PIN",
   "toast.saved": "Đã lưu",
@@ -250,5 +249,6 @@
   "welcome.flow3": "Đăng nhập Google. Bài viết được lưu trong thư mục SPECACT trên Drive của bạn.",
   "update.ready": "Đã có phiên bản SPECACT mới.",
   "update.reload": "Tải lại",
-  "error.insecure": "SPECACT cần kết nối an toàn (HTTPS hoặc http://localhost) để trình duyệt mã hóa được dữ liệu của bạn. Hãy mở từ địa chỉ https://."
+  "error.insecure": "SPECACT cần kết nối an toàn (HTTPS hoặc http://localhost) để trình duyệt mã hóa được dữ liệu của bạn. Hãy mở từ địa chỉ https://.",
+  "post.linkShareHintPw": "Ai đăng nhập Google và có liên kết đều mở được, nhưng vẫn cần mật khẩu."
 }
