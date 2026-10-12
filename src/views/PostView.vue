@@ -3,6 +3,7 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from '@/i18n';
 import AppAvatar from '../components/ui/AppAvatar.vue';
+import ChatButton from '../components/ui/ChatButton.vue';
 import AppIcon from '../components/ui/AppIcon.vue';
 import PostCard from '../components/post/PostCard.vue';
 import RichText from '../components/post/RichText.vue';
@@ -209,6 +210,7 @@ const inIndex = computed(() => !!posts.entryById(props.id));
           <div class="bubble"><b>{{ people.nameFor(c.by) }}</b><p><RichText :text="c.text" /></p></div>
           <time>{{ ago(c.at) }}</time>
         </div>
+        <ChatButton :email="c.by" class="cchat" />
         <button v-if="mine || people.isMe(c.by)" class="icon-btn cdel" :aria-label="t('post.delete')" @click="removeComment(c)"><AppIcon name="trash" :size="16" /></button>
       </div>
       <p v-if="soc?.loaded && !comments.length" class="hint">{{ t('comments.empty') }}</p>
@@ -232,6 +234,9 @@ const inIndex = computed(() => !!posts.entryById(props.id));
 .switch:disabled { opacity: .5; cursor: not-allowed; }
 .comment { align-items: flex-start; }
 .cbody { flex: 1; min-width: 0; }
+.cchat { width: 32px; height: 32px; opacity: 0; }
+.comment:hover .cchat, .cchat:focus-visible { opacity: 1; }
+@media (hover: none) { .cchat { opacity: .7; } }
 .cdel { opacity: 0; width: 32px; height: 32px; }
 .comment:hover .cdel, .cdel:focus-visible { opacity: 1; }
 @media (hover: none) { .cdel { opacity: .7; } }

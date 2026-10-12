@@ -273,5 +273,7 @@
   "legal.updated": "最后更新：{date}",
   "legal.fallback": "本页以英文和越南文撰写，您的语言暂以英文显示。",
   "legal.contact": "联系",
-  "welcome.mission": "我们的目标：一个完全由你拥有的个人内容空间，只与你选择的人分享，并可迁移到你信任的任何网站。"
+  "welcome.mission": "我们的目标：一个完全由你拥有的个人内容空间，只与你选择的人分享，并可迁移到你信任的任何网站。",
+  "chat.message": "在 Google Chat 上给 {name} 发消息",
+  "chat.open": "发消息"
 }

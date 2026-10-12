@@ -273,5 +273,7 @@
   "legal.updated": "Son güncelleme {date}",
   "legal.fallback": "Bu sayfa İngilizce ve Vietnamca yazılmıştır; diliniz için İngilizce gösterilir.",
   "legal.contact": "İletişim",
-  "welcome.mission": "Amacımız: tamamen size ait, yalnızca seçtiğiniz kişilerle paylaşılan ve güvendiğiniz her siteye taşınabilen kişisel bir içerik alanı."
+  "welcome.mission": "Amacımız: tamamen size ait, yalnızca seçtiğiniz kişilerle paylaşılan ve güvendiğiniz her siteye taşınabilen kişisel bir içerik alanı.",
+  "chat.message": "{name} kişisine Google Chat'te yaz",
+  "chat.open": "Mesaj"
 }

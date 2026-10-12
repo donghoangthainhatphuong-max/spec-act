@@ -4,6 +4,7 @@ import { useI18n } from '@/i18n';
 import { useRouter } from 'vue-router';
 import AppAvatar from '../ui/AppAvatar.vue';
 import AppIcon from '../ui/AppIcon.vue';
+import ChatButton from '../ui/ChatButton.vue';
 import AvatarPile from '../ui/AvatarPile.vue';
 import RichText from './RichText.vue';
 import PhotoGrid from './PhotoGrid.vue';
@@ -126,6 +127,7 @@ const ariaPeople = computed(() => listOf(audienceEmails.value.map((e) => people.
           <span v-if="view.linkShare" class="scope" :title="t('post.linkOn')"><AppIcon name="link" :size="14" /></span>
         </span>
       </div>
+      <ChatButton v-if="detail && !mine" :email="view.owner.email" />
       <AvatarPile :emails="audienceEmails" :total="audienceCount" :aria-label="ariaPeople" />
       <button v-if="mine" class="icon-btn" aria-haspopup="menu" :aria-expanded="menuOpen" :aria-label="t('post.more')" @click.stop="emit('menu', menuOpen ? null : view.id)"><AppIcon name="more" :size="20" /></button>
     </header>

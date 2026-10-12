@@ -38,6 +38,7 @@ SPECACT is a Vue 3 PWA for **sharing posts and photos with exactly the people yo
 | **Comments** | Three modes per post: **open** (everyone who can see it), **shared people only**, **locked**. Enforced in Drive, not just in the UI. |
 | **Likes** | Own `likes.json`: everyone the post is open to can like, regardless of the comment mode. |
 | **Fast index** | Each user's `index.json` summarises own + shared posts; the feed paints instantly from an encrypted local cache and syncs in the background, downloading only changed posts. |
+| **Message** | A “Message” button next to a friend, a post author, or a commenter opens that person's Google Chat conversation in a new tab (SPECACT never reads or stores chats; the URL is configurable via `VITE_CHAT_URL_TEMPLATE`). |
 | **Friends** | A list of connected people (`contacts.json`) for mentions/sharing, with suggestions from people who shared with you. |
 | **Local security** | PIN, auto-lock, throttled then wiping brute-force protection, PIN change, device wipe. |
 | **Languages & UI** | 14 languages (incl. RTL Arabic), light/dark/system, responsive, installable PWA. About / Terms / Privacy pages at `#/about`, `#/terms`, `#/privacy`. |
@@ -76,6 +77,7 @@ docker compose up -d --build
 | `VITE_LEGAL_CONTACT` | *(empty)* | Contact e-mail shown on the Terms/Privacy pages (operator fills in) |
 | `VITE_ENABLE_DEMO` | `true` | Enable demo mode |
 | `VITE_DRIVE_ROOT_FOLDER` / `VITE_DRIVE_POSTS_FOLDER` | `SPECACT` / `posts` | Folder names in Drive |
+| `VITE_CHAT_URL_TEMPLATE` | `https://mail.google.com/chat/?authuser={me}#chat/dm/{email}` | Link that opens a Google Chat conversation (`{me}` = your e-mail, `{email}` = the friend's) |
 | `VITE_DRIVE_SHARED_FOLDER` / `VITE_GROUP_SHARED` | `shared` / `true` | Folder holding shortcuts to posts shared with you; turn grouping on/off |
 | `VITE_OAUTH_SCOPES` | `…/auth/drive` | OAuth scopes (full `drive` is needed to open posts others shared) |
 | `VITE_OAUTH_REDIRECT_URI` | *(auto)* | Override the redirect URI if needed |

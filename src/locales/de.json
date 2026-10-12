@@ -273,5 +273,7 @@
   "legal.updated": "Zuletzt aktualisiert: {date}",
   "legal.fallback": "Diese Seite liegt auf Englisch und Vietnamesisch vor; für Ihre Sprache wird sie auf Englisch angezeigt.",
   "legal.contact": "Kontakt",
-  "welcome.mission": "Unser Ziel: ein persönlicher Inhaltsraum, der Ihnen vollständig gehört, nur mit den von Ihnen gewählten Personen geteilt wird und sich zu jeder vertrauenswürdigen Website mitnehmen lässt."
+  "welcome.mission": "Unser Ziel: ein persönlicher Inhaltsraum, der Ihnen vollständig gehört, nur mit den von Ihnen gewählten Personen geteilt wird und sich zu jeder vertrauenswürdigen Website mitnehmen lässt.",
+  "chat.message": "{name} in Google Chat schreiben",
+  "chat.open": "Nachricht"
 }

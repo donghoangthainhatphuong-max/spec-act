@@ -1,6 +1,7 @@
 <script setup>
 import { useI18n } from '@/i18n';
 import AppAvatar from '../ui/AppAvatar.vue';
+import ChatButton from '../ui/ChatButton.vue';
 import AppIcon from '../ui/AppIcon.vue';
 import { usePeopleStore } from '../../stores/people';
 
@@ -24,6 +25,7 @@ const people = usePeopleStore();
       <b>{{ people.nameFor(email) }}<small v-if="viaMention" class="via"><AppIcon name="at" :size="12" />{{ t('compose.viaMention') }}</small></b>
       <span>{{ email }}</span>
     </div>
+    <ChatButton :email="email" />
     <label class="sr" :for="`role-${uid}-${email}`">{{ t('post.access') }}</label>
     <select :id="`role-${uid}-${email}`" class="select sm" :value="role" :disabled="disabled" @change="emit('role', $event.target.value)">
       <option value="view">{{ t('post.canView') }}</option>

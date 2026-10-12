@@ -273,5 +273,7 @@
   "legal.updated": "Cập nhật lần cuối {date}",
   "legal.fallback": "-",
   "legal.contact": "Liên hệ",
-  "welcome.mission": "Mục tiêu của chúng tôi: một không gian nội dung cá nhân do bạn hoàn toàn sở hữu, chỉ chia sẻ cho người bạn chọn, và mang theo được tới mọi website bạn tin tưởng."
+  "welcome.mission": "Mục tiêu của chúng tôi: một không gian nội dung cá nhân do bạn hoàn toàn sở hữu, chỉ chia sẻ cho người bạn chọn, và mang theo được tới mọi website bạn tin tưởng.",
+  "chat.message": "Nhắn tin cho {name} trên Google Chat",
+  "chat.open": "Nhắn tin"
 }

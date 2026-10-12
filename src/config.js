@@ -44,6 +44,7 @@ export const config = Object.freeze({
   rootFolder: str('VITE_DRIVE_ROOT_FOLDER', 'SPECACT'),
   postsFolder: str('VITE_DRIVE_POSTS_FOLDER', 'posts'),
   sharedFolder: str('VITE_DRIVE_SHARED_FOLDER', 'shared'),
+  chatUrl: str('VITE_CHAT_URL_TEMPLATE', 'https://mail.google.com/chat/?authuser={me}#chat/dm/{email}'),
   groupShared: bool('VITE_GROUP_SHARED', true),
   oauthScopes: str('VITE_OAUTH_SCOPES', 'https://www.googleapis.com/auth/drive').split(/[\s,]+/).filter(Boolean),
   oauthRedirectUri: str('VITE_OAUTH_REDIRECT_URI', ''),

@@ -273,5 +273,7 @@
   "legal.updated": "Terakhir diperbarui {date}",
   "legal.fallback": "Halaman ini ditulis dalam bahasa Inggris dan Vietnam; ditampilkan dalam bahasa Inggris untuk bahasa Anda.",
   "legal.contact": "Kontak",
-  "welcome.mission": "Tujuan kami: ruang konten pribadi yang sepenuhnya milik Anda, dibagikan hanya kepada orang pilihan Anda, dan dapat dibawa ke situs tepercaya mana pun."
+  "welcome.mission": "Tujuan kami: ruang konten pribadi yang sepenuhnya milik Anda, dibagikan hanya kepada orang pilihan Anda, dan dapat dibawa ke situs tepercaya mana pun.",
+  "chat.message": "Kirim pesan ke {name} di Google Chat",
+  "chat.open": "Pesan"
 }

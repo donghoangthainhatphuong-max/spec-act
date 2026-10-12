@@ -273,5 +273,7 @@
   "legal.updated": "Last updated {date}",
   "legal.fallback": "This page is written in English and Vietnamese; it is shown in English for your language.",
   "legal.contact": "Contact",
-  "welcome.mission": "Our goal: a personal content space you fully own, shared only with the people you choose, and portable to any site you trust."
+  "welcome.mission": "Our goal: a personal content space you fully own, shared only with the people you choose, and portable to any site you trust.",
+  "chat.message": "Message {name} on Google Chat",
+  "chat.open": "Message"
 }

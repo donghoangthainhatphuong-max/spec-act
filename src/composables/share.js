@@ -9,6 +9,15 @@ export function postLink(post) {
   return `${location.origin}${config.basePath}#/post/${id}`;
 }
 
+/** Google Chat conversation with one person, opened in a new tab (SPECACT never reads or sends chat messages). */
+export function chatLink(me, email) {
+  return config.chatUrl.replaceAll('{me}', encodeURIComponent(me || '')).replaceAll('{email}', encodeURIComponent(email));
+}
+
+export function openChat(me, email) {
+  window.open(chatLink(me, email), '_blank', 'noopener,noreferrer');
+}
+
 export async function copyText(text) {
   try {
     await navigator.clipboard.writeText(text);

@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue';
 import { useI18n } from '@/i18n';
 import AppAvatar from '../components/ui/AppAvatar.vue';
+import ChatButton from '../components/ui/ChatButton.vue';
 import AppIcon from '../components/ui/AppIcon.vue';
 import SecureImage from '../components/ui/SecureImage.vue';
 import { usePeopleStore } from '../stores/people';
@@ -71,6 +72,7 @@ async function remove(c) {
       <div class="top-row">
         <AppAvatar :email="c.email" :name="c.name" size="xl" />
         <div class="who"><b>{{ c.name }}</b><span>{{ c.email }}</span></div>
+ <ChatButton :email="c.email" />
         <button class="icon-btn" :aria-label="`${t('friends.remove')} ${c.name}`" :title="t('friends.remove')" @click="remove(c)"><AppIcon name="x" :size="18" /></button>
       </div>
       <div class="sees">

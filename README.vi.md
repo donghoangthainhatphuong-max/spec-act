@@ -38,6 +38,7 @@ SPECACT là một ứng dụng web (Vue 3, PWA) để **chia sẻ bài viết v�
 | **Bình luận** | Ba chế độ cho mỗi bài: **mở** (ai xem được cũng bình luận được), **chỉ người được chia sẻ**, **khóa hoàn toàn**. Được ép ngay ở Drive, không chỉ ở giao diện. |
 | **Thả tim** | `likes.json` riêng: mọi người được xem bài đều thả tim được, không phụ thuộc chế độ bình luận. |
 | **Chỉ mục nhanh** | Mỗi người có `index.json` trong thư mục SPECACT của mình tổng hợp bài của mình và bài được chia sẻ — hiển thị tức thì từ bộ nhớ đệm mã hóa, rồi tự đồng bộ nền (chỉ tải lại bài có thay đổi). |
+| **Nhắn tin** | Nút “Nhắn tin” cạnh bạn bè, tác giả bài hoặc người bình luận mở cuộc trò chuyện Google Chat với người đó ở tab mới (SPECACT không đọc hay lưu tin nhắn; đường dẫn chỉnh được bằng `VITE_CHAT_URL_TEMPLATE`). |
 | **Bạn bè** | Danh sách người đã kết nối (`contacts.json`) dùng cho tag/chia sẻ; gợi ý từ những người đã chia sẻ cho bạn. |
 | **Bảo mật cục bộ** | PIN 6 số, khóa tự động, giới hạn thử sai (làm chậm rồi xóa kho khóa), đổi PIN, xóa dữ liệu thiết bị. |
 | **Đa ngôn ngữ** | 14 ngôn ngữ: vi, en, zh, ja, ko, ru, fr, de, es, th, id, hi, ar (RTL), tr. |
@@ -80,6 +81,7 @@ docker compose up -d --build
 | `VITE_LEGAL_CONTACT` | *(trống)* | Email liên hệ hiển thị ở trang Điều khoản/Quyền riêng tư (người vận hành điền) |
 | `VITE_ENABLE_DEMO` | `true` | Bật chế độ dùng thử |
 | `VITE_DRIVE_ROOT_FOLDER` / `VITE_DRIVE_POSTS_FOLDER` | `SPECACT` / `posts` | Tên thư mục trên Drive |
+| `VITE_CHAT_URL_TEMPLATE` | `https://mail.google.com/chat/?authuser={me}#chat/dm/{email}` | Đường dẫn mở cuộc trò chuyện Google Chat (`{me}` = email của bạn, `{email}` = email bạn bè) |
 | `VITE_DRIVE_SHARED_FOLDER` / `VITE_GROUP_SHARED` | `shared` / `true` | Thư mục chứa lối tắt tới các bài được chia sẻ với bạn; bật/tắt việc gom nhóm |
 | `VITE_OAUTH_SCOPES` | `…/auth/drive` | Phạm vi OAuth (cần `drive` đầy đủ để mở bài người khác chia sẻ) |
 | `VITE_OAUTH_REDIRECT_URI` | *(tự động)* | Ghi đè redirect URI nếu cần |
