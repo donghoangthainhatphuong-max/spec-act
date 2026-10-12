@@ -250,5 +250,11 @@
   "update.ready": "SPECACT'ın yeni bir sürümü hazır.",
   "update.reload": "Yeniden yükle",
   "error.insecure": "SPECACT'ın tarayıcınızın verilerinizi şifreleyebilmesi için güvenli bir bağlantıya (HTTPS veya http://localhost) ihtiyacı var. Lütfen https:// adresinden açın.",
-  "post.linkShareHintPw": "Google ile giriş yapmış ve bağlantıya sahip herkes açabilir, ancak parola da gerekir."
+  "post.linkShareHintPw": "Google ile giriş yapmış ve bağlantıya sahip herkes açabilir, ancak parola da gerekir.",
+  "viewer.tools": "Görsel araçları",
+  "viewer.rotateLeft": "Sola döndür",
+  "viewer.rotateRight": "Sağa döndür",
+  "viewer.zoomOut": "Uzaklaştır",
+  "viewer.zoomIn": "Yakınlaştır",
+  "viewer.reset": "Sıfırla"
 }

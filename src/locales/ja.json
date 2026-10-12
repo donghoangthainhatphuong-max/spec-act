@@ -250,5 +250,11 @@
   "update.ready": "SPECACT の新しいバージョンが利用できます。",
   "update.reload": "再読み込み",
   "error.insecure": "ブラウザがデータを暗号化できるよう、SPECACT には安全な接続（HTTPS または http://localhost）が必要です。https:// のアドレスから開いてください。",
-  "post.linkShareHintPw": "Google にログインしていてリンクを知っていれば開けますが、パスワードも必要です。"
+  "post.linkShareHintPw": "Google にログインしていてリンクを知っていれば開けますが、パスワードも必要です。",
+  "viewer.tools": "画像ツール",
+  "viewer.rotateLeft": "左に回転",
+  "viewer.rotateRight": "右に回転",
+  "viewer.zoomOut": "縮小",
+  "viewer.zoomIn": "拡大",
+  "viewer.reset": "リセット"
 }

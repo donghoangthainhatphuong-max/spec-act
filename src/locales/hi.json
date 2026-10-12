@@ -250,5 +250,11 @@
   "update.ready": "SPECACT का नया संस्करण उपलब्ध है।",
   "update.reload": "रीलोड करें",
   "error.insecure": "SPECACT को सुरक्षित कनेक्शन (HTTPS या http://localhost) चाहिए ताकि आपका ब्राउज़र आपके डेटा को एन्क्रिप्ट कर सके। कृपया इसे https:// पते से खोलें।",
-  "post.linkShareHintPw": "Google से साइन इन कोई भी व्यक्ति, जिसके पास लिंक है, इसे खोल सकता है, पर उसे पासवर्ड भी चाहिए।"
+  "post.linkShareHintPw": "Google से साइन इन कोई भी व्यक्ति, जिसके पास लिंक है, इसे खोल सकता है, पर उसे पासवर्ड भी चाहिए।",
+  "viewer.tools": "चित्र उपकरण",
+  "viewer.rotateLeft": "बाएँ घुमाएँ",
+  "viewer.rotateRight": "दाएँ घुमाएँ",
+  "viewer.zoomOut": "छोटा करें",
+  "viewer.zoomIn": "बड़ा करें",
+  "viewer.reset": "रीसेट"
 }

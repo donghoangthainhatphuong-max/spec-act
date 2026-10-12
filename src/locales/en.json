@@ -196,7 +196,7 @@
   "post.likeDisabled": "You can only react to posts you are allowed to comment on.",
   "post.linkOn": "Anyone with the link",
   "post.linkShare": "Anyone with the link",
-  "post.linkShareHint": "Anyone signed in with Google who has the link can open it — no need to add them one by one.",
+  "post.linkShareHint": "Anyone signed in with Google who has the link can open this post and its photos. Only those files are opened — the folder and comments stay private.",
   "post.newPassword": "New password",
   "post.notFound": "This post no longer exists.",
   "post.readMore": "Read more",
@@ -250,5 +250,11 @@
   "update.ready": "A new version of SPECACT is ready.",
   "update.reload": "Reload",
   "error.insecure": "SPECACT needs a secure connection (HTTPS, or http://localhost) so your browser can encrypt your data. Please open it from an https:// address.",
-  "post.linkShareHintPw": "Anyone signed in with Google who has the link can open it, but still needs the password."
+  "post.linkShareHintPw": "Anyone signed in with Google who has the link can open it, but still needs the password. Only the files are opened — the folder and comments stay private.",
+  "viewer.tools": "Image tools",
+  "viewer.rotateLeft": "Rotate left",
+  "viewer.rotateRight": "Rotate right",
+  "viewer.zoomOut": "Zoom out",
+  "viewer.zoomIn": "Zoom in",
+  "viewer.reset": "Reset view"
 }

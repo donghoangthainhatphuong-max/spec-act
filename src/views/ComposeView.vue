@@ -194,7 +194,17 @@ onBeforeRouteLeave(async () => {
         </div>
         <p class="hint">{{ t('compose.passwordHint') }}</p>
       </div>
-</section>
+    </section>
+
+    <section class="section">
+      <div class="row-between">
+        <div>
+          <b style="font-weight:600">{{ t('post.linkShare') }}</b>
+          <p class="hint">{{ draft.protect ? t('post.linkShareHintPw') : t('post.linkShareHint') }}</p>
+        </div>
+        <button type="button" class="switch" role="switch" :aria-checked="draft.linkShare" :aria-label="t('post.linkShare')" @click="draft.linkShare = !draft.linkShare"><span /></button>
+      </div>
+    </section>
 
     <div class="footer-actions">
       <button type="button" class="btn lg" :disabled="submitting" @click="cancel">{{ t('compose.cancel') }}</button>

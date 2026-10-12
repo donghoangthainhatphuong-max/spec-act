@@ -88,7 +88,7 @@ async function remove() {
 }
 async function copyLink() {
   emit('menu', null);
-  ui.toast((await copyText(postLink(view.value.id))) ? t('toast.linkCopied') : t('error.generic'));
+  ui.toast((await copyText(postLink(view.value))) ? t('toast.linkCopied') : t('error.generic'));
 }
 
 let observer;

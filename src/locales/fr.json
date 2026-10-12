@@ -250,5 +250,11 @@
   "update.ready": "Une nouvelle version de SPECACT est disponible.",
   "update.reload": "Recharger",
   "error.insecure": "SPECACT nécessite une connexion sécurisée (HTTPS ou http://localhost) pour que votre navigateur puisse chiffrer vos données. Ouvrez-le depuis une adresse https://.",
-  "post.linkShareHintPw": "Toute personne connectée avec Google et ayant le lien peut l’ouvrir, mais le mot de passe reste nécessaire."
+  "post.linkShareHintPw": "Toute personne connectée avec Google et ayant le lien peut l’ouvrir, mais le mot de passe reste nécessaire.",
+  "viewer.tools": "Outils d’image",
+  "viewer.rotateLeft": "Pivoter à gauche",
+  "viewer.rotateRight": "Pivoter à droite",
+  "viewer.zoomOut": "Réduire",
+  "viewer.zoomIn": "Agrandir",
+  "viewer.reset": "Réinitialiser"
 }

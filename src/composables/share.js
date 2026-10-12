@@ -1,7 +1,11 @@
 import { config } from '../config';
 
-/** Link that opens a post in this app (the viewer still needs Drive access to it). */
-export function postLink(id) {
+/**
+ * Link that opens a post in this app. A post shared "with anyone who has the link" is addressed by its public
+ * post.json (the folder stays private); otherwise by its folder, which only people it was shared with can open.
+ */
+export function postLink(post) {
+  const id = post.linkShare && post.ids?.pj ? post.ids.pj : post.id;
   return `${location.origin}${config.basePath}#/post/${id}`;
 }
 

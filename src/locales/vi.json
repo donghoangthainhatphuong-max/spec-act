@@ -196,7 +196,7 @@
   "post.likeDisabled": "Bạn chỉ có thể thả tim bài mà bạn được phép bình luận.",
   "post.linkOn": "Ai có liên kết",
   "post.linkShare": "Ai có liên kết đều xem được",
-  "post.linkShareHint": "Bất kỳ ai đăng nhập Google và có liên kết đều mở được, không cần thêm từng người.",
+  "post.linkShareHint": "Ai đăng nhập Google và có liên kết đều mở được bài và ảnh. Chỉ mở quyền trên từng tệp — thư mục và bình luận vẫn riêng tư.",
   "post.newPassword": "Mật khẩu mới",
   "post.notFound": "Bài viết này không còn tồn tại.",
   "post.readMore": "Xem thêm",
@@ -250,5 +250,11 @@
   "update.ready": "Đã có phiên bản SPECACT mới.",
   "update.reload": "Tải lại",
   "error.insecure": "SPECACT cần kết nối an toàn (HTTPS hoặc http://localhost) để trình duyệt mã hóa được dữ liệu của bạn. Hãy mở từ địa chỉ https://.",
-  "post.linkShareHintPw": "Ai đăng nhập Google và có liên kết đều mở được, nhưng vẫn cần mật khẩu."
+  "post.linkShareHintPw": "Ai đăng nhập Google và có liên kết đều mở được nhưng vẫn cần mật khẩu. Chỉ mở quyền trên từng tệp — thư mục và bình luận vẫn riêng tư.",
+  "viewer.tools": "Công cụ ảnh",
+  "viewer.rotateLeft": "Xoay trái",
+  "viewer.rotateRight": "Xoay phải",
+  "viewer.zoomOut": "Thu nhỏ",
+  "viewer.zoomIn": "Phóng to",
+  "viewer.reset": "Đặt lại"
 }

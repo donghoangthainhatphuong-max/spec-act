@@ -250,5 +250,11 @@
   "update.ready": "Versi baru SPECACT tersedia.",
   "update.reload": "Muat ulang",
   "error.insecure": "SPECACT memerlukan koneksi aman (HTTPS atau http://localhost) agar peramban dapat mengenkripsi data Anda. Silakan buka dari alamat https://.",
-  "post.linkShareHintPw": "Siapa pun yang masuk dengan Google dan punya tautan dapat membukanya, tetapi tetap perlu kata sandi."
+  "post.linkShareHintPw": "Siapa pun yang masuk dengan Google dan punya tautan dapat membukanya, tetapi tetap perlu kata sandi.",
+  "viewer.tools": "Alat gambar",
+  "viewer.rotateLeft": "Putar ke kiri",
+  "viewer.rotateRight": "Putar ke kanan",
+  "viewer.zoomOut": "Perkecil",
+  "viewer.zoomIn": "Perbesar",
+  "viewer.reset": "Atur ulang"
 }

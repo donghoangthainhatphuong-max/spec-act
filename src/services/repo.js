@@ -261,9 +261,13 @@ export class DriveRepo {
   /** Open one post (full content). `id` is the Drive folder id. */
   async openPost(id) {
     let meta;
-    try { meta = await this.drive.get(id, FOLDER_FIELDS); } catch (e) { throw this.#mapErr(e); }
+    try { meta = await this.drive.get(id, FOLDER_FIELDS); } catch (e) {
+      // no access to a folder with this id: it may be a post.json that was made public on its own
+      if (e instanceof DriveError && (e.notFound || e.forbidden)) return this.#openPublic(id);
+      throw this.#mapErr(e);
+    }
     if (meta.trashed) throw new RepoError('not-found');
-    if (!isPostFolder(meta)) throw new RepoError('not-a-post');
+    if (!isPostFolder(meta)) return this.#openPublic(id);
     const ids = await this.#idsOf(meta);
     let doc;
     try { doc = await this.drive.downloadJson(ids.pj); } catch (e) { throw this.#mapErr(e); }
@@ -279,6 +283,26 @@ export class DriveRepo {
     const full = { ...post, id, mine, role, ids, doc, rev: meta.properties?.rev || String(post.updatedAt) };
     await this.loadIndex();
     this.#upsertEntry(toEntry(post, { id, ids, rev: full.rev }), { link: !mine });
+    this.#commitIndex().catch(() => {});
+    return full;
+  }
+
+  /** Open a post through the id of its public post.json (link sharing: the folder itself stays private). */
+  async #openPublic(id) {
+    let f;
+    try { f = await this.drive.get(id, 'id,name,trashed,parents,owners(emailAddress,displayName)'); } catch (e) { throw this.#mapErr(e); }
+    if (f.trashed) throw new RepoError('not-found');
+    if (f.name !== 'post.json') throw new RepoError('not-a-post');
+    let doc;
+    try { doc = await this.drive.downloadJson(id); } catch (e) { throw this.#mapErr(e); }
+    const post = await openPostDoc(doc, this.#keyFor(id));
+    const ownerEmail = post.owner.email || normEmail(f.owners?.[0]?.emailAddress);
+    if (ownerEmail === this.me.email && f.parents?.[0]) return this.openPost(f.parents[0]); // my own post: use the real folder
+    post.owner = { email: ownerEmail, name: post.owner.name || f.owners?.[0]?.displayName || prettyName(ownerEmail) };
+    const ids = { pj: id, cj: null, mf: null };
+    const full = { ...post, id, mine: false, role: ROLE_VIEW, ids, doc, rev: String(post.updatedAt), publicFile: true };
+    await this.loadIndex();
+    this.#upsertEntry(toEntry(post, { id, ids, rev: full.rev }), { link: true });
     this.#commitIndex().catch(() => {});
     return full;
   }
@@ -388,7 +412,7 @@ export class DriveRepo {
         try { await this.#grant(folder.id, cj.id, email, role); } catch (e) { warnings.push({ email, error: e }); delete doc.audience[email]; }
       }
       if (doc.linkShare) {
-        try { await this.drive.addPermission(folder.id, { type: 'anyone', role: 'reader' }); } catch (e) { doc.linkShare = false; warnings.push({ email: '*', error: e }); }
+        try { await this.#applyLink({ ids, media }, true); } catch (e) { doc.linkShare = false; warnings.push({ email: '*', error: e }); }
       }
       if (warnings.length) await this.drive.updateJson(pj.id, doc);
       if (prot) await this.#rememberKey(folder.id, prot.raw, true);
@@ -455,8 +479,10 @@ export class DriveRepo {
     for (const m of dropped) for (const fid of [m.id, m.thumb]) if (fid) { try { await this.drive.remove(fid); } catch { /* already gone */ } this.#forgetBlob(fid); }
 
     const warnings = touchAudience ? await this.#applyAudience(post, audience, truth?.audience) : [];
-    if (linkShare !== post.linkShare) {
-      try { await this.#applyLink(post.id, linkShare); } catch (e) { doc.linkShare = post.linkShare; warnings.push({ email: '*', error: e }); }
+    if (linkShare !== post.linkShare || (linkShare && added.length)) {
+      // when only photos were added, just the new files need opening up; a toggle touches every file
+      const files = linkShare !== post.linkShare ? [...kept, ...added] : added;
+      try { await this.#applyLink({ ids: post.ids, media: files, pj: linkShare !== post.linkShare }, linkShare); } catch (e) { doc.linkShare = post.linkShare; warnings.push({ email: '*', error: e }); }
     }
     if (warnings.length) {
       // never claim access in post.json that Drive did not actually grant
@@ -544,11 +570,18 @@ export class DriveRepo {
     return warnings;
   }
 
-  async #applyLink(folderId, enabled) {
-    const { perms } = await this.#permsByEmail(folderId);
-    const any = perms.find((p) => p.type === 'anyone');
-    if (enabled && !any) await this.drive.addPermission(folderId, { type: 'anyone', role: 'reader' });
-    if (!enabled && any) await this.drive.removePermission(folderId, any.id);
+  /**
+   * "Anyone with the link" is granted on the individual FILES only (post.json + photos), never on the folder:
+   * the folder cannot be listed or browsed, and comments.json stays private.
+   */
+  async #applyLink({ ids, media, pj = true }, enabled) {
+    const fileIds = [...(pj ? [ids.pj] : []), ...media.flatMap((m) => [m.id, m.thumb])].filter(Boolean);
+    await mapLimit(fileIds, 4, async (fid) => {
+      const { perms } = await this.#permsByEmail(fid);
+      const any = perms.find((p) => p.type === 'anyone');
+      if (enabled && !any) await this.drive.addPermission(fid, { type: 'anyone', role: 'reader' });
+      if (!enabled && any) { try { await this.drive.removePermission(fid, any.id); } catch (e) { if (!(e instanceof DriveError && e.notFound)) throw e; } }
+    });
   }
 
   /** Share (or change the role of) one person and persist the mirror kept in post.json. */
@@ -580,7 +613,8 @@ export class DriveRepo {
     }
     const names = {};
     for (const p of folder.perms) if (p.emailAddress && p.displayName) names[normEmail(p.emailAddress)] = p.displayName;
-    return { audience, linkShare: folder.perms.some((p) => p.type === 'anyone'), names };
+    const pjPerms = post.ids.pj ? (await this.#permsByEmail(post.ids.pj)).perms : [];
+    return { audience, linkShare: pjPerms.some((p) => p.type === 'anyone'), names };
   }
 
   /* ================= comments & likes ================= */

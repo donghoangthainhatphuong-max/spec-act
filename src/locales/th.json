@@ -250,5 +250,11 @@
   "update.ready": "มี SPECACT เวอร์ชันใหม่พร้อมใช้งาน",
   "update.reload": "โหลดใหม่",
   "error.insecure": "SPECACT ต้องใช้การเชื่อมต่อที่ปลอดภัย (HTTPS หรือ http://localhost) เพื่อให้เบราว์เซอร์เข้ารหัสข้อมูลของคุณได้ โปรดเปิดจากที่อยู่ https://",
-  "post.linkShareHintPw": "ทุกคนที่เข้าสู่ระบบ Google และมีลิงก์เปิดได้ แต่ยังต้องใช้รหัสผ่าน"
+  "post.linkShareHintPw": "ทุกคนที่เข้าสู่ระบบ Google และมีลิงก์เปิดได้ แต่ยังต้องใช้รหัสผ่าน",
+  "viewer.tools": "เครื่องมือรูปภาพ",
+  "viewer.rotateLeft": "หมุนซ้าย",
+  "viewer.rotateRight": "หมุนขวา",
+  "viewer.zoomOut": "ย่อ",
+  "viewer.zoomIn": "ขยาย",
+  "viewer.reset": "รีเซ็ต"
 }

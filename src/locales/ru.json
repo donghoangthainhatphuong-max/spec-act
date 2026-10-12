@@ -250,5 +250,11 @@
   "update.ready": "Доступна новая версия SPECACT.",
   "update.reload": "Перезагрузить",
   "error.insecure": "Для SPECACT нужно защищённое соединение (HTTPS или http://localhost), чтобы браузер мог шифровать ваши данные. Откройте приложение по адресу https://.",
-  "post.linkShareHintPw": "Любой, кто вошёл через Google и знает ссылку, может открыть запись, но ему всё равно нужен пароль."
+  "post.linkShareHintPw": "Любой, кто вошёл через Google и знает ссылку, может открыть запись, но ему всё равно нужен пароль.",
+  "viewer.tools": "Инструменты изображения",
+  "viewer.rotateLeft": "Повернуть влево",
+  "viewer.rotateRight": "Повернуть вправо",
+  "viewer.zoomOut": "Уменьшить",
+  "viewer.zoomIn": "Увеличить",
+  "viewer.reset": "Сбросить"
 }

@@ -327,24 +327,53 @@ describe('password protected posts', () => {
     expect(next.protected).toBe(true);
   });
 
-  it('link sharing lets anyone with the link in (plus the password when the post has one)', async () => {
+  it('link sharing opens FILES only (post.json + photos), never the folder or comments', async () => {
     const alice = mk('alice@gmail.com', 'Alice');
     const dave = mk('dave@gmail.com', 'Dave');
-    const plain = await alice.createPost({ text: 'plain', files: [], audience: {}, linkShare: true });
-    expect(plain.post.linkShare).toBe(true); // public-by-link works without a password too
-    expect((await dave.openPost(plain.post.id)).text).toBe('plain');
-    const closed = await alice.setLinkShare(plain.post, false);
-    expect(closed.linkShare).toBe(false);
-    await expect(dave.openPost(plain.post.id)).rejects.toMatchObject({ code: 'forbidden' });
-
-    const { post } = await alice.createPost({ text: 'via link', files: [], audience: {}, password: 'pw', linkShare: true });
+    const bob = mk('bob@gmail.com', 'Bob');
+    const { post } = await alice.createPost({ text: 'for everyone', files: [file('a.jpg')], audience: {}, linkShare: true });
     expect(post.linkShare).toBe(true);
-    expect((await dave.openPost(post.id)).locked).toBe(true);
-    expect((await dave.unlockAndOpen(post.id, 'pw')).text).toBe('via link');
-    expect((await dave.loadIndex()).shared[0].via).toBe('link');
-    const off = await alice.setLinkShare(post, false);
+
+    const anyoneOn = (id) => [...fake.files.get(id).perms.values()].some((p) => p.type === 'anyone');
+    expect(anyoneOn(post.id)).toBe(false); // folder
+    expect(anyoneOn(post.ids.mf)).toBe(false); // media folder
+    expect(anyoneOn(post.ids.cj)).toBe(false); // comments
+    expect(anyoneOn(post.ids.pj)).toBe(true);
+    expect(post.media.every((m) => anyoneOn(m.id) && anyoneOn(m.thumb))).toBe(true);
+
+    await expect(dave.openPost(post.id)).rejects.toMatchObject({ code: 'forbidden' }); // folder id: no access
+    const open = await dave.openPost(post.ids.pj); // link id: the public file
+    expect(open.text).toBe('for everyone');
+    expect(open.role).toBe('view');
+    expect(open.ids.cj).toBeNull();
+    expect(await dave.mediaUrl(open, open.media[0])).toBeTruthy();
+    expect((await dave.loadComments(open)).comments).toEqual([]);
+    const seen = (await dave.drive.list({ q: `'${post.id}' in parents and trashed = false` })).map((f) => f.name);
+    expect(seen).toEqual(['post.json']); // only the public file shows up: no comments.json, no media folder
+    await expect(dave.drive.get(post.id)).rejects.toMatchObject({ status: 403 });
+    expect((await dave.loadIndex()).shared[0]).toMatchObject({ id: post.ids.pj, via: 'link' });
+    // the owner following their own link lands on the real post
+    expect((await alice.openPost(post.ids.pj)).id).toBe(post.id);
+    expect((await bob.syncIndex()).shared).toHaveLength(0);
+
+    // photos added later are opened too; turning it off closes everything again
+    const grown = await alice.updatePost(post, { keepMedia: post.media.map((m) => m.id), files: [file('b.jpg')] });
+    expect(grown.post.media.every((m) => anyoneOn(m.id))).toBe(true);
+    const off = await alice.setLinkShare(grown.post, false);
     expect(off.linkShare).toBe(false);
-    await expect(dave.openPost(post.id)).rejects.toMatchObject({ code: 'forbidden' });
+    expect(anyoneOn(post.ids.pj) || off.media.some((m) => anyoneOn(m.id))).toBe(false);
+    await expect(dave.openPost(post.ids.pj)).rejects.toMatchObject({ code: 'forbidden' });
+  });
+
+  it('a protected post opened through its public file still needs the password', async () => {
+    const alice = mk('alice@gmail.com', 'Alice');
+    const dave = mk('dave@gmail.com', 'Dave');
+    const { post } = await alice.createPost({ text: 'via link', files: [file('a.jpg')], audience: {}, password: 'pw', linkShare: true });
+    expect((await dave.openPost(post.ids.pj)).locked).toBe(true);
+    await expect(dave.unlockAndOpen(post.ids.pj, 'bad')).rejects.toMatchObject({ code: 'wrong-password' });
+    const open = await dave.unlockAndOpen(post.ids.pj, 'pw');
+    expect(open.text).toBe('via link');
+    expect(await dave.mediaUrl(open, open.media[0])).toBeTruthy();
   });
 });
 
