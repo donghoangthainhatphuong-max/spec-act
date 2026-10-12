@@ -82,3 +82,26 @@ describe('secure vault', () => {
     expect(await vault.get('k')).toEqual({ v: 42 });
   });
 });
+
+describe('secure vault: PIN confirmation', () => {
+  beforeEach(async () => { await vault.wipe(); });
+
+  it('verify() counts wrong attempts like unlock() and accepts the right PIN', async () => {
+    await vault.create('123456');
+    await expect(vault.verify('000000')).rejects.toMatchObject({ code: 'bad-pin', attempts: 1 });
+    await vault.verify('123456');
+    expect((await vault.status()).attempts).toBe(0);
+  });
+
+  it('verify() needs an unlocked vault and wipes after too many failures', async () => {
+    await vault.create('123456');
+    vault.lock();
+    await expect(vault.verify('123456')).rejects.toMatchObject({ code: 'locked' });
+    await vault.unlock('123456');
+    for (let i = 0; i < 3; i++) await expect(vault.verify('111111')).rejects.toMatchObject({ code: 'bad-pin' });
+    await clearThrottle();
+    await expect(vault.verify('111111')).rejects.toMatchObject({ code: 'wiped' });
+    expect(await vault.exists()).toBe(false);
+    expect(vault.unlocked).toBe(false);
+  });
+});

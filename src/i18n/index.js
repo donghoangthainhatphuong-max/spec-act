@@ -28,6 +28,7 @@ export function detectLanguage() {
     const saved = JSON.parse(localStorage.getItem('specact.prefs') || '{}').lang;
     if (saved && LANGS.some(([c]) => c === saved)) return saved;
   } catch { /* ignore */ }
+  if (!config.detectLang) return config.defaultLang;
   const nav = (navigator.languages || [navigator.language || '']).map((l) => l.slice(0, 2).toLowerCase());
   const hit = nav.find((l) => LANGS.some(([c]) => c === l));
   return hit || config.defaultLang;

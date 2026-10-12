@@ -247,5 +247,8 @@
   "welcome.demo": "Demoyu dene",
   "welcome.flow1": "Bu cihazdaki her şeyi kilitleyen {n} haneli bir PIN oluşturun.",
   "welcome.flow2": "Kendi Google OAuth anahtarlarınızı yapıştırın — cihazdan asla çıkmazlar.",
-  "welcome.flow3": "Google ile giriş yapın. Gönderiler Drive'ınızdaki SPECACT klasöründe saklanır."
+  "welcome.flow3": "Google ile giriş yapın. Gönderiler Drive'ınızdaki SPECACT klasöründe saklanır.",
+  "update.ready": "SPECACT'ın yeni bir sürümü hazır.",
+  "update.reload": "Yeniden yükle",
+  "error.insecure": "SPECACT'ın tarayıcınızın verilerinizi şifreleyebilmesi için güvenli bir bağlantıya (HTTPS veya http://localhost) ihtiyacı var. Lütfen https:// adresinden açın."
 }

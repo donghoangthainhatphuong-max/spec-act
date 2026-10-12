@@ -1,5 +1,6 @@
 <script setup>
 import { computed, nextTick, ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 import { useI18n } from '@/i18n';
 import PinPad from './PinPad.vue';
 import { useSessionStore } from '../../stores/session';
@@ -8,6 +9,7 @@ import { useUiStore } from '../../stores/ui';
 const props = defineProps({ open: { type: Boolean, default: false } });
 const emit = defineEmits(['close']);
 const { t } = useI18n();
+const router = useRouter();
 const session = useSessionStore();
 const ui = useUiStore();
 
@@ -29,7 +31,18 @@ watch(() => props.open, async (o) => {
 
 async function onComplete(pin) {
   error.value = '';
-  if (step.value === 'old') { oldPin.value = pin; step.value = 'new'; pad.value.reset(); return; }
+  if (step.value === 'old') {
+    busy.value = true;
+    try {
+      await session.verifyPin(pin);
+      oldPin.value = pin; step.value = 'new'; pad.value.reset();
+    } catch (e) {
+      if (e.code === 'wiped') { ui.toast(t('pin.wiped'), { kind: 'error', ms: 6000 }); emit('close'); router.replace('/welcome'); return; }
+      error.value = e.code === 'throttled' ? t('pin.wait', { n: Math.ceil(e.retryInMs / 1000) }) : e.code === 'bad-pin' ? t('pin.wrong', { n: e.remaining }) : t('error.generic');
+      pad.value.reset({ shake: true });
+    } finally { busy.value = false; }
+    return;
+  }
   if (step.value === 'new') {
     if (pin === oldPin.value) { error.value = t('pin.change.same'); pad.value.reset({ shake: true }); return; }
     newPin.value = pin; step.value = 'confirm'; pad.value.reset(); return;
@@ -41,7 +54,7 @@ async function onComplete(pin) {
     ui.toast(t('toast.pinChanged'));
     emit('close');
   } catch (e) {
-    error.value = e.code === 'bad-pin' ? t('pin.wrong') : t('error.generic');
+    error.value = t('error.generic');
     step.value = 'old'; oldPin.value = ''; pad.value.reset({ shake: true });
   } finally { busy.value = false; }
 }

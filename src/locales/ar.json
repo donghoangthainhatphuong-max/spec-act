@@ -247,5 +247,8 @@
   "welcome.demo": "جرّب النسخة التجريبية",
   "welcome.flow1": "أنشئ رمز PIN من {n} أرقام يقفل كل شيء على هذا الجهاز.",
   "welcome.flow2": "الصق مفاتيح Google OAuth الخاصة بك — لا تغادر هذا الجهاز أبدًا.",
-  "welcome.flow3": "سجّل الدخول عبر Google. تُحفظ المنشورات في مجلد SPECACT داخل Drive الخاص بك."
+  "welcome.flow3": "سجّل الدخول عبر Google. تُحفظ المنشورات في مجلد SPECACT داخل Drive الخاص بك.",
+  "update.ready": "يتوفر إصدار جديد من SPECACT.",
+  "update.reload": "إعادة التحميل",
+  "error.insecure": "يحتاج SPECACT إلى اتصال آمن (HTTPS أو http://localhost) حتى يتمكن المتصفح من تشفير بياناتك. يرجى فتحه من عنوان يبدأ بـ https://."
 }

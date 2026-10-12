@@ -116,7 +116,7 @@ export class DriveRepo {
     const idx = await this.loadIndex();
     const [mineFolders, sharedFolders] = await Promise.all([
       this.drive.list({ q: `${qs(L.postsId)} in parents and mimeType = ${qs(MIME_FOLDER)} and trashed = false`, fields: FOLDER_FIELDS }),
-      this.drive.list({ q: `sharedWithMe = true and mimeType = ${qs(MIME_FOLDER)} and trashed = false and properties has { key='specact' and value='post' }`, fields: FOLDER_FIELDS }),
+      this.#listShared(),
     ]);
     const mine = await this.#reconcile(idx.mine, mineFolders.filter(isPostFolder));
     const sharedIds = new Set(sharedFolders.map((f) => f.id));
@@ -133,6 +133,18 @@ export class DriveRepo {
     await this.#saveLocalIndex();
     this.pushIndex();
     return idx;
+  }
+
+  /** Folders shared with me that are SPECACT posts. */
+  async #listShared() {
+    const base = `sharedWithMe = true and mimeType = ${qs(MIME_FOLDER)} and trashed = false`;
+    try {
+      return await this.drive.list({ q: `${base} and properties has { key='specact' and value='post' }`, fields: FOLDER_FIELDS });
+    } catch (e) {
+      // should Drive ever reject the `properties` filter, fall back to filtering client-side
+      if (!(e instanceof DriveError) || e.status !== 400) throw e;
+      return this.drive.list({ q: base, fields: FOLDER_FIELDS });
+    }
   }
 
   async #reconcile(existing, folders) {
@@ -414,7 +426,15 @@ export class DriveRepo {
     onProgress({ stage: 'save' });
     const updatedAt = Date.now();
     const text = input.text ?? post.text;
+    // Permissions are only touched when the caller names an audience. Whoever Drive says has access but this post
+    // never listed was shared by hand in the Drive UI: keep them unless the caller derived the list from Drive itself.
+    const touchAudience = input.audience !== undefined;
     const audience = cleanAudience(input.audience ?? post.audience, this.me.email);
+    let truth = null;
+    if (touchAudience) {
+      truth = await this.readAudience(post).catch(() => null);
+      if (truth && !input.authoritative) for (const [e, r] of Object.entries(truth.audience)) if (!(e in (post.audience || {})) && !(e in audience)) audience[e] = r;
+    }
     let protection = post.protection;
     if (post.protected && input.newPassword) {
       const store = await this.#loadRawKeys();
@@ -434,7 +454,7 @@ export class DriveRepo {
     const dropped = post.media.filter((m) => !keepIds.has(m.id));
     for (const m of dropped) for (const fid of [m.id, m.thumb]) if (fid) { try { await this.drive.remove(fid); } catch { /* already gone */ } this.#forgetBlob(fid); }
 
-    const warnings = await this.#applyAudience(post, audience);
+    const warnings = touchAudience ? await this.#applyAudience(post, audience, truth?.audience) : [];
     if (post.protected && linkShare !== post.linkShare) {
       try { await this.#applyLink(post.id, linkShare); } catch (e) { doc.linkShare = post.linkShare; warnings.push({ email: '*', error: e }); }
     }
@@ -515,10 +535,10 @@ export class DriveRepo {
     if (p && p.role !== 'owner') await this.drive.removePermission(folderId, p.id);
   }
 
-  async #applyAudience(post, wanted) {
+  async #applyAudience(post, wanted, known) {
     const warnings = [];
     // trust Drive over the mirror: sharing may also have been changed from the Drive UI
-    const current = (await this.readAudience(post).catch(() => ({ audience: post.audience || {} }))).audience;
+    const current = known ?? (await this.readAudience(post).catch(() => ({ audience: post.audience || {} }))).audience;
     for (const email of Object.keys(current)) if (!wanted[email]) { try { await this.#revoke(post.id, post.ids.cj, email); } catch (e) { warnings.push({ email, error: e }); } }
     for (const [email, role] of Object.entries(wanted)) if (current[email] !== role) { try { await this.#grant(post.id, post.ids.cj, email, role); } catch (e) { warnings.push({ email, error: e }); } }
     return warnings;
@@ -539,7 +559,7 @@ export class DriveRepo {
     const truth = await this.readAudience(post).catch(() => ({ audience: post.audience }));
     const audience = { ...truth.audience };
     if (role) audience[email] = role; else delete audience[email];
-    const { post: next, warnings } = await this.updatePost(post, { audience, keepMedia: post.media.map((m) => m.id), files: [] });
+    const { post: next, warnings } = await this.updatePost(post, { audience, authoritative: true, keepMedia: post.media.map((m) => m.id), files: [] });
     return { post: next, warnings };
   }
 

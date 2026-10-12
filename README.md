@@ -65,7 +65,7 @@ docker compose up -d --build
 | `SPECACT_PORT` | `8088` | Cổng publish của docker compose |
 | `VITE_APP_NAME` | `SPECACT` | Tên hiển thị (manifest PWA) |
 | `VITE_BASE_PATH` | `/` | Đường dẫn gốc nếu host ở thư mục con (*lúc build*) |
-| `VITE_DEFAULT_LANG` / `VITE_DEFAULT_THEME` | `vi` / `system` | Ngôn ngữ, giao diện mặc định |
+| `VITE_DEFAULT_LANG` / `VITE_DETECT_LANG` / `VITE_DEFAULT_THEME` | `vi` / `true` / `system` | Ngôn ngữ mặc định, có tự nhận ngôn ngữ trình duyệt không, giao diện mặc định |
 | `VITE_ENABLE_DEMO` | `true` | Bật chế độ dùng thử |
 | `VITE_DRIVE_ROOT_FOLDER` / `VITE_DRIVE_POSTS_FOLDER` | `SPECACT` / `posts` | Tên thư mục trên Drive |
 | `VITE_OAUTH_SCOPES` | `…/auth/drive` | Phạm vi OAuth (cần `drive` đầy đủ để mở bài người khác chia sẻ) |
@@ -106,6 +106,14 @@ npm test           # 70+ test (mã hóa, vault, OAuth, Drive giả lập đa ng�
 npm run lint
 npm run build      # dist/ (kèm service worker PWA)
 npm run icons      # sinh lại icon PWA từ logo
+```
+
+Thử giao diện thật với **Drive giả lập** (không cần tài khoản Google): chạy `npm run dev`, mở console của trình duyệt và gõ
+
+```js
+const h = await (await import('/tests/browserHarness.js')).bootstrap();   // đăng nhập an@gmail.com (PIN 482916)
+await h.binh.createPost({ text: 'Chào An', files: [], audience: { 'an@gmail.com': 'comment' } });  // người dùng thứ hai
+await h.posts.sync();
 ```
 
 Cấu trúc mã nguồn:

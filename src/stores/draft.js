@@ -18,6 +18,8 @@ export const useDraftStore = defineStore('draft', () => {
   const editing = ref(null);
   const lockedProtection = ref(false); // editing an already protected post: protection can't be toggled
   let seq = 0;
+  const snapshot = () => JSON.stringify([text.value, photos.value.map((p) => p.key), manual.value, protect.value, linkShare.value, password.value]);
+  const baseline = ref(snapshot()); // taken when the draft was opened, to tell real changes from untouched edits
 
   const mentions = computed(() => extractMentions(text.value).filter((e) => !people.isMe(e)));
   const audience = computed(() => {
@@ -63,6 +65,7 @@ export const useDraftStore = defineStore('draft', () => {
   function reset() {
     for (const p of photos.value) if (p.url) URL.revokeObjectURL(p.url);
     text.value = ''; photos.value = []; manual.value = {}; roles.value = {}; protect.value = false; password.value = ''; linkShare.value = false; editing.value = null; lockedProtection.value = false;
+    baseline.value = snapshot();
   }
   on('session-end', reset);
 
@@ -75,9 +78,10 @@ export const useDraftStore = defineStore('draft', () => {
     protect.value = post.protected;
     lockedProtection.value = post.protected;
     linkShare.value = post.linkShare;
+    baseline.value = snapshot();
   }
 
-  const dirty = computed(() => !!(text.value.trim() || photos.value.length));
+  const dirty = computed(() => snapshot() !== baseline.value);
 
   return { text, photos, manual, roles, protect, password, linkShare, editing, lockedProtection, mentions, audience, isMentionOnly, room, dirty, toggle, setRole, remove, addEmail, addFiles, removePhoto, reset, loadFrom };
 });

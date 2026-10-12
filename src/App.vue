@@ -5,12 +5,16 @@ import AppShell from './components/layout/AppShell.vue';
 import ToastHost from './components/ui/ToastHost.vue';
 import ConfirmDialog from './components/ui/ConfirmDialog.vue';
 import Lightbox from './components/ui/Lightbox.vue';
+import { useUiStore } from './stores/ui';
+import { useI18n } from '@/i18n';
 import { useSessionStore } from './stores/session';
 import { usePeopleStore } from './stores/people';
 import { usePostsStore } from './stores/posts';
 import { useAutoLock } from './composables/useAutoLock';
 import { config } from './config';
 
+const { t } = useI18n();
+const ui = useUiStore();
 const route = useRoute();
 const router = useRouter();
 const session = useSessionStore();
@@ -44,6 +48,7 @@ watch(() => session.phase, async (p, prev) => {
 <template>
   <AppShell v-if="inShell" />
   <RouterView v-else-if="!ready" />
+  <div v-if="ui.updateReady" class="update-banner" role="status"><span>{{ t('update.ready') }}</span><button class="btn sm primary" @click="ui.applyUpdate()">{{ t('update.reload') }}</button></div>
   <ToastHost />
   <ConfirmDialog />
   <Lightbox />

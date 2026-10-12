@@ -214,6 +214,25 @@ describe('sharing edge cases', () => {
     expect((await bob.openPost(post.id)).text).toBe('x');
   });
 
+  it('editing a post keeps people shared by hand in Drive, but still honours removals the owner made', async () => {
+    const alice = mk('alice@gmail.com', 'Alice');
+    const bob = mk('bob@gmail.com', 'Bob');
+    const carol = mk('carol@gmail.com', 'Carol');
+    const { post } = await alice.createPost({ text: 'v1', files: [], audience: { 'bob@gmail.com': 'view' } });
+    await alice.drive.addPermission(post.id, { email: 'carol@gmail.com', role: 'reader' }); // by hand in Drive
+    // the compose form only knows what the post listed
+    const edited = await alice.updatePost(post, { text: 'v2', audience: { 'bob@gmail.com': 'view' }, keepMedia: [], files: [] });
+    expect(edited.post.audience).toEqual({ 'bob@gmail.com': 'view', 'carol@gmail.com': 'view' });
+    expect((await carol.openPost(post.id)).text).toBe('v2');
+    // removing someone the post did list really revokes them
+    await alice.updatePost(edited.post, { text: 'v3', audience: { 'carol@gmail.com': 'view' }, keepMedia: [], files: [] });
+    await expect(bob.openPost(post.id)).rejects.toMatchObject({ code: 'forbidden' });
+    // a text-only update never touches permissions
+    await alice.drive.addPermission(post.id, { email: 'bob@gmail.com', role: 'reader' });
+    await alice.updatePost(edited.post, { text: 'v4', keepMedia: [], files: [] });
+    expect((await bob.openPost(post.id)).text).toBe('v4');
+  });
+
   it('never records access in post.json that Drive refused to grant', async () => {
     const alice = mk('alice@gmail.com', 'Alice');
     const { post } = await alice.createPost({ text: 'x', files: [], audience: {} });
@@ -221,6 +240,24 @@ describe('sharing edge cases', () => {
     expect(warnings.map((w) => w.email)).toEqual(['not-an-email']);
     expect(next.audience).toEqual({});
     expect(JSON.parse(fake.text(fake.files.get(post.ids.pj))).audience).toEqual({});
+  });
+
+  it('falls back to client-side filtering if Drive rejects the properties filter', async () => {
+    const alice = mk('alice@gmail.com', 'Alice');
+    const bob = mk('bob@gmail.com', 'Bob');
+    await alice.createPost({ text: 'visible', files: [], audience: { 'bob@gmail.com': 'view' } });
+    const stray = await alice.drive.createFolder('holiday photos', 'root');
+    await alice.drive.addPermission(stray.id, { email: 'bob@gmail.com', role: 'reader' });
+    const orig = fake.fetch;
+    globalThis.fetch = async (url, init) => {
+      const u = decodeURIComponent(String(url));
+      if (u.includes('/drive/v3/files?') && u.includes('sharedWithMe') && u.includes('properties has')) {
+        return new Response(JSON.stringify({ error: { code: 400, message: 'Invalid Value', errors: [{ reason: 'invalid' }] } }), { status: 400 });
+      }
+      return orig(url, init);
+    };
+    const idx = await bob.syncIndex();
+    expect(idx.shared.map((e) => e.text)).toEqual(['visible']); // the unrelated shared folder is ignored
   });
 
   it('treats a trashed post as gone', async () => {

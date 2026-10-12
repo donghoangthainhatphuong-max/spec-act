@@ -35,6 +35,7 @@ const defaultTheme = str('VITE_DEFAULT_THEME', 'system');
 export const config = Object.freeze({
   appName: str('VITE_APP_NAME', 'SPECACT'),
   basePath: str('BASE_URL', '/'),
+  detectLang: bool('VITE_DETECT_LANG', true),
   defaultLang: LANGS.some(([c]) => c === defaultLang) ? defaultLang : 'vi',
   defaultTheme: ['system', 'light', 'dark'].includes(defaultTheme) ? defaultTheme : 'system',
   enableDemo: bool('VITE_ENABLE_DEMO', true),

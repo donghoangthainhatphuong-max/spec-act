@@ -247,5 +247,8 @@
   "welcome.demo": "Essayer la démo",
   "welcome.flow1": "Créez un PIN à {n} chiffres qui verrouille tout sur cet appareil.",
   "welcome.flow2": "Collez vos propres clés OAuth Google — elles ne quittent jamais cet appareil.",
-  "welcome.flow3": "Connectez-vous avec Google. Les posts sont enregistrés dans un dossier SPECACT de votre Drive."
+  "welcome.flow3": "Connectez-vous avec Google. Les posts sont enregistrés dans un dossier SPECACT de votre Drive.",
+  "update.ready": "Une nouvelle version de SPECACT est disponible.",
+  "update.reload": "Recharger",
+  "error.insecure": "SPECACT nécessite une connexion sécurisée (HTTPS ou http://localhost) pour que votre navigateur puisse chiffrer vos données. Ouvrez-le depuis une adresse https://."
 }

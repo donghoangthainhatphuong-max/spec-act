@@ -1,5 +1,5 @@
 <script setup>
-import { computed, nextTick, onMounted, ref } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from '@/i18n';
 import AppAvatar from '../components/ui/AppAvatar.vue';
@@ -59,7 +59,10 @@ async function load() {
     state.value = e.code === 'forbidden' ? 'forbidden' : e.code === 'not-found' ? 'not-found' : e.code === 'not-a-post' ? 'not-found' : 'error';
   }
 }
-onMounted(load);
+const closeMenu = () => { menu.value = null; };
+const onEsc = (e) => { if (e.key === 'Escape') closeMenu(); };
+onMounted(() => { load(); document.addEventListener('click', closeMenu); document.addEventListener('keydown', onEsc); });
+onBeforeUnmount(() => { document.removeEventListener('click', closeMenu); document.removeEventListener('keydown', onEsc); });
 
 async function onUnlocked() {
   audience.value = { ...post.value.audience };

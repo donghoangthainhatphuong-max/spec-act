@@ -247,5 +247,8 @@
   "welcome.demo": "Coba demo",
   "welcome.flow1": "Buat PIN {n} digit yang mengunci semuanya di perangkat ini.",
   "welcome.flow2": "Tempel kunci OAuth Google milik Anda sendiri — tidak pernah keluar dari perangkat ini.",
-  "welcome.flow3": "Masuk dengan Google. Kiriman disimpan di folder SPECACT pada Drive Anda."
+  "welcome.flow3": "Masuk dengan Google. Kiriman disimpan di folder SPECACT pada Drive Anda.",
+  "update.ready": "Versi baru SPECACT tersedia.",
+  "update.reload": "Muat ulang",
+  "error.insecure": "SPECACT memerlukan koneksi aman (HTTPS atau http://localhost) agar peramban dapat mengenkripsi data Anda. Silakan buka dari alamat https://."
 }

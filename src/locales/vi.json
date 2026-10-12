@@ -247,5 +247,8 @@
   "welcome.demo": "Dùng thử",
   "welcome.flow1": "Tạo mã PIN {n} số để khóa toàn bộ dữ liệu trên thiết bị này.",
   "welcome.flow2": "Dán khóa OAuth Google của riêng bạn — chúng không rời khỏi thiết bị.",
-  "welcome.flow3": "Đăng nhập Google. Bài viết được lưu trong thư mục SPECACT trên Drive của bạn."
+  "welcome.flow3": "Đăng nhập Google. Bài viết được lưu trong thư mục SPECACT trên Drive của bạn.",
+  "update.ready": "Đã có phiên bản SPECACT mới.",
+  "update.reload": "Tải lại",
+  "error.insecure": "SPECACT cần kết nối an toàn (HTTPS hoặc http://localhost) để trình duyệt mã hóa được dữ liệu của bạn. Hãy mở từ địa chỉ https://."
 }

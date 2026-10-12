@@ -80,6 +80,13 @@ export const useSessionStore = defineStore('session', () => {
     return { clientId: secrets?.clientId || '', clientSecret: secrets?.clientSecret || '', keep: secrets?.keep !== false };
   }
 
+  async function verifyPin(pin) {
+    try { await vault.verify(pin); } catch (e) {
+      if (e instanceof VaultError && e.code === 'wiped') await resetDevice();
+      throw e;
+    }
+  }
+
   async function changePin(oldPin, newPin) {
     await vault.changePin(oldPin, newPin);
   }
@@ -225,7 +232,7 @@ export const useSessionStore = defineStore('session', () => {
 
   return {
     phase, mode, me, repo, hasCreds, keepSignedIn, offline, notice, busy, ready,
-    init, setup, unlock, saveCreds, credsPreview, changePin, beginSignIn, lock, signOut, resetDevice, enterDemo, leaveDemo,
+    init, setup, unlock, saveCreds, credsPreview, verifyPin, changePin, beginSignIn, lock, signOut, resetDevice, enterDemo, leaveDemo,
   };
 });
 

@@ -247,5 +247,8 @@
   "welcome.demo": "デモを試す",
   "welcome.flow1": "この端末のすべてをロックする {n} 桁の PIN を作成します。",
   "welcome.flow2": "ご自身の Google OAuth キーを貼り付けます。キーはこの端末の外に出ません。",
-  "welcome.flow3": "Google でログインします。投稿はあなたのドライブの SPECACT フォルダに保存されます。"
+  "welcome.flow3": "Google でログインします。投稿はあなたのドライブの SPECACT フォルダに保存されます。",
+  "update.ready": "SPECACT の新しいバージョンが利用できます。",
+  "update.reload": "再読み込み",
+  "error.insecure": "ブラウザがデータを暗号化できるよう、SPECACT には安全な接続（HTTPS または http://localhost）が必要です。https:// のアドレスから開いてください。"
 }

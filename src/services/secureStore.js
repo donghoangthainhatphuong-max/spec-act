@@ -105,7 +105,11 @@ class SecureStore {
     this.devKey = devKey;
   }
 
-  async unlock(pin) {
+  /**
+   * Derive the PIN key and prove it is right. Failures are counted persistently, throttled and finally
+   * wipe the vault — the same rules whether the caller is unlocking or confirming the PIN for a change.
+   */
+  async #checkPin(pin) {
     const meta = await idbGet(META, 'vault');
     const devKey = await idbGet(META, 'device-key');
     if (!meta || !devKey) throw new VaultError('no-vault');
@@ -128,8 +132,19 @@ class SecureStore {
       throw new VaultError('bad-pin', { attempts, remaining: config.pinMaxAttempts - attempts, retryInMs: delay });
     }
     if (meta.attempts || meta.lockedUntil) await idbPut(META, 'vault', { ...meta, attempts: 0, lockedUntil: 0 });
+    return { pinKey, devKey, meta };
+  }
+
+  async unlock(pin) {
+    const { pinKey, devKey } = await this.#checkPin(pin);
     this.pinKey = pinKey;
     this.devKey = devKey;
+  }
+
+  /** Confirm the PIN of an unlocked vault (used before sensitive changes). */
+  async verify(pin) {
+    this.#need();
+    await this.#checkPin(pin);
   }
 
   /** Forget the keys held in memory. Data stays encrypted on disk. */
@@ -156,9 +171,7 @@ class SecureStore {
   /** Re-encrypt every record under a new PIN (and a fresh salt). */
   async changePin(oldPin, newPin) {
     this.#need();
-    const meta = await idbGet(META, 'vault');
-    const oldKey = await deriveKey(oldPin, b64d(meta.salt), meta.iter);
-    try { await this.#open(CHECK, await idbGet(RECORDS, CHECK), oldKey, this.devKey); } catch { throw new VaultError('bad-pin'); }
+    const { pinKey: oldKey, meta } = await this.#checkPin(oldPin);
 
     const rows = (await idbAll(RECORDS)).filter(([k]) => k !== CHECK);
     const plain = [];

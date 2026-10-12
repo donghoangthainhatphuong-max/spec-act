@@ -6,6 +6,10 @@ export const useUiStore = defineStore('ui', () => {
   const confirmState = ref(null);
   const viewer = ref(null); // { post, items, index }
   const search = ref('');
+  const updateReady = ref(false); // a new service-worker version is waiting
+  let updater = null;
+  const setUpdater = (fn) => { updater = fn; };
+  const applyUpdate = () => updater?.();
   const fresh = ref(null); // email just added to an audience (animates the orbit)
   let seq = 0;
 
@@ -26,5 +30,5 @@ export const useUiStore = defineStore('ui', () => {
   function openViewer(items, index = 0) { viewer.value = { items, index }; }
   function closeViewer() { viewer.value = null; }
 
-  return { toasts, toast, confirmState, confirm, answer, viewer, openViewer, closeViewer, search, fresh, flash };
+  return { toasts, toast, confirmState, confirm, answer, viewer, openViewer, closeViewer, search, fresh, flash, updateReady, setUpdater, applyUpdate };
 });

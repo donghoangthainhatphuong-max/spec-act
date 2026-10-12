@@ -247,5 +247,8 @@
   "welcome.demo": "Probar la demo",
   "welcome.flow1": "Crea un PIN de {n} dígitos que bloquea todo en este dispositivo.",
   "welcome.flow2": "Pega tus propias claves OAuth de Google — nunca salen de este dispositivo.",
-  "welcome.flow3": "Inicia sesión con Google. Las publicaciones se guardan en una carpeta SPECACT de tu Drive."
+  "welcome.flow3": "Inicia sesión con Google. Las publicaciones se guardan en una carpeta SPECACT de tu Drive.",
+  "update.ready": "Hay una nueva versión de SPECACT.",
+  "update.reload": "Recargar",
+  "error.insecure": "SPECACT necesita una conexión segura (HTTPS o http://localhost) para que tu navegador pueda cifrar tus datos. Ábrelo desde una dirección https://."
 }

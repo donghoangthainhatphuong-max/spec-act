@@ -57,6 +57,8 @@ npm run lint
 npm run build
 ```
 
+To drive the real UI against the fake Drive (no Google account needed) run `npm run dev` and, in the browser console, `const h = await (await import('/tests/browserHarness.js')).bootstrap()` — it signs `an@gmail.com` in (PIN 482916) and gives you a second user, `h.binh`.
+
 ## Known limitations
 
 - Drive logic is tested against an in-repo simulation of the Drive API (`tests/fakeDrive.js`: permission inheritance, `sharedWithMe`, `properties`, multipart uploads), not live Google. Try it with a throw-away account before trusting it with important data.

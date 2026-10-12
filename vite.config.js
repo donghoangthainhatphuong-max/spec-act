@@ -12,7 +12,7 @@ export default defineConfig(({ mode }) => {
     plugins: [
       vue(),
       VitePWA({
-        registerType: 'autoUpdate',
+        registerType: 'prompt', // never reload under the user's feet (an open draft, an unlocked vault) — they choose when
         injectRegister: false,
         includeAssets: ['favicon.svg', 'icons/apple-touch-icon.png'],
         manifest: {

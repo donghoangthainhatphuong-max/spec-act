@@ -37,3 +37,9 @@ dialog.pin-dialog { text-align: center; }
   .post-head .pile { display: none; }
   .banner { font-size: 13px; }
 }
+
+.update-banner { position: fixed; z-index: 80; top: 12px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 14px; padding: 8px 8px 8px 18px; border-radius: 999px; background: var(--text); color: var(--bg); font-size: 14px; font-weight: 550; box-shadow: 0 16px 40px -14px rgba(0,0,0,.45); animation: toast .35s cubic-bezier(.3,.7,.4,1.3); max-width: calc(100vw - 24px); }
+
+.insecure { max-width: 520px; margin: 18vh auto 0; padding: 0 24px; text-align: center; }
+.insecure h1 { font-size: 34px; letter-spacing: .04em; margin-bottom: 14px; }
+.insecure p { color: var(--muted); font-size: 17px; line-height: 1.55; }

@@ -247,5 +247,8 @@
   "welcome.demo": "डेमो आज़माएँ",
   "welcome.flow1": "{n} अंकों का PIN बनाएँ जो इस डिवाइस पर सब कुछ लॉक रखे।",
   "welcome.flow2": "अपनी Google OAuth कुंजियाँ चिपकाएँ — ये इस डिवाइस से बाहर नहीं जातीं।",
-  "welcome.flow3": "Google से साइन इन करें। पोस्ट आपके Drive के SPECACT फ़ोल्डर में सहेजी जाती हैं।"
+  "welcome.flow3": "Google से साइन इन करें। पोस्ट आपके Drive के SPECACT फ़ोल्डर में सहेजी जाती हैं।",
+  "update.ready": "SPECACT का नया संस्करण उपलब्ध है।",
+  "update.reload": "रीलोड करें",
+  "error.insecure": "SPECACT को सुरक्षित कनेक्शन (HTTPS या http://localhost) चाहिए ताकि आपका ब्राउज़र आपके डेटा को एन्क्रिप्ट कर सके। कृपया इसे https:// पते से खोलें।"
 }

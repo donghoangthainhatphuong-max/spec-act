@@ -125,7 +125,6 @@ async function cancel() {
 
 onBeforeRouteLeave(async () => {
   if (done.value || submitting.value || !draft.dirty) return true;
-  if (!editing.value && !draft.text.trim() && !draft.photos.length) return true;
   const ok = await ui.confirm({ text: t('compose.discardConfirm'), yes: t('compose.discard') });
   if (ok) draft.reset();
   return ok;

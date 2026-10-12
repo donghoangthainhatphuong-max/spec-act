@@ -59,13 +59,15 @@ const syncText = computed(() => {
 });
 
 function closeMenu() { menu.value = null; }
+function onEsc(e) { if (e.key === 'Escape') closeMenu(); }
 onMounted(() => {
   document.addEventListener('click', closeMenu);
+  document.addEventListener('keydown', onEsc);
   if (!('IntersectionObserver' in window)) { visible.value = 9999; return; }
   observer = new IntersectionObserver((e) => { if (e.some((x) => x.isIntersecting)) visible.value += 12; }, { rootMargin: '600px' });
   watch(sentinel, (el, old) => { if (old) observer.unobserve(old); if (el) observer.observe(el); }, { immediate: true });
 });
-onBeforeUnmount(() => { document.removeEventListener('click', closeMenu); observer?.disconnect(); });
+onBeforeUnmount(() => { document.removeEventListener('click', closeMenu); document.removeEventListener('keydown', onEsc); observer?.disconnect(); });
 watch(() => [props.kind, ui.search, who.value], () => { visible.value = 12; });
 </script>
 
