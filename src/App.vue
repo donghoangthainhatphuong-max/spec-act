@@ -24,6 +24,7 @@ useAutoLock();
 
 const ready = computed(() => session.phase === 'ready');
 const inShell = computed(() => ready.value && route.meta.shell);
+const bare = computed(() => !!route.meta.legal);
 
 // Signed in while the welcome page is showing -> continue to where the visitor was going.
 watch([ready, () => route.name], ([isReady, name]) => {
@@ -46,7 +47,8 @@ watch(() => session.phase, async (p, prev) => {
 </script>
 
 <template>
-  <AppShell v-if="inShell" />
+  <RouterView v-if="bare" />
+  <AppShell v-else-if="inShell" />
   <RouterView v-else-if="!ready" />
   <div v-if="ui.updateReady" class="update-banner" role="status"><span>{{ t('update.ready') }}</span><button class="btn sm primary" @click="ui.applyUpdate()">{{ t('update.reload') }}</button></div>
   <ToastHost />

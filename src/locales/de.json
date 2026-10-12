@@ -265,5 +265,13 @@
   "comments.hintShared": "Nur Personen, denen Sie „Kann kommentieren“ gegeben haben. Link-Besucher können nur lesen.",
   "comments.hintLocked": "Niemand kann kommentieren oder reagieren. Vorhandene Kommentare bleiben sichtbar.",
   "comments.lockedNotice": "Kommentare sind für diesen Beitrag deaktiviert.",
-  "about.sovereignty": "Ihre Daten gehören nur Ihnen. Sie liegen in Ihrem eigenen Google Drive in einem offenen, dokumentierten Format, sodass jede Website oder App, der Sie vertrauen, dieselbe persönliche Datenquelle nutzen kann. Es gibt keinen Anbieter dazwischen: Kein Server von uns speichert, liest oder verändert sie."
+  "about.sovereignty": "Ihre Daten gehören nur Ihnen. Sie liegen in Ihrem eigenen Google Drive in einem offenen, dokumentierten Format, sodass jede Website oder App, der Sie vertrauen, dieselbe persönliche Datenquelle nutzen kann. Es gibt keinen Anbieter dazwischen: Kein Server von uns speichert, liest oder verändert sie.",
+  "legal.about": "Über",
+  "legal.terms": "Nutzungsbedingungen",
+  "legal.privacy": "Datenschutz",
+  "legal.back": "Zurück",
+  "legal.updated": "Zuletzt aktualisiert: {date}",
+  "legal.fallback": "Diese Seite liegt auf Englisch und Vietnamesisch vor; für Ihre Sprache wird sie auf Englisch angezeigt.",
+  "legal.contact": "Kontakt",
+  "welcome.mission": "Unser Ziel: ein persönlicher Inhaltsraum, der Ihnen vollständig gehört, nur mit den von Ihnen gewählten Personen geteilt wird und sich zu jeder vertrauenswürdigen Website mitnehmen lässt."
 }

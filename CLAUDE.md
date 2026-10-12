@@ -15,6 +15,8 @@
 
 9. **Định hướng thương hiệu:** nhấn mạnh cá nhân hóa, chủ quyền dữ liệu, phân tán/xuyên nền tảng. **Không** dùng tuyên bố "không quảng cáo/không theo dõi" trong giao diện hay tài liệu (sau này có thể có quảng cáo). Không thêm bất cứ cơ chế nào cho nhà cung cấp can thiệp vào dữ liệu người dùng; giữ định dạng dữ liệu mở và có phiên bản ([docs/OPEN_FORMAT.md](docs/OPEN_FORMAT.md)).
 
+10. Đổi hành vi dữ liệu/quyền riêng tư/chia sẻ → cập nhật `src/locales/pages/*.json` (Terms/Privacy/About, cả en và vi, cùng cấu trúc — `tests/pages.test.js`) trong cùng commit.
+
 ## 2. Lỗi đã gặp → quy tắc
 
 | Lỗi từng xảy ra | Quy tắc |

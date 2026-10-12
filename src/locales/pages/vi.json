@@ -1,0 +1,179 @@
+{
+  "about": {
+    "title": "Giới thiệu SPECACT",
+    "lead": "SPECACT — Secure Personal Ecosystem for Content, Access, and Control Trust — là cách chia sẻ những gì bạn viết và chụp cho đúng những người bạn chọn, trong khi dữ liệu vẫn là của bạn.",
+    "sections": [
+      {
+        "h": "Mục tiêu cốt lõi",
+        "body": [
+          "Trao cho mỗi người một không gian nội dung cá nhân mà họ hoàn toàn sở hữu và kiểm soát — và làm cho việc chia sẻ từ không gian đó an toàn, có chọn lọc và mang theo được tới bất kỳ website/ứng dụng nào họ tin tưởng.",
+          "SPECACT không phải mạng xã hội. Không có bảng tin do chúng tôi sắp xếp, không thu gom khán giả, không thuật toán nào xen giữa bạn và những người bạn chia sẻ. Đây là mạng lưới nội dung cá nhân có kiểm soát: có chủ quyền, có bản quyền và có kiểm soát."
+        ]
+      },
+      {
+        "h": "Năm nguyên tắc",
+        "list": [
+          "Cá nhân hóa — không gian của bạn, luật của bạn: ai xem, ai bình luận, gì được bảo vệ, gì công khai.",
+          "Chủ quyền — dữ liệu nằm trong Google Drive của chính bạn. Không nhà cung cấp trung gian nào lưu, đọc, kiểm duyệt hay sửa được.",
+          "Phân tán & mang theo được — định dạng dữ liệu mở, có tài liệu, nên nhiều website/ứng dụng có thể dùng chung một nguồn dữ liệu cá nhân của bạn mà không phải sao chép hay di cư.",
+          "Chia sẻ có kiểm soát — quyền truy cập là quyền thật của Drive chứ không phải lời hứa: không có quyền thì không đọc được, kể cả có liên kết. Bài có mật khẩu còn được mã hóa phía máy bạn.",
+          "An toàn mặc định — khóa và token ở lại trên thiết bị, mã hóa hai lớp và khóa bằng PIN; trang chỉ nói chuyện với Google."
+        ]
+      },
+      {
+        "h": "Trong thực tế điều này nghĩa là",
+        "list": [
+          "Xóa ứng dụng đi, bài viết vẫn nằm trong Drive của bạn, ứng dụng tương thích nào cũng đọc được.",
+          "Đổi nơi xem nội dung mà không đổi nơi lưu.",
+          "Thu hồi quyền của ai đó chỉ một cú nhấp — do Google Drive thực thi, không phải chúng tôi.",
+          "Tự host SPECACT: chỉ là các file tĩnh theo giấy phép MIT."
+        ]
+      },
+      {
+        "h": "Giới hạn thành thật",
+        "body": [
+          "Dữ liệu của bạn do Google lưu và chịu điều khoản của Google. Bên host website có thể phát mã bị sửa — hãy tự host hoặc dùng bản build bạn đã kiểm tra để loại rủi ro này. Thu hồi quyền không xóa được điều người khác đã xem hoặc lưu."
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "title": "Điều khoản sử dụng",
+    "lead": "Điều khoản dễ hiểu khi dùng SPECACT. Dùng ứng dụng nghĩa là bạn đồng ý với các điều khoản này.",
+    "sections": [
+      {
+        "h": "1. SPECACT là gì",
+        "body": [
+          "SPECACT là phần mềm nguồn mở (giấy phép MIT) chạy trong trình duyệt và lưu nội dung vào Google Drive của chính bạn, bằng tài khoản Google và OAuth client của chính bạn. Đơn vị vận hành website chỉ phát các file tĩnh; họ không lưu, nhận hay xử lý nội dung của bạn."
+        ]
+      },
+      {
+        "h": "2. Tài khoản và khóa của bạn",
+        "list": [
+          "Bạn cần tài khoản Google và tự tạo, tự giữ OAuth client ID/secret.",
+          "PIN, khóa và mật khẩu do bạn chịu trách nhiệm. Mất PIN chỉ khắc phục bằng cách xóa dữ liệu cục bộ rồi đăng nhập lại; mất mật khẩu bài viết thì không thể khôi phục.",
+          "Bạn phải tuân thủ điều khoản dịch vụ và chính sách API của Google."
+        ]
+      },
+      {
+        "h": "3. Nội dung của bạn",
+        "list": [
+          "Bạn sở hữu nội dung mình tạo và hoàn toàn chịu trách nhiệm về nó cũng như về việc bạn chia sẻ cho ai.",
+          "Không dùng SPECACT để lưu hay chia sẻ nội dung trái pháp luật, xâm phạm quyền người khác, hoặc để lộ dữ liệu riêng tư của người khác khi chưa được phép.",
+          "Vì nội dung nằm trong Drive của bạn, dự án và đơn vị vận hành website đều không thể xem xét, gỡ bỏ hay khôi phục nó."
+        ]
+      },
+      {
+        "h": "4. Chia sẻ và quyền truy cập",
+        "body": [
+          "Việc chia sẻ dùng quyền Google Drive. Khi bạn chia sẻ, nhắc tên, công khai bài bằng liên kết hoặc cho phép bình luận, bạn quyết định ai truy cập được và có thể thay đổi bất cứ lúc nào. Những gì đã bị người khác xem, sao chép hay tải về thì không thể lấy lại."
+        ]
+      },
+      {
+        "h": "5. Sử dụng chấp nhận được",
+        "list": [
+          "Không cố phá hoại, dò quét hay làm quá tải dữ liệu của người khác hoặc dịch vụ của Google qua ứng dụng.",
+          "Không dùng ứng dụng để quấy rối, lừa đảo hay gửi thư rác.",
+          "Người tự host không được sửa ứng dụng để thu thập khóa, token hay nội dung của người dùng."
+        ]
+      },
+      {
+        "h": "6. Không bảo hành",
+        "body": [
+          "Phần mềm được cung cấp “nguyên trạng”, không kèm bảo hành nào. Có thể có lỗi; hãy sao lưu những gì quan trọng (dữ liệu của bạn vốn là file thông thường trong Drive). Hãy thử bằng tài khoản phụ trước khi dựa vào nó."
+        ]
+      },
+      {
+        "h": "7. Giới hạn trách nhiệm",
+        "body": [
+          "Trong phạm vi luật cho phép, tác giả, người đóng góp và đơn vị vận hành không chịu trách nhiệm về mất dữ liệu, truy cập trái phép do PIN/mật khẩu yếu, nội dung được chia sẻ, hay bất kỳ thiệt hại gián tiếp nào phát sinh từ việc dùng phần mềm."
+        ]
+      },
+      {
+        "h": "8. Thay đổi và liên hệ",
+        "body": [
+          "Điều khoản có thể thay đổi; ngày ở trên là phiên bản mới nhất. Nếu có đơn vị chạy phần mềm này cho người khác, họ nên công bố thông tin liên hệ và điều khoản bổ sung tại đây."
+        ]
+      },
+      {
+        "h": "Lưu ý",
+        "body": [
+          "Văn bản này là mẫu chung cho dự án nguồn mở, không phải tư vấn pháp lý. Đơn vị vận hành nên nhờ rà soát theo luật nơi mình hoạt động."
+        ]
+      }
+    ]
+  },
+  "privacy": {
+    "title": "Chính sách quyền riêng tư",
+    "lead": "Tóm tắt: dự án không có máy chủ nào nhận nội dung của bạn, nên không thể thu thập nó. Dưới đây là chính xác điều xảy ra với dữ liệu của bạn.",
+    "sections": [
+      {
+        "h": "1. Chúng tôi thu thập gì",
+        "body": [
+          "Phần mềm SPECACT không thu thập gì: không phân tích truy cập, không trình theo dõi, không tài khoản riêng. Bài viết, ảnh, bình luận, danh bạ và chỉ mục của bạn chỉ nằm trong Google Drive của bạn. Bên host website phát file tĩnh có thể giữ nhật ký truy cập máy chủ thông thường (địa chỉ IP, thời gian, file được yêu cầu) theo chính sách của họ."
+        ]
+      },
+      {
+        "h": "2. Google nhận gì",
+        "body": [
+          "Ứng dụng nói chuyện trực tiếp từ trình duyệt của bạn tới Google (accounts.google.com, oauth2.googleapis.com, www.googleapis.com). Google xử lý dữ liệu đó theo Chính sách quyền riêng tư của Google. SPECACT xin quyền Google Drive để tạo thư mục SPECACT, đọc/ghi bài của bạn, đọc bài được chia sẻ cho bạn và quản lý ai mở được chúng. Nó không đụng vào các file khác trong Drive."
+        ]
+      },
+      {
+        "h": "3. Dữ liệu lưu trên thiết bị của bạn",
+        "list": [
+          "IndexedDB (mã hóa hai lớp: khóa thiết bị + PIN): OAuth client ID/secret, refresh token, khóa bài viết, chỉ mục và danh bạ lưu đệm.",
+          "localStorage (không bí mật): ngôn ngữ, giao diện, tự khóa, tùy chọn thông báo.",
+          "sessionStorage: trạng thái đăng nhập ngắn hạn và mã trong lúc chuyển hướng Google.",
+          "Không đặt cookie nào. Access token chỉ nằm trong bộ nhớ."
+        ]
+      },
+      {
+        "h": "4. Ai thấy được nội dung của bạn",
+        "body": [
+          "Chỉ những người bạn cấp quyền Google Drive và — với bài bạn công khai bằng liên kết — bất kỳ ai có liên kết và đã đăng nhập Google. Bài có mật khẩu được mã hóa ngay trên trình duyệt trước khi tải lên, nên cả người có quyền Drive cũng cần mật khẩu. Người được chia sẻ thấy tên, email của bạn và những người nhận khác ghi trên bài."
+        ]
+      },
+      {
+        "h": "5. Ảnh",
+        "body": [
+          "Ảnh được mã hóa lại trên trình duyệt trước khi tải lên, nhờ đó các siêu dữ liệu EXIF như vị trí GPS và thông tin máy ảnh bị loại bỏ."
+        ]
+      },
+      {
+        "h": "6. Chia sẻ với bên thứ ba",
+        "body": [
+          "Dự án không bán hay chia sẻ dữ liệu của bạn. Các website/ứng dụng khác mà bạn chọn kết nối với nguồn dữ liệu của mình hoạt động theo chính sách riêng của họ."
+        ]
+      },
+      {
+        "h": "7. Quyền kiểm soát của bạn",
+        "list": [
+          "Thu hồi quyền của bất kỳ người hay liên kết nào bất cứ lúc nào từ trang bài viết.",
+          "Xóa bài (vào thùng rác Drive hoặc xóa hẳn — do đơn vị vận hành cấu hình).",
+          "Đăng xuất để thu hồi token của ứng dụng; xóa dữ liệu cục bộ trong Cài đặt; gỡ ứng dụng tại myaccount.google.com/permissions.",
+          "Xuất hoặc chuyển dữ liệu: đó là file JSON và ảnh thông thường trong Drive của bạn."
+        ]
+      },
+      {
+        "h": "8. Trẻ em",
+        "body": [
+          "SPECACT không hướng tới trẻ em dưới độ tuổi Google yêu cầu để có tài khoản."
+        ]
+      },
+      {
+        "h": "9. Thay đổi và liên hệ",
+        "body": [
+          "Chính sách có thể được cập nhật; ngày ở trên là phiên bản mới nhất. Đơn vị triển khai SPECACT cho người khác nên bổ sung thông tin liên hệ và mô tả nhật ký máy chủ của mình tại đây."
+        ]
+      },
+      {
+        "h": "Lưu ý",
+        "body": [
+          "Văn bản này là mẫu chung cho dự án nguồn mở, không phải tư vấn pháp lý. Đơn vị vận hành nên nhờ rà soát theo luật nơi mình hoạt động."
+        ]
+      }
+    ]
+  },
+  "updated": "2026-10-12"
+}

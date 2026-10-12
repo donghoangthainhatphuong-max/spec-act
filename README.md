@@ -38,6 +38,7 @@ SPECACT là một ứng dụng web (Vue 3, PWA) để **chia sẻ bài viết v�
 | **Bảo mật cục bộ** | PIN 6 số, khóa tự động, giới hạn thử sai (làm chậm rồi xóa kho khóa), đổi PIN, xóa dữ liệu thiết bị. |
 | **Đa ngôn ngữ** | 14 ngôn ngữ: vi, en, zh, ja, ko, ru, fr, de, es, th, id, hi, ar (RTL), tr. |
 | **Giao diện** | Sáng/tối/tự động, responsive từ điện thoại đến máy tính, PWA cài được. |
+| **Trang thông tin** | Giới thiệu (mục tiêu cốt lõi, nguyên tắc), Điều khoản sử dụng, Chính sách quyền riêng tư tại `#/about`, `#/terms`, `#/privacy` — xem được cả khi chưa đăng nhập. Nội dung ở `src/locales/pages/` (en, vi; ngôn ngữ khác hiện bản tiếng Anh). Người vận hành nên rà soát theo luật địa phương và điền `VITE_LEGAL_CONTACT`. |
 | **Dùng thử** | Chế độ demo với dữ liệu mẫu (không cần Google) tại `#/demo`. |
 
 ## Chạy nhanh
@@ -72,6 +73,7 @@ docker compose up -d --build
 | `VITE_APP_NAME` | `SPECACT` | Tên hiển thị (manifest PWA) |
 | `VITE_BASE_PATH` | `/` | Đường dẫn gốc nếu host ở thư mục con (*lúc build*) |
 | `VITE_DEFAULT_LANG` / `VITE_DETECT_LANG` / `VITE_DEFAULT_THEME` | `vi` / `true` / `system` | Ngôn ngữ mặc định, có tự nhận ngôn ngữ trình duyệt không, giao diện mặc định |
+| `VITE_LEGAL_CONTACT` | *(trống)* | Email liên hệ hiển thị ở trang Điều khoản/Quyền riêng tư (người vận hành điền) |
 | `VITE_ENABLE_DEMO` | `true` | Bật chế độ dùng thử |
 | `VITE_DRIVE_ROOT_FOLDER` / `VITE_DRIVE_POSTS_FOLDER` | `SPECACT` / `posts` | Tên thư mục trên Drive |
 | `VITE_OAUTH_SCOPES` | `…/auth/drive` | Phạm vi OAuth (cần `drive` đầy đủ để mở bài người khác chia sẻ) |

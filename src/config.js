@@ -38,6 +38,7 @@ export const config = Object.freeze({
   detectLang: bool('VITE_DETECT_LANG', true),
   defaultLang: LANGS.some(([c]) => c === defaultLang) ? defaultLang : 'vi',
   defaultTheme: ['system', 'light', 'dark'].includes(defaultTheme) ? defaultTheme : 'system',
+  legalContact: str('VITE_LEGAL_CONTACT', ''),
   enableDemo: bool('VITE_ENABLE_DEMO', true),
 
   rootFolder: str('VITE_DRIVE_ROOT_FOLDER', 'SPECACT'),

@@ -16,6 +16,9 @@ const routes = [
       return { name: 'home' };
     },
   },
+  { path: '/about', name: 'about', component: () => import('../views/LegalView.vue'), props: { page: 'about' }, meta: { public: true, legal: true } },
+  { path: '/terms', name: 'terms', component: () => import('../views/LegalView.vue'), props: { page: 'terms' }, meta: { public: true, legal: true } },
+  { path: '/privacy', name: 'privacy', component: () => import('../views/LegalView.vue'), props: { page: 'privacy' }, meta: { public: true, legal: true } },
   { path: '/welcome', name: 'welcome', component: () => import('../views/WelcomeView.vue'), meta: { public: true } },
   { path: '/', name: 'home', component: () => import('../views/FeedView.vue'), props: { kind: 'home' }, meta: { shell: true } },
   { path: '/shared', name: 'shared', component: () => import('../views/FeedView.vue'), props: { kind: 'shared' }, meta: { shell: true } },

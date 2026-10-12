@@ -265,5 +265,13 @@
   "comments.hintShared": "Yalnızca “Yorum yapabilir” düzeyinde paylaştığınız kişiler. Bağlantıyla gelenler sadece okur.",
   "comments.hintLocked": "Kimse yorum yapamaz veya tepki veremez. Mevcut yorumlar görünmeye devam eder.",
   "comments.lockedNotice": "Bu gönderide yorumlar kapalı.",
-  "about.sovereignty": "Verileriniz yalnızca size aittir. Açık ve belgelenmiş bir biçimde kendi Google Drive'ınızda durur; böylece güvendiğiniz her web sitesi veya uygulama aynı kişisel veri kaynağını kullanabilir. Aracı sağlayıcı yoktur: hiçbir sunucumuz bunu saklamaz, okumaz veya değiştiremez."
+  "about.sovereignty": "Verileriniz yalnızca size aittir. Açık ve belgelenmiş bir biçimde kendi Google Drive'ınızda durur; böylece güvendiğiniz her web sitesi veya uygulama aynı kişisel veri kaynağını kullanabilir. Aracı sağlayıcı yoktur: hiçbir sunucumuz bunu saklamaz, okumaz veya değiştiremez.",
+  "legal.about": "Hakkında",
+  "legal.terms": "Koşullar",
+  "legal.privacy": "Gizlilik",
+  "legal.back": "Geri",
+  "legal.updated": "Son güncelleme {date}",
+  "legal.fallback": "Bu sayfa İngilizce ve Vietnamca yazılmıştır; diliniz için İngilizce gösterilir.",
+  "legal.contact": "İletişim",
+  "welcome.mission": "Amacımız: tamamen size ait, yalnızca seçtiğiniz kişilerle paylaşılan ve güvendiğiniz her siteye taşınabilen kişisel bir içerik alanı."
 }

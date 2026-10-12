@@ -265,5 +265,13 @@
   "comments.hintShared": "Hanya orang yang dibagikan dengan level “Boleh berkomentar”. Pengunjung tautan hanya bisa membaca.",
   "comments.hintLocked": "Tidak ada yang bisa berkomentar atau bereaksi. Komentar yang ada tetap terlihat.",
   "comments.lockedNotice": "Komentar dimatikan untuk kiriman ini.",
-  "about.sovereignty": "Data Anda hanya milik Anda. Data tersimpan di Google Drive Anda sendiri dalam format terbuka yang terdokumentasi, sehingga situs atau aplikasi tepercaya mana pun dapat memakai sumber data pribadi yang sama. Tidak ada penyedia di tengah: tidak ada server kami yang menyimpan, membaca, atau mengubahnya."
+  "about.sovereignty": "Data Anda hanya milik Anda. Data tersimpan di Google Drive Anda sendiri dalam format terbuka yang terdokumentasi, sehingga situs atau aplikasi tepercaya mana pun dapat memakai sumber data pribadi yang sama. Tidak ada penyedia di tengah: tidak ada server kami yang menyimpan, membaca, atau mengubahnya.",
+  "legal.about": "Tentang",
+  "legal.terms": "Ketentuan",
+  "legal.privacy": "Privasi",
+  "legal.back": "Kembali",
+  "legal.updated": "Terakhir diperbarui {date}",
+  "legal.fallback": "Halaman ini ditulis dalam bahasa Inggris dan Vietnam; ditampilkan dalam bahasa Inggris untuk bahasa Anda.",
+  "legal.contact": "Kontak",
+  "welcome.mission": "Tujuan kami: ruang konten pribadi yang sepenuhnya milik Anda, dibagikan hanya kepada orang pilihan Anda, dan dapat dibawa ke situs tepercaya mana pun."
 }

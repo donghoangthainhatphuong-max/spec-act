@@ -9,6 +9,7 @@ import { useI18n } from '@/i18n';
 import AppIcon from '../components/ui/AppIcon.vue';
 import AppLogo from '../components/ui/AppLogo.vue';
 import OrbitGraphic from '../components/ui/OrbitGraphic.vue';
+import LegalLinks from '../components/layout/LegalLinks.vue';
 import PinPad from '../components/auth/PinPad.vue';
 import CredentialsForm from '../components/auth/CredentialsForm.vue';
 import lanterns from '../assets/samples/lanterns.jpg?url';
@@ -153,6 +154,7 @@ async function demo() { await session.enterDemo(); router.replace('/'); }
         <template v-if="stage === 'intro'">
           <h1>{{ t('welcome.title') }}</h1>
           <p class="sub">{{ t('welcome.sub') }}</p>
+          <p class="mission"><AppIcon name="shield" :size="18" />{{ t('welcome.mission') }}</p>
           <button class="btn primary lg block g" @click="step = 'pin'"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z" opacity=".95" /><path d="M12 22c2.7 0 5-.9 6.6-2.5l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z" opacity=".8" /><path d="M6.4 13.9a6 6 0 0 1 0-3.8V7.5H3.1a10 10 0 0 0 0 9z" opacity=".65" /><path d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.5l3.3 2.6C7.2 7.8 9.4 6 12 6z" opacity=".8" /></svg>{{ t('welcome.google') }}</button>
           <ul class="flow">
             <li><b>1</b>{{ t('welcome.flow1', { n: config.pinLength }) }}</li>
@@ -183,6 +185,7 @@ async function demo() { await session.enterDemo(); router.replace('/'); }
         <template v-else>
           <h1>{{ t('welcome.title') }}</h1>
           <p class="sub">{{ t('welcome.sub') }}</p>
+          <p class="mission"><AppIcon name="shield" :size="18" />{{ t('welcome.mission') }}</p>
           <button class="btn primary lg block g" :disabled="busy" @click="signIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z" opacity=".95" /><path d="M12 22c2.7 0 5-.9 6.6-2.5l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z" opacity=".8" /><path d="M6.4 13.9a6 6 0 0 1 0-3.8V7.5H3.1a10 10 0 0 0 0 9z" opacity=".65" /><path d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.5l3.3 2.6C7.2 7.8 9.4 6 12 6z" opacity=".8" /></svg>{{ t('welcome.google') }}</button>
           <details data-act="adv"><summary><AppIcon name="key" :size="16" />{{ t('welcome.advanced') }}</summary>
             <div class="adv"><p class="hint">{{ t('welcome.advancedHint') }}</p><button class="btn sm" @click="editKeys = true">{{ t('settings.editKeys') }}</button></div>
@@ -191,6 +194,7 @@ async function demo() { await session.enterDemo(); router.replace('/'); }
         </template>
       </div>
 
+      <LegalLinks class="welcome-legal" />
       <ul class="trust"><li v-for="s in t('welcome.foot').split(/\s*·\s*/)" :key="s"><AppIcon name="check" :size="14" />{{ s }}</li></ul>
     </div>
   </div>
@@ -203,6 +207,9 @@ async function demo() { await session.enterDemo(); router.replace('/'); }
 .flow { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 14.5px; color: var(--muted); }
 .flow li { display: flex; gap: 12px; align-items: flex-start; line-height: 1.45; }
 .flow b { flex: none; width: 24px; height: 24px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; font-size: 12.5px; font-weight: 700; }
+.mission { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: 14px; background: var(--accent-soft); font-size: 14px; line-height: 1.5; }
+.mission svg { flex: none; color: var(--accent); margin-top: 1px; }
+.welcome-legal { margin-bottom: 10px; }
 .h-sm { font-size: clamp(26px, 3.4vw, 34px); }
 .btn:disabled { opacity: .6; }
 </style>

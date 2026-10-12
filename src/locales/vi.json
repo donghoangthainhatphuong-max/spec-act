@@ -265,5 +265,13 @@
   "comments.hintShared": "Chỉ người được chia sẻ ở mức “Được bình luận”. Người lạ qua liên kết chỉ đọc.",
   "comments.hintLocked": "Không ai bình luận hay thả tim được. Bình luận cũ vẫn hiển thị.",
   "comments.lockedNotice": "Bài này đã tắt bình luận.",
-  "about.sovereignty": "Dữ liệu là của riêng bạn. Nó nằm trong Google Drive của bạn theo định dạng mở, có tài liệu, nên nhiều website/ứng dụng bạn tin tưởng có thể cùng dùng một nguồn dữ liệu cá nhân. Không có nhà cung cấp ở giữa: không máy chủ nào của chúng tôi lưu, đọc hay can thiệp được."
+  "about.sovereignty": "Dữ liệu là của riêng bạn. Nó nằm trong Google Drive của bạn theo định dạng mở, có tài liệu, nên nhiều website/ứng dụng bạn tin tưởng có thể cùng dùng một nguồn dữ liệu cá nhân. Không có nhà cung cấp ở giữa: không máy chủ nào của chúng tôi lưu, đọc hay can thiệp được.",
+  "legal.about": "Giới thiệu",
+  "legal.terms": "Điều khoản",
+  "legal.privacy": "Quyền riêng tư",
+  "legal.back": "Quay lại",
+  "legal.updated": "Cập nhật lần cuối {date}",
+  "legal.fallback": "-",
+  "legal.contact": "Liên hệ",
+  "welcome.mission": "Mục tiêu của chúng tôi: một không gian nội dung cá nhân do bạn hoàn toàn sở hữu, chỉ chia sẻ cho người bạn chọn, và mang theo được tới mọi website bạn tin tưởng."
 }

@@ -265,5 +265,13 @@
   "comments.hintShared": "仅限以“可评论”级别分享的人。链接访问者只能阅读。",
   "comments.hintLocked": "任何人都不能评论或点赞，已有评论仍可见。",
   "comments.lockedNotice": "此帖已关闭评论。",
-  "about.sovereignty": "数据只属于你。它以开放、有文档的格式保存在你自己的 Google Drive 中，因此任何你信任的网站或应用都可以共用同一个个人数据源。中间没有服务商：我们没有任何服务器存储、读取或修改它。"
+  "about.sovereignty": "数据只属于你。它以开放、有文档的格式保存在你自己的 Google Drive 中，因此任何你信任的网站或应用都可以共用同一个个人数据源。中间没有服务商：我们没有任何服务器存储、读取或修改它。",
+  "legal.about": "关于",
+  "legal.terms": "条款",
+  "legal.privacy": "隐私",
+  "legal.back": "返回",
+  "legal.updated": "最后更新：{date}",
+  "legal.fallback": "本页以英文和越南文撰写，您的语言暂以英文显示。",
+  "legal.contact": "联系",
+  "welcome.mission": "我们的目标：一个完全由你拥有的个人内容空间，只与你选择的人分享，并可迁移到你信任的任何网站。"
 }

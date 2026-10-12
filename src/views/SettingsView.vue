@@ -3,6 +3,7 @@ import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from '@/i18n';
 import AppAvatar from '../components/ui/AppAvatar.vue';
+import LegalLinks from '../components/layout/LegalLinks.vue';
 import AppIcon from '../components/ui/AppIcon.vue';
 import CredentialsForm from '../components/auth/CredentialsForm.vue';
 import ChangePinDialog from '../components/auth/ChangePinDialog.vue';
@@ -104,6 +105,7 @@ async function resync() { await posts.sync(); ui.toast(t('toast.synced')); }
   <section class="set"><h2>{{ t('settings.about') }}</h2>
     <div class="set-row about"><p>{{ t('about.notSocial') }}</p></div>
     <div class="set-row about"><p>{{ t('about.sovereignty') }}</p></div>
+    <div class="set-row"><LegalLinks /></div>
     <div v-if="installEvent" class="set-row"><span>{{ t('settings.install') }}</span><button class="btn sm primary" @click="install"><AppIcon name="download" :size="16" />{{ t('settings.installBtn') }}</button></div>
     <div class="set-row"><span class="hint">SPECACT · Secure Personal Ecosystem for Content, Access, and Control Trust</span></div>
   </section>
