@@ -8,6 +8,8 @@ import ChatButton from '../ui/ChatButton.vue';
 import AvatarPile from '../ui/AvatarPile.vue';
 import RichText from './RichText.vue';
 import PhotoGrid from './PhotoGrid.vue';
+import AttachmentList from './AttachmentList.vue';
+import { isVisual } from '../../services/mediaKinds';
 import SealedBox from './SealedBox.vue';
 import { usePostsStore } from '../../stores/posts';
 import { usePeopleStore } from '../../stores/people';
@@ -64,13 +66,16 @@ const scope = computed(() => {
   const n = audienceCount.value;
   return { icon: 'lock', text: n === 0 ? t('post.onlyYou') : n === 1 ? t('post.people1') : t('post.people', { n }) };
 });
-const mediaTotal = computed(() => view.value.mediaCount ?? view.value.media.length);
+const visualMedia = computed(() => view.value.media.filter(isVisual));
+const attachments = computed(() => view.value.files ?? view.value.media.filter((m) => !isVisual(m)));
+const moreFiles = computed(() => Math.max(0, (view.value.fileCount ?? 0) - attachments.value.length));
+const mediaTotal = computed(() => view.value.mediaCount ?? visualMedia.value.length);
 
 function openPhoto(i) {
-  ui.openViewer({ post: view.value, items: view.value.media }, i);
+  ui.openViewer({ post: view.value, items: visualMedia.value }, i);
   // a feed card only knows its first photos: open the slideshow right away, then add the rest as soon as they are loaded
-  if (!props.detail && mediaTotal.value > view.value.media.length) {
-    posts.open(view.value.id).then((full) => ui.extendViewer(full, full.media)).catch(() => {});
+  if (!props.detail && mediaTotal.value > visualMedia.value.length) {
+    posts.open(view.value.id).then((full) => ui.extendViewer(full, full.media.filter(isVisual))).catch(() => {});
   }
 }
 
@@ -142,7 +147,8 @@ const ariaPeople = computed(() => listOf(audienceEmails.value.map((e) => people.
     <SealedBox v-if="locked" :post="view" @unlocked="emit('unlocked')" />
     <template v-else>
       <p v-if="view.text" class="post-text"><RichText :text="view.text" /><template v-if="view.truncated && !detail"> <RouterLink class="readmore" :to="{ name: 'post', params: { id: view.id } }">{{ t('post.readMore') }}</RouterLink></template></p>
-      <PhotoGrid :post="view" :media="view.media" :total="mediaTotal" :detail="detail" @open="openPhoto" />
+      <PhotoGrid :post="view" :media="visualMedia" :total="mediaTotal" :detail="detail" @open="openPhoto" />
+      <AttachmentList :post="view" :items="attachments" :more="moreFiles" />
     </template>
 
     <div class="actions">

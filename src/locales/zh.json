@@ -114,7 +114,7 @@
   "compose.saving": "正在保存…",
   "compose.sharing": "正在分享…",
   "compose.showPassword": "显示密码",
-  "compose.skipped": "已跳过 {n} 个文件。仅限照片和视频，每帖最多 {max} 个；照片每个 {mb} MB，视频每个 {vmb} MB。",
+  "compose.skipped": "已跳过 {n} 个文件。仅限照片、视频、音频和文档（不含网页、脚本或程序），每帖最多 {max} 个；照片 {mb} MB，视频 {vmb} MB，其他文件 {fmb} MB。",
   "compose.uploading": "正在上传 {done}/{total}…",
   "compose.viaMention": "已提及",
   "creds.badId": "这看起来不像 Google 客户端 ID（…apps.googleusercontent.com）。",
@@ -290,6 +290,12 @@
   "camera.useApp": "使用相机应用",
   "camera.added": "已添加 {n} 个",
   "camera.full": "此帖已满——请先移除一些再添加。",
-  "compose.addMedia": "添加照片或视频",
-  "viewer.loadingVideo": "正在加载视频…"
+  "compose.addMedia": "添加照片、视频、音频或文件",
+  "viewer.loadingVideo": "正在加载视频…",
+  "camera.audio": "音频",
+  "camera.audioOpen": "录音",
+  "attach.play": "播放",
+  "attach.download": "下载",
+  "attach.loading": "加载中…",
+  "attach.more": "另有 {n} 个附件"
 }

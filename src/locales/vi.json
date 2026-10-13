@@ -114,7 +114,7 @@
   "compose.saving": "Đang lưu…",
   "compose.sharing": "Đang chia sẻ…",
   "compose.showPassword": "Hiện mật khẩu",
-  "compose.skipped": "Đã bỏ qua {n} tệp. Chỉ nhận ảnh và video, tối đa {max} mỗi bài; ảnh {mb} MB, video {vmb} MB mỗi tệp.",
+  "compose.skipped": "Đã bỏ qua {n} tệp. Chỉ nhận ảnh, video, âm thanh và tài liệu (không nhận trang web, script hay chương trình), tối đa {max} mỗi bài; ảnh {mb} MB, video {vmb} MB, tệp khác {fmb} MB.",
   "compose.uploading": "Đang tải lên {done}/{total}…",
   "compose.viaMention": "được nhắc",
   "creds.badId": "Giá trị này không giống Client ID của Google (…apps.googleusercontent.com).",
@@ -290,6 +290,12 @@
   "camera.useApp": "Dùng ứng dụng máy ảnh",
   "camera.added": "Đã thêm {n}",
   "camera.full": "Bài đã đủ số lượng — hãy xóa bớt để thêm.",
-  "compose.addMedia": "Thêm ảnh hoặc video",
-  "viewer.loadingVideo": "Đang tải video…"
+  "compose.addMedia": "Thêm ảnh, video, âm thanh hoặc tài liệu",
+  "viewer.loadingVideo": "Đang tải video…",
+  "camera.audio": "Âm thanh",
+  "camera.audioOpen": "Ghi âm",
+  "attach.play": "Phát",
+  "attach.download": "Tải xuống",
+  "attach.loading": "Đang tải…",
+  "attach.more": "+{n} tệp đính kèm nữa"
 }

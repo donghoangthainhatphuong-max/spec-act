@@ -114,7 +114,7 @@
   "compose.saving": "กำลังบันทึก…",
   "compose.sharing": "กำลังแชร์…",
   "compose.showPassword": "แสดงรหัสผ่าน",
-  "compose.skipped": "ข้าม {n} ไฟล์ รับเฉพาะรูปภาพและวิดีโอ สูงสุด {max} ต่อโพสต์ รูปไม่เกิน {mb} MB วิดีโอไม่เกิน {vmb} MB ต่อไฟล์",
+  "compose.skipped": "ข้าม {n} ไฟล์ รับเฉพาะรูป วิดีโอ เสียง และเอกสาร (ไม่รับหน้าเว็บ สคริปต์ หรือโปรแกรม) สูงสุด {max} ต่อโพสต์ รูปไม่เกิน {mb} MB วิดีโอ {vmb} MB ไฟล์อื่น {fmb} MB",
   "compose.uploading": "กำลังอัปโหลด {done}/{total}…",
   "compose.viaMention": "ถูกแท็ก",
   "creds.badId": "ดูไม่เหมือนรหัสไคลเอ็นต์ของ Google (…apps.googleusercontent.com)",
@@ -290,6 +290,12 @@
   "camera.useApp": "ใช้แอปกล้อง",
   "camera.added": "เพิ่มแล้ว {n}",
   "camera.full": "โพสต์นี้เต็มแล้ว — ลบบางรายการก่อนจึงจะเพิ่มได้",
-  "compose.addMedia": "เพิ่มรูปภาพหรือวิดีโอ",
-  "viewer.loadingVideo": "กำลังโหลดวิดีโอ…"
+  "compose.addMedia": "เพิ่มรูป วิดีโอ เสียง หรือไฟล์",
+  "viewer.loadingVideo": "กำลังโหลดวิดีโอ…",
+  "camera.audio": "เสียง",
+  "camera.audioOpen": "บันทึกเสียง",
+  "attach.play": "เล่น",
+  "attach.download": "ดาวน์โหลด",
+  "attach.loading": "กำลังโหลด…",
+  "attach.more": "ไฟล์แนบอีก {n} รายการ"
 }

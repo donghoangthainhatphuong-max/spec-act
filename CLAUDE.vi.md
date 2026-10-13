@@ -19,7 +19,7 @@
 
 10. Đổi hành vi dữ liệu/quyền riêng tư/chia sẻ → cập nhật `src/locales/pages/*.json` (Terms/Privacy/About, cả en và vi, cùng cấu trúc — `tests/pages.test.js`) trong cùng commit.
 
-13. **Mục media** có `kind` (`image` mặc định, `video`) qua `publicMedia()`; mọi nơi hiển thị/tải lên media phải xử lý cả hai (lưới ở bảng tin, khung xem, xem trước khi soạn, demo, bài có mật khẩu).
+13. **Mục media** có `kind` (`image` mặc định, `video`, `audio`, `file`; âm thanh và tệp không có ảnh thu nhỏ, hiện dạng danh sách chứ không vào lưới) qua `publicMedia()`; mọi nơi hiển thị/tải lên media phải xử lý tất cả; không bao giờ hiển thị tài liệu đính kèm (chỉ tải xuống) và giữ danh sách chặn trong `mediaKinds.js` (lưới ở bảng tin, khung xem, xem trước khi soạn, demo, bài có mật khẩu).
 12. **Đặt tên:** mọi thứ SPECACT tạo trên Drive mà người khác thấy được đều dùng tiền tố `__S.P.E.C.T.A.C.T__` (`brandName()` trong `postModel.js`). Việc tìm kiếm phải chấp nhận cả tên có tiền tố lẫn tên cũ.
 11. **Thả tim đi theo quyền xem bài, không theo quyền bình luận.** Tim nằm ở `likes.json` riêng (writer cho mọi người được xem, không có quyền gì khác). Không đưa tim trở lại `comments.json`.
 

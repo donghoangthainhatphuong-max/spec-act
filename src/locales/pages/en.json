@@ -126,7 +126,7 @@
           "localStorage (not secret): language, theme, auto-lock and notification preferences.",
           "sessionStorage: a short-lived sign-in state and code during the Google redirect.",
           "No cookies are set. Access tokens are kept only in memory.",
-          "Camera and microphone: only when you open the in-app camera (microphone only while filming). Captures go into your post draft and then to your Drive; nothing else receives them."
+          "Camera and microphone: only when you open the in-app camera or voice recorder (microphone only while filming or recording sound). Captures go into your post draft and then to your Drive; nothing else receives them."
         ]
       },
       {

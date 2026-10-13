@@ -33,6 +33,7 @@ SPECACT là một ứng dụng web (Vue 3, PWA) để **chia sẻ bài viết v�
 |---|---|
 | **Bài viết** | Tạo, sửa, xóa (vào thùng rác Drive hoặc xóa hẳn — cấu hình được); tải ảnh (tự xoay đúng chiều, thu nhỏ, **xóa EXIF/GPS**, tạo ảnh thu nhỏ). Xem ảnh dạng slide có phóng to, thu nhỏ, xoay, kéo. |
 | **Chụp ảnh & quay video** | Chụp ảnh và quay video ngay trong app (camera trước/sau, tối đa `VITE_MAX_VIDEO_SECONDS` giây) hoặc chọn tệp; trên điện thoại nút **+** mở camera trước, trên máy tính mở trình chọn tệp. Video có ảnh bìa, xem được trong khung xem, và cũng được mã hóa trong bài có mật khẩu. |
+| **Âm thanh & tài liệu** | Ghi âm giọng nói ngay trong app hoặc đính kèm tệp âm thanh; đính kèm tài liệu (PDF, Office, văn bản, tệp nén…) như ảnh. Chúng hiện thành danh sách dưới bài (phát / tải xuống), được mã hóa trong bài có mật khẩu, và các loại nguy hiểm (trang web, script, chương trình, SVG) bị từ chối. Giới hạn: `VITE_MAX_FILE_MB`, `VITE_MAX_AUDIO_SECONDS`. |
 | **Chia sẻ** | Gõ `@email` để *tag* một người bạn đã kết nối → họ được cấp quyền xem. Hai mức: *được xem* và *được bình luận*. Chọn bạn từ lưới, nhập email, hoặc thu hồi bất kỳ lúc nào. |
 | **Mật khẩu** | Bài có thể **bảo vệ bằng mật khẩu**: nội dung và ảnh được mã hóa ngay trên trình duyệt (AES-256-GCM) trước khi lên Drive; có thể kết hợp liên kết công khai. |
 | **Liên kết công khai** | “Ai có liên kết” chỉ mở **các tệp của bài** (`post.json` + ảnh), không bao giờ mở thư mục. |
@@ -95,6 +96,7 @@ docker compose up -d --build
 | `VITE_AUTO_LOCK_MINUTES` | `5` | Tự khóa sau N phút không thao tác (0 = tắt) |
 | `VITE_POST_KDF_ITERATIONS` | `310000` | Độ nặng khi dẫn xuất khóa từ mật khẩu bài viết |
 | `VITE_MAX_IMAGES_PER_POST` / `VITE_MAX_IMAGE_MB` | `10` / `25` | Giới hạn ảnh |
+| `VITE_MAX_FILE_MB` / `VITE_MAX_AUDIO_SECONDS` | `50` / `600` | Giới hạn dung lượng tài liệu/tệp âm thanh; thời lượng tối đa khi ghi âm trong app |
 | `VITE_MAX_VIDEO_MB` / `VITE_MAX_VIDEO_SECONDS` | `200` / `180` | Giới hạn dung lượng video; thời lượng tối đa khi quay trong app |
 | `VITE_IMAGE_MAX_DIMENSION` / `VITE_IMAGE_QUALITY` / `VITE_THUMB_DIMENSION` | `2048` / `0.86` / `480` | Chất lượng ảnh |
 

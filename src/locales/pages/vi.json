@@ -126,7 +126,7 @@
           "localStorage (không bí mật): ngôn ngữ, giao diện, tự khóa, tùy chọn thông báo.",
           "sessionStorage: trạng thái đăng nhập ngắn hạn và mã trong lúc chuyển hướng Google.",
           "Không đặt cookie nào. Access token chỉ nằm trong bộ nhớ.",
-          "Camera và micro: chỉ khi bạn mở camera trong app (micro chỉ khi quay video). Ảnh/video vừa quay đi vào bản nháp rồi lên Drive của bạn; không nơi nào khác nhận được."
+          "Camera và micro: chỉ khi bạn mở camera hoặc máy ghi âm trong app (micro chỉ khi quay video hoặc ghi âm). Ảnh/video vừa quay đi vào bản nháp rồi lên Drive của bạn; không nơi nào khác nhận được."
         ]
       },
       {

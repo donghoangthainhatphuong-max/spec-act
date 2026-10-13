@@ -8,6 +8,7 @@ import wall from '../assets/samples/wall.jpg?url';
 import desk from '../assets/samples/desk.jpg?url';
 import mountains from '../assets/samples/mountains.jpg?url';
 import { randomId } from './crypto';
+import { classify } from './mediaKinds';
 import { extractMentions, normEmail, prettyName } from './mentions';
 import { ROLE_COMMENT, byNewest, cleanAudience, toEntry } from './postModel';
 import { RepoError } from './repo';
@@ -60,9 +61,11 @@ export class DemoRepo {
 
   /** A picked photo/video becomes a media item that lives only in this page. */
   #upload(f, id) {
-    const video = String(f.type).startsWith('video/');
+    const kind = classify(f) || 'file';
     const item = { id, thumb: id, url: URL.createObjectURL(f), name: f.name, mime: f.type, w: 1200, h: 800, size: f.size };
-    if (video) Object.assign(item, { kind: 'video', duration: 0, poster: POSTER });
+    if (kind === 'video') Object.assign(item, { kind, duration: 0, poster: POSTER });
+    if (kind === 'audio') Object.assign(item, { kind, duration: 0, thumb: null });
+    if (kind === 'file') Object.assign(item, { kind, thumb: null, w: 0, h: 0 });
     return item;
   }
 

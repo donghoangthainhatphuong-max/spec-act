@@ -114,7 +114,7 @@
   "compose.saving": "Enregistrement…",
   "compose.sharing": "Partage…",
   "compose.showPassword": "Afficher le mot de passe",
-  "compose.skipped": "{n} fichier(s) ignoré(s). Photos et vidéos uniquement, {max} par post au maximum ; photos {mb} Mo, vidéos {vmb} Mo chacune.",
+  "compose.skipped": "{n} fichier(s) ignoré(s). Photos, vidéos, audio et documents uniquement (ni pages web, ni scripts, ni programmes), {max} par post au maximum ; photos {mb} Mo, vidéos {vmb} Mo, autres fichiers {fmb} Mo.",
   "compose.uploading": "Envoi {done}/{total}…",
   "compose.viaMention": "mentionné",
   "creds.badId": "Cela ne ressemble pas à un ID client Google (…apps.googleusercontent.com).",
@@ -290,6 +290,12 @@
   "camera.useApp": "Utiliser l’appli appareil photo",
   "camera.added": "{n} ajouté(s)",
   "camera.full": "Ce post est complet — retirez un élément pour en ajouter.",
-  "compose.addMedia": "Ajouter une photo ou une vidéo",
-  "viewer.loadingVideo": "Chargement de la vidéo…"
+  "compose.addMedia": "Ajouter photo, vidéo, audio ou fichier",
+  "viewer.loadingVideo": "Chargement de la vidéo…",
+  "camera.audio": "Audio",
+  "camera.audioOpen": "Enregistrer un son",
+  "attach.play": "Lire",
+  "attach.download": "Télécharger",
+  "attach.loading": "Chargement…",
+  "attach.more": "+{n} pièces jointes de plus"
 }

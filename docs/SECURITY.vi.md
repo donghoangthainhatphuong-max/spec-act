@@ -55,6 +55,10 @@ bản ghi = AES-256-GCM_{khóa PIN}( AES-256-GCM_{khóa thiết bị}( JSON ) )
 
 Camera trong app xin trình duyệt quyền dùng camera (micro chỉ khi quay video). Luồng hình chỉ hiển thị tại chỗ và không gửi đi đâu; ảnh/clip vừa quay đi vào bản nháp bài rồi lên Drive của bạn như mọi tệp khác. `Permissions-Policy` đi kèm chỉ cho phép camera/micro với chính trang này. Camera tắt ngay khi đóng hộp quay hoặc khi tab bị ẩn.
 
+## Tài liệu và âm thanh đính kèm
+
+Mọi thứ có thể chạy mã khi mở — trang web (`.html`, `.xhtml`), SVG, script, chương trình, bộ cài, lối tắt — đều bị **từ chối** theo phần mở rộng *và* theo MIME do trình duyệt báo, nên đổi tên tệp cũng không lọt qua. SPECACT không bao giờ hiển thị tài liệu: chỉ đưa cho trình duyệt dưới dạng tải xuống (âm thanh phát bằng thẻ `<audio>` thuần). Trong bài có mật khẩu, byte, tên gốc và kiểu tệp được mã hóa như ảnh.
+
 ## Quyền riêng tư ảnh
 
 Ảnh được vẽ lại qua canvas trước khi tải lên → **EXIF (GPS, thiết bị, thời gian chụp) bị loại bỏ**. Ảnh được xoay đúng chiều và giới hạn kích thước.

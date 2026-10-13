@@ -6,7 +6,12 @@ vi.mock('../src/config', async (orig) => {
   return { ...mod, config: { ...mod.config, pbkdf2Iterations: 1000, postKdfIterations: 1000, syncIntervalSeconds: 0 } };
 });
 vi.mock('../src/services/image', () => ({
-  prepareMedia: async (file) => (file.type.startsWith('video/')
+  prepareMedia: async (file) => (file.type.startsWith('audio/') || file.type === 'application/pdf'
+    ? {
+      kind: file.type === 'application/pdf' ? 'file' : 'audio', mime: file.type, name: file.name,
+      main: { blob: new Blob([new Uint8Array([1, 2, 3, 4, 5])], { type: file.type }), duration: 7 }, thumb: null,
+    }
+    : file.type.startsWith('video/')
     ? {
       kind: 'video', mime: file.type, name: file.name,
       main: { blob: new Blob([new Uint8Array(6 * 1024 * 1024).fill(7)], { type: file.type }), w: 640, h: 360, duration: 12 },
@@ -503,6 +508,46 @@ describe('videos', () => {
     expect(fake.allBytesContain('holiday')).toBe(false);
     const open = await bob.unlockAndOpen(post.id, 'pw-1234');
     expect(open.media[0].kind).toBe('video');
+    expect(await bob.mediaUrl(open, open.media[0])).toBeTruthy();
+  });
+});
+
+describe('audio and documents', () => {
+  const voice = { name: 'voice.webm', type: 'audio/webm', size: 5 };
+  const pdf = { name: 'Contract v2.pdf', type: 'application/pdf', size: 5 };
+
+  it('are stored without a poster, listed apart from photos and downloadable by viewers', async () => {
+    const alice = mk('alice@gmail.com', 'Alice');
+    const bob = mk('bob@gmail.com', 'Bob');
+    const { post } = await alice.createPost({ text: 'notes', files: [file('a.jpg'), voice, pdf], audience: { 'bob@gmail.com': 'view' } });
+    expect(post.media.map((m) => m.kind || 'image')).toEqual(['image', 'audio', 'file']);
+    expect(post.media[1]).toMatchObject({ kind: 'audio', duration: 7, thumb: null });
+    expect(post.media[2]).toMatchObject({ kind: 'file', name: 'Contract v2.pdf', thumb: null });
+    expect(fake.files.get(post.media[2].id).name.endsWith('Contract v2.pdf')).toBe(true);
+    expect(fake.files.get(post.media[2].id).mimeType).toBe('application/pdf');
+    const entry = (await alice.loadIndex()).mine[0];
+    expect(entry.media.map((m) => m.kind || 'image')).toEqual(['image']); // the feed grid only gets photos/videos
+    expect(entry.mediaCount).toBe(1);
+    expect(entry.files.map((m) => m.kind)).toEqual(['audio', 'file']);
+    expect(entry.fileCount).toBe(2);
+    const seen = await bob.openPost(post.id);
+    expect(await bob.mediaUrl(seen, seen.media[2])).toBeTruthy();
+  });
+
+  it('stay sealed (name, type and bytes) in password-protected posts', async () => {
+    const alice = mk('alice@gmail.com', 'Alice');
+    const bob = mk('bob@gmail.com', 'Bob');
+    const { post } = await alice.createPost({ text: 'x', files: [pdf, voice], audience: { 'bob@gmail.com': 'view' }, password: 'pw-12345' });
+    for (const m of post.media) {
+      const raw = fake.files.get(m.id);
+      expect(raw.mimeType).toBe('application/octet-stream');
+      expect(raw.name.endsWith('.bin')).toBe(true);
+    }
+    expect(fake.allBytesContain('Contract')).toBe(false);
+    const entry = (await alice.loadIndex()).mine[0];
+    expect(entry.files).toEqual([]);
+    const open = await bob.unlockAndOpen(post.id, 'pw-12345');
+    expect(open.media[0]).toMatchObject({ kind: 'file', name: 'Contract v2.pdf' });
     expect(await bob.mediaUrl(open, open.media[0])).toBeTruthy();
   });
 });

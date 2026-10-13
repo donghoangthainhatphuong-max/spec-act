@@ -114,7 +114,7 @@
   "compose.saving": "सहेजा जा रहा है…",
   "compose.sharing": "साझा किया जा रहा है…",
   "compose.showPassword": "पासवर्ड दिखाएँ",
-  "compose.skipped": "{n} फ़ाइल छोड़ी गईं। केवल फ़ोटो और वीडियो, प्रति पोस्ट अधिकतम {max}; फ़ोटो {mb} MB, वीडियो {vmb} MB प्रत्येक।",
+  "compose.skipped": "{n} फ़ाइल छोड़ी गईं। केवल फ़ोटो, वीडियो, ऑडियो और दस्तावेज़ (वेब पेज, स्क्रिप्ट या प्रोग्राम नहीं), प्रति पोस्ट अधिकतम {max}; फ़ोटो {mb} MB, वीडियो {vmb} MB, अन्य फ़ाइलें {fmb} MB।",
   "compose.uploading": "अपलोड हो रहा है {done}/{total}…",
   "compose.viaMention": "उल्लेखित",
   "creds.badId": "यह Google क्लाइंट ID (…apps.googleusercontent.com) जैसा नहीं लगता।",
@@ -290,6 +290,12 @@
   "camera.useApp": "कैमरा ऐप इस्तेमाल करें",
   "camera.added": "{n} जोड़े गए",
   "camera.full": "यह पोस्ट भर चुकी है — और जोड़ने के लिए कुछ हटाएँ।",
-  "compose.addMedia": "फ़ोटो या वीडियो जोड़ें",
-  "viewer.loadingVideo": "वीडियो लोड हो रहा है…"
+  "compose.addMedia": "फ़ोटो, वीडियो, ऑडियो या फ़ाइल जोड़ें",
+  "viewer.loadingVideo": "वीडियो लोड हो रहा है…",
+  "camera.audio": "ऑडियो",
+  "camera.audioOpen": "आवाज़ रिकॉर्ड करें",
+  "attach.play": "चलाएँ",
+  "attach.download": "डाउनलोड",
+  "attach.loading": "लोड हो रहा है…",
+  "attach.more": "{n} और अटैचमेंट"
 }

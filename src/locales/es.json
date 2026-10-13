@@ -114,7 +114,7 @@
   "compose.saving": "Guardando…",
   "compose.sharing": "Compartiendo…",
   "compose.showPassword": "Mostrar contraseña",
-  "compose.skipped": "Se omitieron {n} archivo(s). Solo fotos y vídeos, hasta {max} por publicación; fotos {mb} MB, vídeos {vmb} MB cada uno.",
+  "compose.skipped": "Se omitieron {n} archivo(s). Solo fotos, vídeos, audio y documentos (sin páginas web, scripts ni programas), hasta {max} por publicación; fotos {mb} MB, vídeos {vmb} MB, otros archivos {fmb} MB.",
   "compose.uploading": "Subiendo {done}/{total}…",
   "compose.viaMention": "mencionado",
   "creds.badId": "Eso no parece un ID de cliente de Google (…apps.googleusercontent.com).",
@@ -290,6 +290,12 @@
   "camera.useApp": "Usar la app de cámara",
   "camera.added": "{n} añadido(s)",
   "camera.full": "La publicación está llena — quita algo para añadir más.",
-  "compose.addMedia": "Añadir foto o vídeo",
-  "viewer.loadingVideo": "Cargando vídeo…"
+  "compose.addMedia": "Añadir foto, vídeo, audio o archivo",
+  "viewer.loadingVideo": "Cargando vídeo…",
+  "camera.audio": "Audio",
+  "camera.audioOpen": "Grabar audio",
+  "attach.play": "Reproducir",
+  "attach.download": "Descargar",
+  "attach.loading": "Cargando…",
+  "attach.more": "+{n} adjuntos más"
 }

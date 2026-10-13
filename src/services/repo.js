@@ -11,6 +11,7 @@ import { DriveError, MIME_FOLDER, MIME_SHORTCUT, qs } from './drive';
 import { normEmail, extractMentions, prettyName } from './mentions';
 import { ROLE_COMMENT, ROLE_VIEW, buildPostDoc, canCommentWith, normMode, byNewest, cleanAudience, emptyIndex, folderNameFor, isBranded, brandName, shortcutNameFor, openPostDoc, toEntry } from './postModel';
 import { prepareMedia } from './image';
+import { extOf } from './mediaKinds';
 import { debounce, mapLimit } from './util';
 
 export class RepoError extends Error {
@@ -373,8 +374,7 @@ export class DriveRepo {
   async #uploadImage(file, mediaFolderId, key, pid) {
     const img = await prepareMedia(file);
     const base = randomId(5);
-    const put = async (blob, stem, mime, large = false) => {
-      const ext = mime === 'image/jpeg' ? 'jpg' : (mime.split('/')[1] || 'bin');
+    const put = async (blob, stem, mime, ext, large = false) => {
       const create = (args) => (large ? this.drive.createFileLarge(args) : this.drive.createFile(args));
       if (!key) return create({ name: `${stem}.${ext}`, parentId: mediaFolderId, mimeType: mime, data: blob });
       // Protected posts: bytes are sealed before upload and carry an opaque name.
@@ -382,11 +382,12 @@ export class DriveRepo {
       return create({ name: `${stem}.bin`, parentId: mediaFolderId, mimeType: 'application/octet-stream', data: new Blob([sealed]) });
     };
     const clean = img.name.replace(/\.[^.]+$/, '');
+    const ext = img.kind === 'image' ? 'jpg' : (extOf(img.name) || (img.mime.split('/')[1] || 'bin'));
     const stem = key ? base : `${base}_${clean}`;
-    const main = await put(img.main.blob, stem, img.mime, img.kind === 'video');
-    const thumb = await put(img.thumb.blob, `${base}_t`, 'image/jpeg');
-    const item = { id: main.id, thumb: thumb.id, name: img.name, mime: img.mime, w: img.main.w, h: img.main.h, size: img.main.blob.size };
-    if (img.kind === 'video') { item.kind = 'video'; item.duration = img.main.duration || 0; }
+    const main = await put(img.main.blob, stem, img.mime, ext, img.kind !== 'image');
+    const thumb = img.thumb ? await put(img.thumb.blob, `${base}_t`, 'image/jpeg', 'jpg') : null; // audio and documents have no poster
+    const item = { id: main.id, thumb: thumb?.id || null, name: img.name, mime: img.mime, w: img.main.w || 0, h: img.main.h || 0, size: img.main.blob.size };
+    if (img.kind !== 'image') { item.kind = img.kind; if (img.kind !== 'file') item.duration = img.main.duration || 0; }
     return item;
   }
 

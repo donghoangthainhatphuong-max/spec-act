@@ -114,7 +114,7 @@
   "compose.saving": "저장 중…",
   "compose.sharing": "공유 중…",
   "compose.showPassword": "비밀번호 표시",
-  "compose.skipped": "파일 {n}개를 건너뛰었습니다. 사진과 동영상만 가능하며 글당 최대 {max}개, 사진은 개당 {mb}MB, 동영상은 개당 {vmb}MB까지입니다.",
+  "compose.skipped": "파일 {n}개를 건너뛰었습니다. 사진, 동영상, 오디오, 문서만 가능(웹 페이지·스크립트·프로그램 불가)하며 글당 최대 {max}개, 사진 {mb}MB, 동영상 {vmb}MB, 기타 파일 {fmb}MB까지입니다.",
   "compose.uploading": "업로드 중 {done}/{total}…",
   "compose.viaMention": "멘션됨",
   "creds.badId": "Google 클라이언트 ID(…apps.googleusercontent.com) 형식이 아닙니다.",
@@ -290,6 +290,12 @@
   "camera.useApp": "카메라 앱 사용",
   "camera.added": "{n}개 추가됨",
   "camera.full": "이 글은 가득 찼습니다. 일부를 삭제한 뒤 추가하세요.",
-  "compose.addMedia": "사진 또는 동영상 추가",
-  "viewer.loadingVideo": "동영상 불러오는 중…"
+  "compose.addMedia": "사진, 동영상, 오디오 또는 파일 추가",
+  "viewer.loadingVideo": "동영상 불러오는 중…",
+  "camera.audio": "오디오",
+  "camera.audioOpen": "녹음",
+  "attach.play": "재생",
+  "attach.download": "다운로드",
+  "attach.loading": "불러오는 중…",
+  "attach.more": "첨부 {n}개 더 있음"
 }

@@ -15,6 +15,7 @@ import { useSessionStore } from '../stores/session';
 import { useUiStore } from '../stores/ui';
 import { config } from '../config';
 import { listOf } from '../i18n';
+import { labelOf } from '../services/mediaKinds';
 import { isEmail, normEmail } from '../services/mentions';
 
 const props = defineProps({ id: { type: String, default: '' } });
@@ -35,6 +36,8 @@ const done = ref(false);
 const showPw = ref(false);
 const fileInput = ref(null);
 const camera = ref(false);
+const cameraMode = ref('photo');
+function openCamera(m = 'photo') { cameraMode.value = m; camera.value = true; }
 const textarea = ref(null);
 const dragging = ref(false);
 const extraEmail = ref('');
@@ -64,16 +67,16 @@ onMounted(async () => {
 function pick(e) {
   const skipped = draft.addFiles(e.target.files);
   e.target.value = '';
-  if (skipped) ui.toast(t('compose.skipped', { n: skipped, max: config.maxImagesPerPost, mb: config.maxImageMb, vmb: config.maxVideoMb }), { kind: 'error' });
+  if (skipped) ui.toast(t('compose.skipped', { n: skipped, max: config.maxImagesPerPost, mb: config.maxImageMb, vmb: config.maxVideoMb, fmb: config.maxFileMb }), { kind: 'error' });
 }
 function captured(files) {
   const skipped = draft.addFiles(files);
-  if (skipped) ui.toast(t('compose.skipped', { n: skipped, max: config.maxImagesPerPost, mb: config.maxImageMb, vmb: config.maxVideoMb }), { kind: 'error' });
+  if (skipped) ui.toast(t('compose.skipped', { n: skipped, max: config.maxImagesPerPost, mb: config.maxImageMb, vmb: config.maxVideoMb, fmb: config.maxFileMb }), { kind: 'error' });
 }
 function onDrop(e) {
   dragging.value = false;
   const skipped = draft.addFiles(e.dataTransfer?.files || []);
-  if (skipped) ui.toast(t('compose.skipped', { n: skipped, max: config.maxImagesPerPost, mb: config.maxImageMb, vmb: config.maxVideoMb }), { kind: 'error' });
+  if (skipped) ui.toast(t('compose.skipped', { n: skipped, max: config.maxImagesPerPost, mb: config.maxImageMb, vmb: config.maxVideoMb, fmb: config.maxFileMb }), { kind: 'error' });
 }
 function onPaste(e) {
   const files = Array.from(e.clipboardData?.files || []).filter((f) => f.type.startsWith('image/'));
@@ -124,7 +127,7 @@ async function publish() {
     if (res.warnings?.length) ui.toast(t('toast.shareFailed', { name: res.warnings.map((w) => w.email === '*' ? t('post.linkShare') : people.nameFor(w.email)).join(', ') }), { kind: 'error', ms: 5000 });
     router.push({ name: editing.value ? 'post' : 'mine', params: editing.value ? { id: props.id } : {} });
   } catch (e) {
-    ui.toast(e.code === 'too-many-images' ? t('compose.skipped', { n: 1, max: config.maxImagesPerPost, mb: config.maxImageMb, vmb: config.maxVideoMb }) : e.status === 0 ? t('banner.offline') : t('error.publish'), { kind: 'error', ms: 4500 });
+    ui.toast(e.code === 'too-many-images' ? t('compose.skipped', { n: 1, max: config.maxImagesPerPost, mb: config.maxImageMb, vmb: config.maxVideoMb, fmb: config.maxFileMb }) : e.status === 0 ? t('banner.offline') : t('error.publish'), { kind: 'error', ms: 4500 });
   } finally { submitting.value = false; progress.value = null; }
 }
 
@@ -145,7 +148,7 @@ onBeforeRouteLeave(async () => {
 
 <template>
   <h1 class="page-title">{{ editing ? t('post.edit') : t('compose.title') }}</h1>
-  <CameraDialog :open="camera" :room="draft.room" @close="camera = false" @capture="captured" />
+  <CameraDialog :open="camera" :start-mode="cameraMode" :room="draft.room" @close="camera = false" @capture="captured" />
 
   <div v-if="loading" class="write" aria-busy="true"><div class="ph" /></div>
   <template v-else>
@@ -158,16 +161,22 @@ onBeforeRouteLeave(async () => {
       <MentionTextarea ref="textarea" v-model="draft.text" input-id="draft" :placeholder="t('compose.placeholder')" @submit="publish" />
       <p class="hint mention-hint"><AppIcon name="at" :size="14" />{{ t('compose.mentionHint') }}</p>
       <div class="thumbs">
-        <div v-for="p in draft.photos" :key="p.key" class="thumb">
-          <video v-if="p.url && p.video" :src="p.url + '#t=0.1'" preload="metadata" muted playsinline />
+        <div v-for="p in draft.photos" :key="p.key" class="thumb" :class="{ tile: p.type === 'audio' || p.type === 'file' }">
+          <div v-if="p.type === 'audio' || p.type === 'file'" class="tile-body">
+            <AppIcon :name="p.type === 'audio' ? 'mic' : 'file'" :size="24" />
+            <b>{{ p.type === 'audio' ? t('camera.audio') : labelOf(p.file?.name || p.media?.name) }}</b>
+            <small>{{ p.file?.name || p.media?.name }}</small>
+          </div>
+          <video v-else-if="p.url && p.video" :src="p.url + '#t=0.1'" preload="metadata" muted playsinline />
           <img v-else-if="p.url" :src="p.url" alt="" />
           <SecureImage v-else :post="original" :item="p.media" thumb eager />
           <span v-if="p.video || p.media?.kind === 'video'" class="vbadge"><AppIcon name="play" :size="14" fill /></span>
           <button type="button" :aria-label="t('post.remove')" @click="draft.removePhoto(p.key)"><AppIcon name="x" :size="14" /></button>
         </div>
         <button v-if="draft.room > 0" type="button" class="add-photo" @click="fileInput.click()"><AppIcon name="image" :size="24" /><span>{{ t('compose.addMedia') }}</span></button>
-        <button v-if="draft.room > 0" type="button" class="add-photo" @click="camera = true"><AppIcon name="camera" :size="24" /><span>{{ t('camera.open') }}</span></button>
-        <input ref="fileInput" class="sr" type="file" accept="image/*,video/*" multiple tabindex="-1" @change="pick" />
+        <button v-if="draft.room > 0" type="button" class="add-photo" @click="openCamera('photo')"><AppIcon name="camera" :size="24" /><span>{{ t('camera.open') }}</span></button>
+        <button v-if="draft.room > 0" type="button" class="add-photo" @click="openCamera('audio')"><AppIcon name="mic" :size="24" /><span>{{ t('camera.audioOpen') }}</span></button>
+        <input ref="fileInput" class="sr" type="file" multiple tabindex="-1" @change="pick" />
       </div>
     </form>
 
@@ -244,6 +253,10 @@ onBeforeRouteLeave(async () => {
 
 <style scoped>
 .vbadge { position: absolute; left: 6px; bottom: 6px; width: 24px; height: 24px; border-radius: 50%; background: rgba(0,0,0,.55); color: #fff; display: grid; place-items: center; pointer-events: none; }
+.thumb.tile { background: var(--sunken); }
+.tile-body { width: 100%; height: 100%; padding: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: var(--muted); text-align: center; }
+.tile-body b { font-size: 12px; font-weight: 650; letter-spacing: .04em; color: var(--text); }
+.tile-body small { font-size: 11px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .thumb video { width: 100%; height: 100%; object-fit: cover; }
 .write.drop { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
 .mention-hint { display: flex; align-items: center; gap: 6px; margin-top: -4px; }

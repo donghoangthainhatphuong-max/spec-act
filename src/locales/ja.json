@@ -114,7 +114,7 @@
   "compose.saving": "保存中…",
   "compose.sharing": "共有中…",
   "compose.showPassword": "パスワードを表示",
-  "compose.skipped": "{n} 個のファイルをスキップしました。写真と動画のみ、1 投稿あたり最大 {max} 件、写真は 1 件 {mb} MB、動画は 1 件 {vmb} MB までです。",
+  "compose.skipped": "{n} 個のファイルをスキップしました。写真・動画・音声・文書のみ（Web ページ、スクリプト、プログラムは不可）、1 投稿あたり最大 {max} 件。写真 {mb} MB、動画 {vmb} MB、その他 {fmb} MB まで。",
   "compose.uploading": "アップロード中 {done}/{total}…",
   "compose.viaMention": "メンション",
   "creds.badId": "Google のクライアント ID（…apps.googleusercontent.com）の形式ではありません。",
@@ -290,6 +290,12 @@
   "camera.useApp": "カメラアプリを使う",
   "camera.added": "{n} 件追加",
   "camera.full": "この投稿は上限です。何か削除してから追加してください。",
-  "compose.addMedia": "写真または動画を追加",
-  "viewer.loadingVideo": "動画を読み込み中…"
+  "compose.addMedia": "写真・動画・音声・ファイルを追加",
+  "viewer.loadingVideo": "動画を読み込み中…",
+  "camera.audio": "音声",
+  "camera.audioOpen": "録音",
+  "attach.play": "再生",
+  "attach.download": "ダウンロード",
+  "attach.loading": "読み込み中…",
+  "attach.more": "ほか {n} 件の添付"
 }

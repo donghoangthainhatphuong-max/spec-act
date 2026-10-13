@@ -114,7 +114,7 @@
   "compose.saving": "Kaydediliyor…",
   "compose.sharing": "Paylaşılıyor…",
   "compose.showPassword": "Parolayı göster",
-  "compose.skipped": "{n} dosya atlandı. Yalnızca fotoğraf ve video, gönderi başına en fazla {max}; fotoğraflar {mb} MB, videolar {vmb} MB.",
+  "compose.skipped": "{n} dosya atlandı. Yalnızca fotoğraf, video, ses ve belgeler (web sayfası, betik veya program olmaz), gönderi başına en fazla {max}; fotoğraflar {mb} MB, videolar {vmb} MB, diğer dosyalar {fmb} MB.",
   "compose.uploading": "Yükleniyor {done}/{total}…",
   "compose.viaMention": "anıldı",
   "creds.badId": "Bu bir Google istemci kimliğine (…apps.googleusercontent.com) benzemiyor.",
@@ -290,6 +290,12 @@
   "camera.useApp": "Kamera uygulamasını kullan",
   "camera.added": "{n} eklendi",
   "camera.full": "Bu gönderi dolu — eklemek için bir şey kaldırın.",
-  "compose.addMedia": "Fotoğraf veya video ekle",
-  "viewer.loadingVideo": "Video yükleniyor…"
+  "compose.addMedia": "Fotoğraf, video, ses veya dosya ekle",
+  "viewer.loadingVideo": "Video yükleniyor…",
+  "camera.audio": "Ses",
+  "camera.audioOpen": "Ses kaydet",
+  "attach.play": "Oynat",
+  "attach.download": "İndir",
+  "attach.loading": "Yükleniyor…",
+  "attach.more": "+{n} ek daha"
 }

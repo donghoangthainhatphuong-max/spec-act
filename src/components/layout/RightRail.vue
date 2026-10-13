@@ -44,7 +44,7 @@ const orbit = computed(() => {
   }
   if (kind.value === 'new' || kind.value === 'edit') {
     const aud = Object.keys(draft.audience);
-    const first = draft.photos.find((p) => p.url);
+    const first = draft.photos.find((p) => p.url && p.type === 'image');
     return {
       center: first ? { src: first.url } : { email: me },
       sats: people.contacts.map((c) => ({ email: c.email, lit: aud.includes(c.email) })),

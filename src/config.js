@@ -61,6 +61,8 @@ export const config = Object.freeze({
   maxImagesPerPost: int('VITE_MAX_IMAGES_PER_POST', 10, 1, 50),
   maxVideoMb: num('VITE_MAX_VIDEO_MB', 200, 1),
   maxVideoSeconds: int('VITE_MAX_VIDEO_SECONDS', 180, 5),
+  maxFileMb: num('VITE_MAX_FILE_MB', 50, 1),
+  maxAudioSeconds: int('VITE_MAX_AUDIO_SECONDS', 600, 5),
   maxImageMb: num('VITE_MAX_IMAGE_MB', 25, 1),
   imageMaxDimension: int('VITE_IMAGE_MAX_DIMENSION', 2048, 320),
   imageQuality: num('VITE_IMAGE_QUALITY', 0.86, 0.3, 1),

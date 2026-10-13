@@ -11,6 +11,7 @@
  *        media/                 photos (+ thumbnails)
  */
 import { decryptJson, encryptJson } from './crypto';
+import { isVisual } from './mediaKinds';
 import { normEmail } from './mentions';
 
 export const SCHEMA = 1;
@@ -66,6 +67,8 @@ export function cleanAudience(aud, ownerEmail) {
 export function publicMedia(m) {
   const out = { id: m.id, thumb: m.thumb || null, name: m.name || '', mime: m.mime || 'image/jpeg', w: m.w || 0, h: m.h || 0, size: m.size || 0 };
   if (m.kind === 'video' || String(m.mime).startsWith('video/')) { out.kind = 'video'; out.duration = m.duration || 0; }
+  else if (m.kind === 'audio') { out.kind = 'audio'; out.duration = m.duration || 0; }
+  else if (m.kind === 'file') out.kind = 'file';
   return out;
 }
 
@@ -125,8 +128,11 @@ export function toEntry(post, { id, ids, rev }) {
     commentMode: post.commentMode,
     text: snip.text,
     truncated: snip.truncated,
-    mediaCount: post.protected ? 0 : post.media.length,
-    media: post.protected ? [] : post.media.slice(0, ENTRY_MEDIA),
+    // the feed card shows the first photos/videos and lists audio and documents next to them
+    mediaCount: post.protected ? 0 : post.media.filter(isVisual).length,
+    media: post.protected ? [] : post.media.filter(isVisual).slice(0, ENTRY_MEDIA),
+    files: post.protected ? [] : post.media.filter((x) => !isVisual(x)).slice(0, 6),
+    fileCount: post.protected ? 0 : post.media.filter((x) => !isVisual(x)).length,
     audience: Object.fromEntries(aud),
     audienceCount: Object.keys(post.audience || {}).length,
     ids,

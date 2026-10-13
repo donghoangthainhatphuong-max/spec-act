@@ -33,6 +33,7 @@ SPECACT is a Vue 3 PWA for **sharing posts and photos with exactly the people yo
 |---|---|
 | **Posts** | Create, edit, delete (Drive trash or permanent — configurable); photo upload (orientation-corrected, resized, **EXIF/GPS stripped**, thumbnails). Photo viewer with slideshow, zoom, rotate and pan. |
 | **Camera & video** | Take photos and record video inside the app (front/back camera, up to `VITE_MAX_VIDEO_SECONDS`) or pick files; on a phone the **+** tab opens the camera first, on a computer it opens the picker. Videos get a poster frame, play in the viewer, and are encrypted too in password-protected posts. |
+| **Audio & documents** | Record a voice note in the app or attach audio files; attach documents (PDF, Office, text, archives…) like photos. They appear as a list under the post (play / download), are encrypted in password-protected posts, and risky types (web pages, scripts, programs, SVG) are refused. Limits: `VITE_MAX_FILE_MB`, `VITE_MAX_AUDIO_SECONDS`. |
 | **Sharing** | Type `@email` to mention a connected friend and grant access. Roles: *can view*, *can comment*. Pick friends from a grid, enter an e-mail, revoke any time. |
 | **Public link** | "Anyone with the link" opens **only the post's files** (`post.json` + photos), never the folder. |
 | **Passwords** | Password-protect a post: text and photos are **encrypted in the browser** (AES-256-GCM) before they reach Drive. Combine with a public link if you like. |
@@ -91,6 +92,7 @@ docker compose up -d --build
 | `VITE_AUTO_LOCK_MINUTES` | `5` | Auto-lock after N idle minutes (0 = off) |
 | `VITE_POST_KDF_ITERATIONS` | `310000` | Cost of deriving the key from a post password |
 | `VITE_MAX_IMAGES_PER_POST` / `VITE_MAX_IMAGE_MB` | `10` / `25` | Photo limits |
+| `VITE_MAX_FILE_MB` / `VITE_MAX_AUDIO_SECONDS` | `50` / `600` | Size limit for documents/audio files; max length when recording sound in the app |
 | `VITE_MAX_VIDEO_MB` / `VITE_MAX_VIDEO_SECONDS` | `200` / `180` | Video size limit; max length when recording in the app |
 | `VITE_IMAGE_MAX_DIMENSION` / `VITE_IMAGE_QUALITY` / `VITE_THUMB_DIMENSION` | `2048` / `0.86` / `480` | Photo quality |
 

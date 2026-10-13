@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 import { config } from '../config';
+import { classify, limitMb } from '../services/mediaKinds';
 import { extractMentions } from '../services/mentions';
 import { usePeopleStore } from './people';
 import { on } from '../services/events';
@@ -52,11 +53,9 @@ export const useDraftStore = defineStore('draft', () => {
   function addFiles(list) {
     let skipped = 0;
     for (const f of Array.from(list)) {
-      const video = f.type.startsWith('video/');
-      const okType = video || (f.type.startsWith('image/') && f.type !== 'image/svg+xml');
-      const limit = (video ? config.maxVideoMb : config.maxImageMb) * 1024 * 1024;
-      if (!okType || f.size > limit || room.value <= 0) { skipped++; continue; }
-      photos.value = [...photos.value, { key: `n${++seq}`, kind: 'new', file: f, url: URL.createObjectURL(f), video }];
+      const type = classify(f); // image | video | audio | file | null (refused)
+      if (!type || f.size > limitMb(type) * 1024 * 1024 || room.value <= 0) { skipped++; continue; }
+      photos.value = [...photos.value, { key: `n${++seq}`, kind: 'new', type, file: f, url: type === 'file' ? '' : URL.createObjectURL(f), video: type === 'video' }];
     }
     return skipped;
   }
@@ -77,7 +76,7 @@ export const useDraftStore = defineStore('draft', () => {
     reset();
     editing.value = post.id;
     text.value = post.text;
-    photos.value = post.media.map((m) => ({ key: m.id, kind: 'old', media: m }));
+    photos.value = post.media.map((m) => ({ key: m.id, kind: 'old', type: m.kind || 'image', media: m }));
     manual.value = { ...post.audience };
     protect.value = post.protected;
     lockedProtection.value = post.protected;

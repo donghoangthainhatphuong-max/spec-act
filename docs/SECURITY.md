@@ -55,6 +55,10 @@ record = AES-256-GCM_{PIN key}( AES-256-GCM_{device key}( JSON ) )
 
 The in-app camera asks the browser for camera access (microphone only while filming). The stream is shown locally and never sent anywhere; a captured photo/clip goes into the post draft and then to your Drive like any other file. The shipped `Permissions-Policy` allows camera/microphone for this site only. Tracks are stopped as soon as the camera is closed or the tab is hidden.
 
+## Attached documents and audio
+
+Anything that could run code when opened — web pages (`.html`, `.xhtml`), SVG, scripts, executables, installers, shortcuts — is **refused** by extension *and* by reported MIME type, so a renamed file does not slip through. Documents are never rendered by SPECACT: they are only handed to the browser as a download (audio plays in a plain `<audio>` element). In password-protected posts the bytes, the original name and the type are sealed like photos.
+
 ## Photo privacy
 
 Photos are redrawn through a canvas before upload, so **EXIF (GPS, device, capture time) is stripped**. They are also orientation-corrected and size-capped.

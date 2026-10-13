@@ -40,9 +40,10 @@ describe('draft', () => {
 
   it('accepts only real images within the limits', () => {
     const d = useDraftStore();
-    const skipped = d.addFiles([img(), img('x.svg', 10, 'image/svg+xml'), img('doc.pdf', 10, 'application/pdf'), img('huge.jpg', config.maxImageMb * 1024 * 1024 + 1)]);
+    const skipped = d.addFiles([img(), img('x.svg', 10, 'image/svg+xml'), img('setup.exe', 10, 'application/x-msdownload'), img('huge.jpg', config.maxImageMb * 1024 * 1024 + 1), img('doc.pdf', 10, 'application/pdf'), img('voice.webm', 10, 'audio/webm')]);
     expect(skipped).toBe(3);
-    expect(d.photos).toHaveLength(1);
+    expect(d.photos.map((p) => p.type)).toEqual(['image', 'file', 'audio']);
+    expect(d.photos[1].url).toBe(''); // documents have no preview
     const many = Array.from({ length: config.maxImagesPerPost + 3 }, (_, i) => img(`${i}.jpg`));
     d.addFiles(many);
     expect(d.photos).toHaveLength(config.maxImagesPerPost);

@@ -4,12 +4,12 @@ import { useI18n } from '@/i18n';
 import AppIcon from '../ui/AppIcon.vue';
 import { config } from '../../config';
 
-const props = defineProps({ open: { type: Boolean, default: false }, room: { type: Number, default: 99 } });
+const props = defineProps({ open: { type: Boolean, default: false }, room: { type: Number, default: 99 }, startMode: { type: String, default: 'photo' } });
 const emit = defineEmits(['close', 'capture']);
 const { t } = useI18n();
 
 const videoEl = ref(null);
-const mode = ref('photo'); // photo | video
+const mode = ref('photo'); // photo | video | audio
 const facing = ref('environment');
 const recording = ref(false);
 const seconds = ref(0);
@@ -28,7 +28,42 @@ const canCapture = computed(() => ready.value && !error.value && props.room > 0)
 const mirror = computed(() => facing.value === 'user');
 const clock = computed(() => `${String(Math.floor(seconds.value / 60)).padStart(2, '0')}:${String(seconds.value % 60).padStart(2, '0')}`);
 
+// level meter for the sound-only mode
+const meter = ref(null);
+let audioCtx = null;
+let raf = 0;
+function startMeter() {
+  stopMeter();
+  try {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 256;
+    audioCtx.createMediaStreamSource(stream).connect(analyser);
+    const data = new Uint8Array(analyser.frequencyBinCount);
+    const draw = () => {
+      const c = meter.value;
+      if (c) {
+        const g = c.getContext('2d');
+        analyser.getByteFrequencyData(data);
+        g.clearRect(0, 0, c.width, c.height);
+        const bars = 28;
+        const w = c.width / bars;
+        for (let i = 0; i < bars; i++) {
+          const v = data[Math.floor((i / bars) * data.length * 0.6)] / 255;
+          const h = Math.max(4, v * c.height);
+          g.fillStyle = recording.value ? '#ff4d4d' : 'rgba(255,255,255,.75)';
+          g.fillRect(i * w + 2, (c.height - h) / 2, w - 4, h);
+        }
+      }
+      raf = requestAnimationFrame(draw);
+    };
+    draw();
+  } catch { /* the meter is decoration */ }
+}
+function stopMeter() { cancelAnimationFrame(raf); audioCtx?.close?.().catch?.(() => {}); audioCtx = null; }
+
 function stopStream() {
+  stopMeter();
   stream?.getTracks().forEach((tr) => tr.stop());
   stream = null;
   ready.value = false;
@@ -40,14 +75,15 @@ async function start() {
   if (!navigator.mediaDevices?.getUserMedia) { error.value = 'unsupported'; return; }
   try {
     stream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: { ideal: facing.value }, width: { ideal: 1920 }, height: { ideal: 1080 } },
-      audio: mode.value === 'video', // the microphone is only requested when filming
+      video: mode.value === 'audio' ? false : { facingMode: { ideal: facing.value }, width: { ideal: 1920 }, height: { ideal: 1080 } },
+      audio: mode.value !== 'photo', // the microphone is only requested when filming or recording sound
     });
   } catch (e) {
     error.value = e?.name === 'NotAllowedError' || e?.name === 'SecurityError' ? 'denied' : 'unsupported';
     return;
   }
   await nextTick();
+  if (mode.value === 'audio') { startMeter(); ready.value = true; return; }
   if (!videoEl.value) { stopStream(); return; }
   videoEl.value.srcObject = stream;
   try { await videoEl.value.play(); } catch { /* autoplay is allowed for muted streams */ }
@@ -60,7 +96,7 @@ function close() {
   emit('close');
 }
 
-watch(() => props.open, (o) => { if (o) { added.value = 0; mode.value = 'photo'; start(); } else { stopStream(); } }, { immediate: true });
+watch(() => props.open, (o) => { if (o) { added.value = 0; mode.value = props.startMode === 'audio' ? 'audio' : 'photo'; start(); } else { stopStream(); } }, { immediate: true });
 onBeforeUnmount(() => { clearInterval(timer); stopStream(); });
 if (typeof document !== 'undefined') document.addEventListener('visibilitychange', () => { if (document.hidden && props.open) close(); });
 
@@ -91,7 +127,9 @@ async function shoot() {
 }
 
 function pickMime() {
-  const list = ['video/mp4;codecs=avc1', 'video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm', 'video/mp4'];
+  const list = mode.value === 'audio'
+    ? ['audio/mp4', 'audio/webm;codecs=opus', 'audio/webm', 'audio/ogg;codecs=opus']
+    : ['video/mp4;codecs=avc1', 'video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm', 'video/mp4'];
   return typeof MediaRecorder !== 'undefined' ? list.find((m) => MediaRecorder.isTypeSupported(m)) || '' : '';
 }
 
@@ -99,27 +137,29 @@ function startRecording() {
   if (!stream || typeof MediaRecorder === 'undefined') { error.value = 'unsupported'; return; }
   recMime = pickMime();
   chunks = [];
-  try { recorder = new MediaRecorder(stream, { ...(recMime ? { mimeType: recMime } : {}), videoBitsPerSecond: 2_500_000 }); } catch { error.value = 'unsupported'; return; }
+  try { recorder = new MediaRecorder(stream, { ...(recMime ? { mimeType: recMime } : {}), ...(mode.value === 'audio' ? { audioBitsPerSecond: 96_000 } : { videoBitsPerSecond: 2_500_000 }) }); } catch { error.value = 'unsupported'; return; }
   recorder.ondataavailable = (e) => { if (e.data?.size) chunks.push(e.data); };
   recorder.onstop = () => {
     clearInterval(timer);
     recording.value = false;
     if (!chunks.length) return;
-    const type = (recorder.mimeType || recMime || 'video/webm').split(';')[0];
-    const ext = type.includes('mp4') ? 'mp4' : 'webm';
-    emit('capture', [new File(chunks, `camera-${Date.now()}.${ext}`, { type })]);
+    const sound = mode.value === 'audio';
+    const type = (recorder.mimeType || recMime || (sound ? 'audio/webm' : 'video/webm')).split(';')[0];
+    const ext = type.includes('mp4') ? (sound ? 'm4a' : 'mp4') : type.includes('ogg') ? 'ogg' : 'webm';
+    emit('capture', [new File(chunks, `${sound ? 'voice' : 'camera'}-${Date.now()}.${ext}`, { type })]);
     added.value++;
     chunks = [];
   };
   recorder.start(1000);
   recording.value = true;
   seconds.value = 0;
-  timer = setInterval(() => { seconds.value++; if (seconds.value >= config.maxVideoSeconds) stopRecording(); }, 1000);
+  timer = setInterval(() => { seconds.value++; if (seconds.value >= (mode.value === 'audio' ? config.maxAudioSeconds : config.maxVideoSeconds)) stopRecording(); }, 1000);
 }
 function stopRecording() { if (recorder && recorder.state !== 'inactive') recorder.stop(); }
 function discardRecording() { chunks = []; if (recorder) { recorder.onstop = null; if (recorder.state !== 'inactive') recorder.stop(); } clearInterval(timer); recording.value = false; }
 
 const onShutter = () => (mode.value === 'photo' ? shoot() : recording.value ? stopRecording() : startRecording());
+const fromDeviceTypes = computed(() => (mode.value === 'audio' ? 'audio/*' : mode.value === 'video' ? 'video/*' : 'image/*'));
 
 // fallback when the live camera is unavailable: the device's own camera app through a file input
 function fromDevice(e) {
@@ -138,27 +178,30 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKey));
 
 <template>
   <Teleport to="body"><div v-if="open" class="camera" role="dialog" aria-modal="true" :aria-label="t('camera.title')">
-    <video ref="videoEl" class="cam-feed" :class="{ mirror }" playsinline muted autoplay />
+    <video v-show="mode !== 'audio'" ref="videoEl" class="cam-feed" :class="{ mirror }" playsinline muted autoplay />
+    <div v-if="mode === 'audio'" class="cam-voice"><AppIcon name="mic" :size="44" /><canvas ref="meter" width="560" height="120" /></div>
     <div v-if="flash" class="cam-flash" />
 
     <header class="cam-bar cam-top">
       <button class="icon-btn" :aria-label="t('close')" @click="close"><AppIcon name="x" :size="22" /></button>
       <span v-if="recording" class="cam-rec"><i />{{ clock }}</span>
       <span class="grow" />
-      <button class="icon-btn" :aria-label="t('camera.switch')" :disabled="recording || !!error" @click="flip"><AppIcon name="refresh" :size="22" /></button>
+      <button class="icon-btn" :aria-label="t('camera.switch')" :disabled="recording || !!error || mode === 'audio'" @click="flip"><AppIcon name="refresh" :size="22" /></button>
     </header>
 
     <div v-if="error" class="cam-fallback">
       <AppIcon name="alert" :size="28" />
       <p>{{ t(error === 'denied' ? 'camera.denied' : 'camera.noCamera') }}</p>
-      <label class="btn primary">{{ t('camera.useApp') }} · {{ t('camera.photo') }}<input class="sr" type="file" accept="image/*" capture="environment" @change="fromDevice" /></label>
-      <label class="btn">{{ t('camera.useApp') }} · {{ t('camera.video') }}<input class="sr" type="file" accept="video/*" capture="environment" @change="fromDevice" /></label>
+      <label v-if="mode !== 'audio'" class="btn primary">{{ t('camera.useApp') }} · {{ t('camera.photo') }}<input class="sr" type="file" accept="image/*" capture="environment" @change="fromDevice" /></label>
+      <label v-if="mode !== 'audio'" class="btn">{{ t('camera.useApp') }} · {{ t('camera.video') }}<input class="sr" type="file" accept="video/*" capture="environment" @change="fromDevice" /></label>
+      <label v-else class="btn primary">{{ t('camera.useApp') }} · {{ t('camera.audio') }}<input class="sr" type="file" :accept="fromDeviceTypes" capture @change="fromDevice" /></label>
     </div>
 
     <footer class="cam-bar cam-bottom">
       <div class="cam-modes" role="tablist">
         <button role="tab" :aria-selected="mode === 'photo'" :class="{ on: mode === 'photo' }" :disabled="recording" @click="setMode('photo')">{{ t('camera.photo') }}</button>
         <button role="tab" :aria-selected="mode === 'video'" :class="{ on: mode === 'video' }" :disabled="recording" @click="setMode('video')">{{ t('camera.video') }}</button>
+        <button role="tab" :aria-selected="mode === 'audio'" :class="{ on: mode === 'audio' }" :disabled="recording" @click="setMode('audio')">{{ t('camera.audio') }}</button>
       </div>
       <div class="cam-row">
         <span class="cam-count">{{ added ? t('camera.added', { n: added }) : '' }}</span>
@@ -176,6 +219,8 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKey));
 .camera { position: fixed; top: 0; left: 0; right: 0; height: 100vh; height: 100svh; z-index: 90; background: #000; color: #fff; display: flex; flex-direction: column; overflow: hidden; }
 .cam-feed { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: #000; }
 .cam-feed.mirror { transform: scaleX(-1); }
+.cam-voice { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; background: radial-gradient(120% 90% at 50% 30%, #1f2d27, #0b0f0d); }
+.cam-voice canvas { width: min(88vw, 520px); height: 110px; }
 .cam-flash { position: absolute; inset: 0; background: #fff; opacity: .85; animation: fade .16s reverse; pointer-events: none; z-index: 3; }
 .cam-bar { position: relative; z-index: 2; display: flex; align-items: center; gap: 10px; padding: 14px 16px; flex: none; }
 .cam-bar.cam-top { padding-top: calc(14px + env(safe-area-inset-top)); background: linear-gradient(rgba(0,0,0,.55), transparent); }
@@ -192,7 +237,7 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKey));
 .cam-done { justify-self: end; }
 .shutter { width: 74px; height: 74px; flex: none; border-radius: 50%; border: 4px solid #fff; background: transparent; padding: 0; display: grid; place-items: center; }
 .shutter i { width: 56px; height: 56px; border-radius: 50%; background: #fff; transition: all .15s; }
-.shutter.video i { background: #ff4d4d; }
+.shutter.video i, .shutter.audio i { background: #ff4d4d; }
 .shutter.recording i { width: 28px; height: 28px; border-radius: 8px; }
 .shutter:active i { transform: scale(.9); }
 .shutter:disabled { opacity: .55; }

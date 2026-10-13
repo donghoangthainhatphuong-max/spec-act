@@ -114,7 +114,7 @@
   "compose.saving": "Сохранение…",
   "compose.sharing": "Предоставление доступа…",
   "compose.showPassword": "Показать пароль",
-  "compose.skipped": "Пропущено файлов: {n}. Только фото и видео, не более {max} на запись; фото до {mb} МБ, видео до {vmb} МБ.",
+  "compose.skipped": "Пропущено файлов: {n}. Только фото, видео, аудио и документы (без веб-страниц, скриптов и программ), не более {max} на запись; фото до {mb} МБ, видео до {vmb} МБ, прочие файлы до {fmb} МБ.",
   "compose.uploading": "Загрузка {done}/{total}…",
   "compose.viaMention": "упомянут",
   "creds.badId": "Это не похоже на идентификатор клиента Google (…apps.googleusercontent.com).",
@@ -290,6 +290,12 @@
   "camera.useApp": "Приложение камеры",
   "camera.added": "Добавлено: {n}",
   "camera.full": "Запись заполнена — удалите что-нибудь, чтобы добавить.",
-  "compose.addMedia": "Добавить фото или видео",
-  "viewer.loadingVideo": "Загрузка видео…"
+  "compose.addMedia": "Добавить фото, видео, аудио или файл",
+  "viewer.loadingVideo": "Загрузка видео…",
+  "camera.audio": "Аудио",
+  "camera.audioOpen": "Записать звук",
+  "attach.play": "Воспроизвести",
+  "attach.download": "Скачать",
+  "attach.loading": "Загрузка…",
+  "attach.more": "ещё вложений: {n}"
 }

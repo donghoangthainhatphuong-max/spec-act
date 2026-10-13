@@ -114,7 +114,7 @@
   "compose.saving": "Menyimpan…",
   "compose.sharing": "Membagikan…",
   "compose.showPassword": "Tampilkan kata sandi",
-  "compose.skipped": "{n} berkas dilewati. Hanya foto dan video, maksimal {max} per kiriman; foto {mb} MB, video {vmb} MB per berkas.",
+  "compose.skipped": "{n} berkas dilewati. Hanya foto, video, audio, dan dokumen (tanpa halaman web, skrip, atau program), maksimal {max} per kiriman; foto {mb} MB, video {vmb} MB, berkas lain {fmb} MB.",
   "compose.uploading": "Mengunggah {done}/{total}…",
   "compose.viaMention": "disebut",
   "creds.badId": "Ini tidak terlihat seperti ID klien Google (…apps.googleusercontent.com).",
@@ -290,6 +290,12 @@
   "camera.useApp": "Pakai aplikasi kamera",
   "camera.added": "{n} ditambahkan",
   "camera.full": "Kiriman ini penuh — hapus sesuatu untuk menambah.",
-  "compose.addMedia": "Tambah foto atau video",
-  "viewer.loadingVideo": "Memuat video…"
+  "compose.addMedia": "Tambah foto, video, audio, atau berkas",
+  "viewer.loadingVideo": "Memuat video…",
+  "camera.audio": "Audio",
+  "camera.audioOpen": "Rekam suara",
+  "attach.play": "Putar",
+  "attach.download": "Unduh",
+  "attach.loading": "Memuat…",
+  "attach.more": "+{n} lampiran lagi"
 }

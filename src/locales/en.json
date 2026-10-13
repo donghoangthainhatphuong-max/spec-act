@@ -114,7 +114,7 @@
   "compose.saving": "Saving…",
   "compose.sharing": "Sharing…",
   "compose.showPassword": "Show password",
-  "compose.skipped": "{n} file(s) skipped. Photos and videos only, up to {max} per post; photos {mb} MB, videos {vmb} MB each.",
+  "compose.skipped": "{n} file(s) skipped. Photos, videos, audio and documents only (no web pages, scripts or programs), up to {max} per post; photos {mb} MB, videos {vmb} MB, other files {fmb} MB each.",
   "compose.uploading": "Uploading {done}/{total}…",
   "compose.viaMention": "mentioned",
   "creds.badId": "That does not look like a Google client ID (…apps.googleusercontent.com).",
@@ -290,6 +290,12 @@
   "camera.useApp": "Use camera app",
   "camera.added": "{n} added",
   "camera.full": "This post is full — remove something to add more.",
-  "compose.addMedia": "Add photo or video",
-  "viewer.loadingVideo": "Loading video…"
+  "compose.addMedia": "Add photo, video, audio or file",
+  "viewer.loadingVideo": "Loading video…",
+  "camera.audio": "Audio",
+  "camera.audioOpen": "Record audio",
+  "attach.play": "Play",
+  "attach.download": "Download",
+  "attach.loading": "Loading…",
+  "attach.more": "+{n} more attachments"
 }
