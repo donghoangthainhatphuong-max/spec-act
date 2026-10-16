@@ -64,6 +64,8 @@ docker compose up -d --build   # http://localhost:8088
 
 추가 문서(English / Tiếng Việt): [Architecture](docs/ARCHITECTURE.md) · [Security](docs/SECURITY.md) · [Google setup](docs/GOOGLE_SETUP.md) · [Open format](docs/OPEN_FORMAT.md) — [Kiến trúc](docs/ARCHITECTURE.vi.md) · [Bảo mật](docs/SECURITY.vi.md) · [Thiết lập Google](docs/GOOGLE_SETUP.vi.md) · [Định dạng mở](docs/OPEN_FORMAT.vi.md)
 
+🌐 **[specact.com](https://specact.com)** · [GitHub](https://github.com/donghoangthainhatphuong-max/spec-act)
+
 기여자 규칙: CLAUDE.md ([EN](CLAUDE.md) · [VI](CLAUDE.vi.md))
 
 라이선스: MIT.

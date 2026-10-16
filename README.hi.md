@@ -64,6 +64,8 @@ docker compose up -d --build   # http://localhost:8088
 
 अधिक दस्तावेज़ (English / Tiếng Việt): [Architecture](docs/ARCHITECTURE.md) · [Security](docs/SECURITY.md) · [Google setup](docs/GOOGLE_SETUP.md) · [Open format](docs/OPEN_FORMAT.md) — [Kiến trúc](docs/ARCHITECTURE.vi.md) · [Bảo mật](docs/SECURITY.vi.md) · [Thiết lập Google](docs/GOOGLE_SETUP.vi.md) · [Định dạng mở](docs/OPEN_FORMAT.vi.md)
 
+🌐 **[specact.com](https://specact.com)** · [GitHub](https://github.com/donghoangthainhatphuong-max/spec-act)
+
 योगदानकर्ताओं के नियम: CLAUDE.md ([EN](CLAUDE.md) · [VI](CLAUDE.vi.md))
 
 लाइसेंस: MIT।

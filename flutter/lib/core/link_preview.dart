@@ -39,8 +39,13 @@ String? _abs(String? href, Uri base) {
 }
 
 /// Pure: HTML text -> card + picture address (or null when the page says nothing useful). Never runs scripts.
-({Map<String, dynamic> link, String? imageUrl})? parseOpenGraph(String page, String pageUrl) {
-  final doc = html.parse(page.length > _maxHtml ? page.substring(0, _maxHtml) : page);
+({Map<String, dynamic> link, String? imageUrl})? parseOpenGraph(
+  String page,
+  String pageUrl,
+) {
+  final doc = html.parse(
+    page.length > _maxHtml ? page.substring(0, _maxHtml) : page,
+  );
   String meta(List<String> names) {
     for (final n in names) {
       final el = doc.querySelector('meta[property="$n"], meta[name="$n"]');
@@ -56,22 +61,49 @@ String? _abs(String? href, Uri base) {
   final link = cleanLink({
     // the address that was pasted is what a card opens, never an address the page claims for itself
     'url': pageUrl,
-    'title': ogTitle.isNotEmpty ? ogTitle : (doc.querySelector('title')?.text ?? ''),
-    'description': meta(['og:description', 'twitter:description', 'description']),
-    'site': site.isNotEmpty ? site : base.host.replaceFirst(RegExp(r'^www\.'), ''),
+    'title': ogTitle.isNotEmpty
+        ? ogTitle
+        : (doc.querySelector('title')?.text ?? ''),
+    'description': meta([
+      'og:description',
+      'twitter:description',
+      'description',
+    ]),
+    'site': site.isNotEmpty
+        ? site
+        : base.host.replaceFirst(RegExp(r'^www\.'), ''),
   });
-  if (link == null || ((link['title'] as String).isEmpty && (link['description'] as String).isEmpty)) return null;
-  return (link: link, imageUrl: _abs(meta(['og:image:secure_url', 'og:image', 'twitter:image']), base));
+  if (link == null ||
+      ((link['title'] as String).isEmpty &&
+          (link['description'] as String).isEmpty))
+    return null;
+  return (
+    link: link,
+    imageUrl: _abs(
+      meta(['og:image:secure_url', 'og:image', 'twitter:image']),
+      base,
+    ),
+  );
 }
 
-Future<http.Response> _get(String url, Duration timeout, http.Client c) =>
-    c.get(Uri.parse(url), headers: const {'User-Agent': 'Mozilla/5.0 (compatible; SPECACTLinkPreview/1.0)', 'Accept': 'text/html,application/xhtml+xml,image/*;q=0.8'}).timeout(timeout);
+Future<http.Response> _get(String url, Duration timeout, http.Client c) => c
+    .get(
+      Uri.parse(url),
+      headers: const {
+        'User-Agent': 'Mozilla/5.0 (compatible; SPECACTLinkPreview/1.0)',
+        'Accept': 'text/html,application/xhtml+xml,image/*;q=0.8',
+      },
+    )
+    .timeout(timeout);
 
 Future<Uint8List?> _loadImage(String url, http.Client c) async {
   try {
     final r = await _get(url, const Duration(seconds: 6), c);
     final type = (r.headers['content-type'] ?? '').toLowerCase();
-    if (r.statusCode != 200 || !RegExp(r'^image/(jpeg|png|webp|gif|avif)').hasMatch(type) || r.bodyBytes.length > _maxImage) return null; // never SVG
+    if (r.statusCode != 200 ||
+        !RegExp(r'^image/(jpeg|png|webp|gif|avif)').hasMatch(type) ||
+        r.bodyBytes.length > _maxImage)
+      return null; // never SVG
     return r.bodyBytes;
   } catch (_) {
     return null;
@@ -79,30 +111,49 @@ Future<Uint8List?> _loadImage(String url, http.Client c) async {
 }
 
 /// null when there is nothing to show or the page can't be reached.
-Future<LinkPreview?> fetchPreview(String url, {http.Client? client, bool? web}) async {
+Future<LinkPreview?> fetchPreview(
+  String url, {
+  http.Client? client,
+  bool? web,
+}) async {
   if (!RegExp(r'^https?://', caseSensitive: false).hasMatch(url)) return null;
   final c = client ?? http.Client();
   final viaService = web ?? kIsWeb;
   try {
     if (viaService && _previewService.isEmpty) {
-      debugPrint('link preview: a browser cannot read other sites; start with --dart-define=LINK_PREVIEW_URL=…');
+      debugPrint(
+        'link preview: a browser cannot read other sites; start with --dart-define=LINK_PREVIEW_URL=…',
+      );
       return null;
     }
-    final target = viaService ? _previewService.replaceAll('{url}', Uri.encodeComponent(url)) : url;
+    final target = viaService
+        ? _previewService.replaceAll('{url}', Uri.encodeComponent(url))
+        : url;
     final r = await _get(target, const Duration(seconds: 8), c);
     if (r.statusCode != 200) {
       debugPrint('link preview: $url answered ${r.statusCode}');
       return null;
     }
     final type = (r.headers['content-type'] ?? 'text/html').toLowerCase();
-    if (!type.contains('html') && !type.contains('xml') && !type.contains('text')) return null;
+    if (!type.contains('html') &&
+        !type.contains('xml') &&
+        !type.contains('text'))
+      return null;
     final parsed = parseOpenGraph(r.body, url);
     if (parsed == null) {
       debugPrint('link preview: no Open Graph data in $url');
       return null;
     }
     final img = parsed.imageUrl;
-    final bytes = img == null ? null : (viaService ? await _loadImage('$_previewService${_previewService.contains('?') ? '&' : '?'}kind=image'.replaceAll('{url}', Uri.encodeComponent(img)), c) : await _loadImage(img, c));
+    final bytes = img == null
+        ? null
+        : (viaService
+              ? await _loadImage(
+                  '$_previewService${_previewService.contains('?') ? '&' : '?'}kind=image'
+                      .replaceAll('{url}', Uri.encodeComponent(img)),
+                  c,
+                )
+              : await _loadImage(img, c));
     return LinkPreview(parsed.link, bytes);
   } catch (e) {
     debugPrint('link preview failed for $url: $e');

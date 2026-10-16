@@ -52,6 +52,7 @@ dependencies:
   fc_native_video_thumbnail: ^3.0.1
   camera: ^0.12.1
   html: ^0.15.7
+  in_app_update: ^5.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

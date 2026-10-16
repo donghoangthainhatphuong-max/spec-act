@@ -313,5 +313,12 @@
   "attach.play": "Putar",
   "attach.download": "Unduh",
   "attach.loading": "Memuat…",
-  "attach.more": "+{n} lampiran lagi"
+  "attach.more": "+{n} lampiran lagi",
+  "settings.github": "Sumber terbuka di GitHub",
+  "settings.website": "Situs web specact.com",
+  "settings.update": "Periksa pembaruan",
+  "update.latest": "Anda memakai versi terbaru",
+  "update.downloaded": "Pembaruan telah diunduh",
+  "update.restart": "Mulai ulang",
+  "update.unavailable": "Pembaruan dikirim lewat Google Play"
 }

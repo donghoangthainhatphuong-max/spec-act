@@ -8,19 +8,25 @@ import '../i18n.dart';
 import '../state.dart';
 import 'design.dart';
 
-String tr(BuildContext c, String key, [Map<String, Object?> p = const {}]) => c.watch<I18n>().t(key, p);
+String tr(BuildContext c, String key, [Map<String, Object?> p = const {}]) =>
+    c.watch<I18n>().t(key, p);
 
-void toast(BuildContext c, String msg) => ScaffoldMessenger.of(c).showSnackBar(SnackBar(content: Text(msg)));
+void toast(BuildContext c, String msg) =>
+    ScaffoldMessenger.of(c).showSnackBar(SnackBar(content: Text(msg)));
 
 /// Maps a thrown error to a translated message; never shows raw exception text.
 String errorText(BuildContext c, Object e) {
   final i = c.read<I18n>();
   if (e is RepoError) {
     switch (e.code) {
-      case 'not-found': return i.t('post.notFound');
-      case 'forbidden': return i.t('post.forbidden');
-      case 'wrong-password': return i.t('post.wrongPassword');
-      case 'offline': return i.t('error.sync');
+      case 'not-found':
+        return i.t('post.notFound');
+      case 'forbidden':
+        return i.t('post.forbidden');
+      case 'wrong-password':
+        return i.t('post.wrongPassword');
+      case 'offline':
+        return i.t('error.sync');
     }
   }
   return i.t('error.generic');
@@ -47,7 +53,13 @@ class Avatar extends StatelessWidget {
 
 /// Loads (and decrypts) one photo through the repo; shows a placeholder meanwhile.
 class DriveImage extends StatefulWidget {
-  const DriveImage({super.key, required this.post, required this.item, this.thumb = false, this.fit = BoxFit.cover});
+  const DriveImage({
+    super.key,
+    required this.post,
+    required this.item,
+    this.thumb = false,
+    this.fit = BoxFit.cover,
+  });
   final Map<String, dynamic> post;
   final Map item;
   final bool thumb;
@@ -61,7 +73,11 @@ class _DriveImageState extends State<DriveImage> {
   @override
   void initState() {
     super.initState();
-    _f = context.read<AppState>().repo!.mediaBytes(widget.post, widget.item, thumb: widget.thumb);
+    _f = context.read<AppState>().repo!.mediaBytes(
+      widget.post,
+      widget.item,
+      thumb: widget.thumb,
+    );
   }
 
   @override
@@ -70,8 +86,30 @@ class _DriveImageState extends State<DriveImage> {
     return FutureBuilder<Uint8List>(
       future: _f,
       builder: (_, s) {
-        if (s.hasData) return Image.memory(s.data!, fit: widget.fit, gaplessPlayback: true, cacheWidth: widget.thumb ? 720 : 1600, filterQuality: FilterQuality.medium, errorBuilder: (_, __, ___) => ColoredBox(color: bg, child: const Icon(Icons.broken_image_outlined)));
-        return ColoredBox(color: bg, child: Center(child: s.hasError ? const Icon(Icons.lock_outline) : const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))));
+        if (s.hasData)
+          return Image.memory(
+            s.data!,
+            fit: widget.fit,
+            gaplessPlayback: true,
+            cacheWidth: widget.thumb ? 720 : 1600,
+            filterQuality: FilterQuality.medium,
+            errorBuilder: (_, __, ___) => ColoredBox(
+              color: bg,
+              child: const Icon(Icons.broken_image_outlined),
+            ),
+          );
+        return ColoredBox(
+          color: bg,
+          child: Center(
+            child: s.hasError
+                ? const Icon(Icons.lock_outline)
+                : const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+          ),
+        );
       },
     );
   }

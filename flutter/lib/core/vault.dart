@@ -23,7 +23,8 @@ class SecureKeyValueStore implements KeyValueStore {
   @override
   Future<String?> read(String key) => _s.read(key: key);
   @override
-  Future<void> write(String key, String value) => _s.write(key: key, value: value);
+  Future<void> write(String key, String value) =>
+      _s.write(key: key, value: value);
   @override
   Future<void> delete(String key) => _s.delete(key: key);
   @override
@@ -44,7 +45,8 @@ class MemoryKeyValueStore implements KeyValueStore {
 
 class VaultError implements Exception {
   VaultError(this.code, {this.retryInMs = 0, this.remaining = 0});
-  final String code; // no-vault | throttled | bad-pin | wiped | locked | corrupt
+  final String
+  code; // no-vault | throttled | bad-pin | wiped | locked | corrupt
   final int retryInMs;
   final int remaining;
   @override
@@ -52,7 +54,11 @@ class VaultError implements Exception {
 }
 
 class Vault {
-  Vault({KeyValueStore? store, this.iterations = Config.pbkdf2Iterations, this.maxAttempts = Config.pinMaxAttempts}) : _kv = store ?? SecureKeyValueStore();
+  Vault({
+    KeyValueStore? store,
+    this.iterations = Config.pbkdf2Iterations,
+    this.maxAttempts = Config.pinMaxAttempts,
+  }) : _kv = store ?? SecureKeyValueStore();
 
   final KeyValueStore _kv;
   final int iterations;
@@ -77,18 +83,39 @@ class Vault {
 
   Future<({int attempts, int lockedUntil})> status() async {
     final m = await _meta();
-    return (attempts: (m?['attempts'] ?? 0) as int, lockedUntil: (m?['lockedUntil'] ?? 0) as int);
+    return (
+      attempts: (m?['attempts'] ?? 0) as int,
+      lockedUntil: (m?['lockedUntil'] ?? 0) as int,
+    );
   }
 
-  Future<String> _seal(String name, Object? value, SecretKey pin, SecretKey dev) async {
-    final inner = await encryptBytes(dev, utf8b(jsonEncode(value)), 'dev:$name');
+  Future<String> _seal(
+    String name,
+    Object? value,
+    SecretKey pin,
+    SecretKey dev,
+  ) async {
+    final inner = await encryptBytes(
+      dev,
+      utf8b(jsonEncode(value)),
+      'dev:$name',
+    );
     final outer = await encryptBytes(pin, inner, 'pin:$name');
     return _prefix + b64e(outer);
   }
 
-  Future<dynamic> _open(String name, String sealed, SecretKey pin, SecretKey dev) async {
+  Future<dynamic> _open(
+    String name,
+    String sealed,
+    SecretKey pin,
+    SecretKey dev,
+  ) async {
     if (!sealed.startsWith(_prefix)) throw VaultError('corrupt');
-    final inner = await decryptBytes(pin, b64d(sealed.substring(_prefix.length)), 'pin:$name');
+    final inner = await decryptBytes(
+      pin,
+      b64d(sealed.substring(_prefix.length)),
+      'pin:$name',
+    );
     return jsonDecode(fromUtf8(await decryptBytes(dev, inner, 'dev:$name')));
   }
 
@@ -98,22 +125,48 @@ class Vault {
     final dev = rawKey(randomBytes(32));
     final pinKey = await deriveKey(pin, salt, iterations);
     await _kv.write(_devKey, b64e(await dev.extractBytes()));
-    await _kv.write(_recPrefix + _check, await _seal(_check, 'specact-ok', pinKey, dev));
-    await _kv.write(_metaKey, jsonEncode({'v': 1, 'salt': b64e(salt), 'iter': iterations, 'attempts': 0, 'lockedUntil': 0, 'createdAt': DateTime.now().millisecondsSinceEpoch}));
+    await _kv.write(
+      _recPrefix + _check,
+      await _seal(_check, 'specact-ok', pinKey, dev),
+    );
+    await _kv.write(
+      _metaKey,
+      jsonEncode({
+        'v': 1,
+        'salt': b64e(salt),
+        'iter': iterations,
+        'attempts': 0,
+        'lockedUntil': 0,
+        'createdAt': DateTime.now().millisecondsSinceEpoch,
+      }),
+    );
     _pin = pinKey;
     _dev = dev;
   }
 
-  Future<({SecretKey pin, SecretKey dev, Map<String, dynamic> meta})> _checkPin(String pin) async {
+  Future<({SecretKey pin, SecretKey dev, Map<String, dynamic> meta})> _checkPin(
+    String pin,
+  ) async {
     final meta = await _meta();
     final devRaw = await _kv.read(_devKey);
     if (meta == null || devRaw == null) throw VaultError('no-vault');
-    final wait = ((meta['lockedUntil'] ?? 0) as int) - DateTime.now().millisecondsSinceEpoch;
+    final wait =
+        ((meta['lockedUntil'] ?? 0) as int) -
+        DateTime.now().millisecondsSinceEpoch;
     if (wait > 0) throw VaultError('throttled', retryInMs: wait);
     final dev = rawKey(b64d(devRaw));
-    final pinKey = await deriveKey(pin, b64d(meta['salt'] as String), meta['iter'] as int);
+    final pinKey = await deriveKey(
+      pin,
+      b64d(meta['salt'] as String),
+      meta['iter'] as int,
+    );
     try {
-      final c = await _open(_check, (await _kv.read(_recPrefix + _check)) ?? '', pinKey, dev);
+      final c = await _open(
+        _check,
+        (await _kv.read(_recPrefix + _check)) ?? '',
+        pinKey,
+        dev,
+      );
       if (c != 'specact-ok') throw VaultError('corrupt');
     } catch (_) {
       final attempts = ((meta['attempts'] ?? 0) as int) + 1;
@@ -122,11 +175,19 @@ class Vault {
         throw VaultError('wiped');
       }
       // 3 free tries, then 5s, 10s, 20s ... capped at 15 minutes
-      final delay = attempts < 3 ? 0 : (5000 * (1 << (attempts - 3))).clamp(0, 15 * 60000);
+      final delay = attempts < 3
+          ? 0
+          : (5000 * (1 << (attempts - 3))).clamp(0, 15 * 60000);
       meta['attempts'] = attempts;
-      meta['lockedUntil'] = delay == 0 ? 0 : DateTime.now().millisecondsSinceEpoch + delay;
+      meta['lockedUntil'] = delay == 0
+          ? 0
+          : DateTime.now().millisecondsSinceEpoch + delay;
       await _kv.write(_metaKey, jsonEncode(meta));
-      throw VaultError('bad-pin', remaining: maxAttempts - attempts, retryInMs: delay);
+      throw VaultError(
+        'bad-pin',
+        remaining: maxAttempts - attempts,
+        retryInMs: delay,
+      );
     }
     if ((meta['attempts'] ?? 0) != 0 || (meta['lockedUntil'] ?? 0) != 0) {
       meta['attempts'] = 0;
@@ -188,22 +249,42 @@ class Vault {
       if (name == _check) continue;
       try {
         plain[name] = await _open(name, e.value, r.pin, _dev!);
-      } catch (_) {/* drop unreadable */}
+      } catch (_) {
+        /* drop unreadable */
+      }
     }
     final salt = randomBytes(16);
     final nk = await deriveKey(newPin, salt, iterations);
-    await _kv.write(_recPrefix + _check, await _seal(_check, 'specact-ok', nk, _dev!));
+    await _kv.write(
+      _recPrefix + _check,
+      await _seal(_check, 'specact-ok', nk, _dev!),
+    );
     for (final e in plain.entries) {
-      await _kv.write(_recPrefix + e.key, await _seal(e.key, e.value, nk, _dev!));
+      await _kv.write(
+        _recPrefix + e.key,
+        await _seal(e.key, e.value, nk, _dev!),
+      );
     }
-    await _kv.write(_metaKey, jsonEncode({'v': 1, 'salt': b64e(salt), 'iter': iterations, 'attempts': 0, 'lockedUntil': 0, 'createdAt': r.meta['createdAt'], 'changedAt': DateTime.now().millisecondsSinceEpoch}));
+    await _kv.write(
+      _metaKey,
+      jsonEncode({
+        'v': 1,
+        'salt': b64e(salt),
+        'iter': iterations,
+        'attempts': 0,
+        'lockedUntil': 0,
+        'createdAt': r.meta['createdAt'],
+        'changedAt': DateTime.now().millisecondsSinceEpoch,
+      }),
+    );
     _pin = nk;
   }
 
   Future<void> wipe() async {
     lock();
     for (final k in (await _kv.readAll()).keys) {
-      if (k == _metaKey || k == _devKey || k.startsWith(_recPrefix)) await _kv.delete(k);
+      if (k == _metaKey || k == _devKey || k.startsWith(_recPrefix))
+        await _kv.delete(k);
     }
   }
 }

@@ -6,8 +6,20 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const languages = <(String, String)>[
-  ('en', 'English'), ('vi', 'Tiếng Việt'), ('zh', '中文'), ('ja', '日本語'), ('ko', '한국어'), ('ru', 'Русский'), ('fr', 'Français'),
-  ('de', 'Deutsch'), ('es', 'Español'), ('th', 'ไทย'), ('id', 'Bahasa Indonesia'), ('hi', 'हिन्दी'), ('ar', 'العربية'), ('tr', 'Türkçe'),
+  ('en', 'English'),
+  ('vi', 'Tiếng Việt'),
+  ('zh', '中文'),
+  ('ja', '日本語'),
+  ('ko', '한국어'),
+  ('ru', 'Русский'),
+  ('fr', 'Français'),
+  ('de', 'Deutsch'),
+  ('es', 'Español'),
+  ('th', 'ไทย'),
+  ('id', 'Bahasa Indonesia'),
+  ('hi', 'हिन्दी'),
+  ('ar', 'العربية'),
+  ('tr', 'Türkçe'),
 ];
 
 Map<String, String> _flat(Map<String, dynamic> o, [String p = '']) {
@@ -34,15 +46,22 @@ class I18n extends ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     final saved = prefs.getString('lang');
     final device = PlatformDispatcher.instance.locale.languageCode;
-    await setLang(saved ?? (languages.any((l) => l.$1 == device) ? device : 'en'), persist: false);
+    await setLang(
+      saved ?? (languages.any((l) => l.$1 == device) ? device : 'en'),
+      persist: false,
+    );
   }
 
-  Future<Map<String, String>> _load(String code) async => _flat(jsonDecode(await rootBundle.loadString('assets/locales/$code.json')) as Map<String, dynamic>);
+  Future<Map<String, String>> _load(String code) async => _flat(
+    jsonDecode(await rootBundle.loadString('assets/locales/$code.json'))
+        as Map<String, dynamic>,
+  );
 
   Future<void> setLang(String code, {bool persist = true}) async {
     lang = code;
     _cur = code == 'en' ? _en : await _load(code);
-    if (persist) (await SharedPreferences.getInstance()).setString('lang', code);
+    if (persist)
+      (await SharedPreferences.getInstance()).setString('lang', code);
     notifyListeners();
   }
 

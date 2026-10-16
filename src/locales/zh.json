@@ -313,5 +313,12 @@
   "attach.play": "播放",
   "attach.download": "下载",
   "attach.loading": "加载中…",
-  "attach.more": "另有 {n} 个附件"
+  "attach.more": "另有 {n} 个附件",
+  "settings.github": "GitHub 开源项目",
+  "settings.website": "官网 specact.com",
+  "settings.update": "检查更新",
+  "update.latest": "已是最新版本",
+  "update.downloaded": "更新已下载",
+  "update.restart": "重启",
+  "update.unavailable": "更新通过 Google Play 提供"
 }

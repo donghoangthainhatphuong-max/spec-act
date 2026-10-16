@@ -313,5 +313,12 @@
   "attach.play": "Oynat",
   "attach.download": "İndir",
   "attach.loading": "Yükleniyor…",
-  "attach.more": "+{n} ek daha"
+  "attach.more": "+{n} ek daha",
+  "settings.github": "GitHub'da açık kaynak",
+  "settings.website": "Web sitesi specact.com",
+  "settings.update": "Güncellemeleri denetle",
+  "update.latest": "En son sürümü kullanıyorsunuz",
+  "update.downloaded": "Güncelleme indirildi",
+  "update.restart": "Yeniden başlat",
+  "update.unavailable": "Güncellemeler Google Play ile gelir"
 }

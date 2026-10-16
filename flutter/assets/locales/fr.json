@@ -313,5 +313,12 @@
   "attach.play": "Lire",
   "attach.download": "Télécharger",
   "attach.loading": "Chargement…",
-  "attach.more": "+{n} pièces jointes de plus"
+  "attach.more": "+{n} pièces jointes de plus",
+  "settings.github": "Open source sur GitHub",
+  "settings.website": "Site web specact.com",
+  "settings.update": "Rechercher des mises à jour",
+  "update.latest": "Vous avez la dernière version",
+  "update.downloaded": "Mise à jour téléchargée",
+  "update.restart": "Redémarrer",
+  "update.unavailable": "Les mises à jour sont fournies par Google Play"
 }

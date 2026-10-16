@@ -20,7 +20,16 @@ Future<void> main() async {
   final app = AppState();
   app.translate = i18n.t;
   await app.init();
-  runApp(MultiProvider(providers: [ChangeNotifierProvider.value(value: i18n), ChangeNotifierProvider.value(value: app), ChangeNotifierProvider.value(value: themeCtl)], child: const SpecActApp()));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: i18n),
+        ChangeNotifierProvider.value(value: app),
+        ChangeNotifierProvider.value(value: themeCtl),
+      ],
+      child: const SpecActApp(),
+    ),
+  );
 }
 
 class SpecActApp extends StatelessWidget {
@@ -37,9 +46,14 @@ class SpecActApp extends StatelessWidget {
       theme: AppTheme.light(),
       darkTheme: AppTheme.dark(),
       themeMode: themeMode,
-      builder: (c, child) => Directionality(textDirection: i18n.rtl ? TextDirection.rtl : TextDirection.ltr, child: child!),
+      builder: (c, child) => Directionality(
+        textDirection: i18n.rtl ? TextDirection.rtl : TextDirection.ltr,
+        child: child!,
+      ),
       home: switch (app.phase) {
-        Phase.boot => const Scaffold(body: Center(child: CircularProgressIndicator())),
+        Phase.boot => const Scaffold(
+          body: Center(child: CircularProgressIndicator()),
+        ),
         Phase.consent => const ConsentScreen(),
         Phase.setup => const SetupScreen(),
         Phase.locked => const UnlockScreen(),

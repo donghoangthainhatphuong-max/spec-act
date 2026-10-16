@@ -16,18 +16,30 @@ class LegalSection {
 }
 
 class LegalDoc {
-  LegalDoc({required this.title, required this.lead, required this.sections, required this.updated, required this.native});
+  LegalDoc({
+    required this.title,
+    required this.lead,
+    required this.sections,
+    required this.updated,
+    required this.native,
+  });
   final String title, lead, updated;
   final List<LegalSection> sections;
-  final bool native; // false: shown in English because the app language has no translation of this page
+  final bool
+  native; // false: shown in English because the app language has no translation of this page
 }
 
 /// [page] is 'about', 'terms' or 'privacy'.
-Future<LegalDoc> loadLegal(String page, String lang, {AssetBundle? bundle}) async {
+Future<LegalDoc> loadLegal(
+  String page,
+  String lang, {
+  AssetBundle? bundle,
+}) async {
   final b = bundle ?? rootBundle;
   Future<Map<String, dynamic>?> read(String code) async {
     try {
-      return jsonDecode(await b.loadString('assets/locales/pages/$code.json')) as Map<String, dynamic>;
+      return jsonDecode(await b.loadString('assets/locales/pages/$code.json'))
+          as Map<String, dynamic>;
     } catch (_) {
       return null;
     }
@@ -43,7 +55,11 @@ Future<LegalDoc> loadLegal(String page, String lang, {AssetBundle? bundle}) asyn
     native: own != null || lang == 'en',
     sections: [
       for (final s in (doc['sections'] as List).cast<Map<String, dynamic>>())
-        LegalSection('${s['h']}', [for (final p in (s['body'] as List?) ?? const []) '$p'], [for (final p in (s['list'] as List?) ?? const []) '$p']),
+        LegalSection(
+          '${s['h']}',
+          [for (final p in (s['body'] as List?) ?? const []) '$p'],
+          [for (final p in (s['list'] as List?) ?? const []) '$p'],
+        ),
     ],
   );
 }

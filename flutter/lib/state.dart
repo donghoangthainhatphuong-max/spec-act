@@ -22,6 +22,7 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
   DriveRepo? repo;
   String? error; // i18n key of the last sign-in problem
   Map<String, String> account = {};
+
   /// Translator for the page the browser shows after Google redirects back (set by main).
   String Function(String key) translate = (k) => k;
   DateTime? _pausedAt;
@@ -46,7 +47,10 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
   Future<void> recordConsent() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('terms.accepted', termsVersion);
-    await prefs.setString('terms.acceptedAt', DateTime.now().toUtc().toIso8601String());
+    await prefs.setString(
+      'terms.acceptedAt',
+      DateTime.now().toUtc().toIso8601String(),
+    );
     consentOk = true;
   }
 
@@ -63,14 +67,24 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     } else if (s == AppLifecycleState.resumed && _pausedAt != null) {
       final away = DateTime.now().difference(_pausedAt!);
       _pausedAt = null;
-      if (Config.autoLockMinutes > 0 && away.inMinutes >= Config.autoLockMinutes && vault.unlocked) lock();
+      if (Config.autoLockMinutes > 0 &&
+          away.inMinutes >= Config.autoLockMinutes &&
+          vault.unlocked)
+        lock();
     }
   }
 
   /* ---------- first run ---------- */
-  Future<void> createVault({required String pin, required String clientId, String? clientSecret}) async {
+  Future<void> createVault({
+    required String pin,
+    required String clientId,
+    String? clientSecret,
+  }) async {
     await vault.create(pin);
-    await vault.set('creds', {'clientId': clientId.trim(), 'clientSecret': (clientSecret ?? '').trim()});
+    await vault.set('creds', {
+      'clientId': clientId.trim(),
+      'clientSecret': (clientSecret ?? '').trim(),
+    });
     _clientId = clientId.trim();
     _clientSecret = (clientSecret ?? '').trim();
     phase = Phase.signIn;
@@ -80,10 +94,14 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
   /* ---------- unlock ---------- */
   Future<void> unlock(String pin) async {
     await vault.unlock(pin); // throws VaultError
-    final creds = Map<String, dynamic>.from((await vault.get('creds', <String, dynamic>{})) as Map);
+    final creds = Map<String, dynamic>.from(
+      (await vault.get('creds', <String, dynamic>{})) as Map,
+    );
     _clientId = creds['clientId'] as String?;
     _clientSecret = creds['clientSecret'] as String?;
-    final a = Map<String, dynamic>.from((await vault.get('auth', <String, dynamic>{})) as Map);
+    final a = Map<String, dynamic>.from(
+      (await vault.get('auth', <String, dynamic>{})) as Map,
+    );
     _refresh = a['refreshToken'] as String?;
     account = Map<String, String>.from((a['account'] as Map?) ?? {});
     if (_refresh == null) {
@@ -103,7 +121,16 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     error = null;
     notifyListeners();
     try {
-      final t = await auth.signIn(clientId: _clientId ?? '', clientSecret: _clientSecret, loginHint: account['email'], donePage: (title: translate('auth.doneTitle'), text: translate('auth.doneText'), button: translate('auth.doneButton')));
+      final t = await auth.signIn(
+        clientId: _clientId ?? '',
+        clientSecret: _clientSecret,
+        loginHint: account['email'],
+        donePage: (
+          title: translate('auth.doneTitle'),
+          text: translate('auth.doneText'),
+          button: translate('auth.doneButton'),
+        ),
+      );
       _access = t.accessToken;
       _expiresAt = t.expiresAt;
       _refresh = t.refreshToken ?? _refresh;
@@ -117,12 +144,18 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
   }
 
   Future<String> _token() async {
-    if (_access == null || DateTime.now().millisecondsSinceEpoch > _expiresAt - 60000) await _refreshToken();
+    if (_access == null ||
+        DateTime.now().millisecondsSinceEpoch > _expiresAt - 60000)
+      await _refreshToken();
     return _access!;
   }
 
   Future<String> _refreshToken() async {
-    final t = await auth.refresh(clientId: _clientId ?? '', clientSecret: _clientSecret, refreshToken: _refresh ?? '');
+    final t = await auth.refresh(
+      clientId: _clientId ?? '',
+      clientSecret: _clientSecret,
+      refreshToken: _refresh ?? '',
+    );
     _access = t.accessToken;
     _expiresAt = t.expiresAt;
     return _access!;
@@ -132,9 +165,17 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     final drive = DriveClient(getToken: _token, onUnauthorized: _refreshToken);
     final about = await drive.about();
     final user = about['user'] as Map<String, dynamic>;
-    account = {'email': '${user['emailAddress']}', 'name': '${user['displayName'] ?? ''}'};
+    account = {
+      'email': '${user['emailAddress']}',
+      'name': '${user['displayName'] ?? ''}',
+    };
     await vault.set('auth', {'refreshToken': _refresh, 'account': account});
-    repo = DriveRepo(drive: drive, email: account['email']!, name: account['name'], vault: vault);
+    repo = DriveRepo(
+      drive: drive,
+      email: account['email']!,
+      name: account['name'],
+      vault: vault,
+    );
     await repo!.restoreKeys();
     phase = Phase.ready;
   }
@@ -181,7 +222,8 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     notifyListeners();
   }
 
-  Future<void> changePin(String oldPin, String newPin) => vault.changePin(oldPin, newPin);
+  Future<void> changePin(String oldPin, String newPin) =>
+      vault.changePin(oldPin, newPin);
 
   /// Called when the vault wiped itself after too many wrong PINs.
   Future<void> wiped() async {

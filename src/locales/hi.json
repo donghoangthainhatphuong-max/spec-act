@@ -313,5 +313,12 @@
   "attach.play": "चलाएँ",
   "attach.download": "डाउनलोड",
   "attach.loading": "लोड हो रहा है…",
-  "attach.more": "{n} और अटैचमेंट"
+  "attach.more": "{n} और अटैचमेंट",
+  "settings.github": "GitHub पर ओपन सोर्स",
+  "settings.website": "वेबसाइट specact.com",
+  "settings.update": "अपडेट जाँचें",
+  "update.latest": "आपके पास नवीनतम संस्करण है",
+  "update.downloaded": "अपडेट डाउनलोड हो गया",
+  "update.restart": "पुनः आरंभ करें",
+  "update.unavailable": "अपडेट Google Play से मिलते हैं"
 }

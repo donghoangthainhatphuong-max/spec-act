@@ -10,7 +10,9 @@ class DiskStore implements MediaStore {
   static const maxBytes = 300 * 1024 * 1024;
   Directory? _dir;
 
-  Future<Directory> _d() async => _dir ??= await Directory('${(await getApplicationCacheDirectory()).path}/specact-media').create(recursive: true);
+  Future<Directory> _d() async => _dir ??= await Directory(
+    '${(await getApplicationCacheDirectory()).path}/specact-media',
+  ).create(recursive: true);
 
   String _name(String id) => id.replaceAll(RegExp(r'[^A-Za-z0-9_-]'), '_');
 
@@ -29,9 +31,13 @@ class DiskStore implements MediaStore {
   @override
   Future<void> write(String id, Uint8List bytes) async {
     try {
-      await File('${(await _d()).path}/${_name(id)}').writeAsBytes(bytes, flush: false);
+      await File(
+        '${(await _d()).path}/${_name(id)}',
+      ).writeAsBytes(bytes, flush: false);
       if (DateTime.now().millisecond % 10 == 0) await _trim();
-    } catch (_) {/* only an optimisation */}
+    } catch (_) {
+      /* only an optimisation */
+    }
   }
 
   Future<void> _trim() async {
@@ -44,7 +50,9 @@ class DiskStore implements MediaStore {
       }
     }
     if (total <= maxBytes) return;
-    files.sort((a, b) => a.statSync().accessed.compareTo(b.statSync().accessed));
+    files.sort(
+      (a, b) => a.statSync().accessed.compareTo(b.statSync().accessed),
+    );
     for (final f in files) {
       if (total <= maxBytes * .8) break;
       total -= await f.length();

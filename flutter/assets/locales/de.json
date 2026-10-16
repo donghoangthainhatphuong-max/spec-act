@@ -313,5 +313,12 @@
   "attach.play": "Abspielen",
   "attach.download": "Herunterladen",
   "attach.loading": "Wird geladen…",
-  "attach.more": "+{n} weitere Anhänge"
+  "attach.more": "+{n} weitere Anhänge",
+  "settings.github": "Open Source auf GitHub",
+  "settings.website": "Website specact.com",
+  "settings.update": "Nach Updates suchen",
+  "update.latest": "Du hast die neueste Version",
+  "update.downloaded": "Update heruntergeladen",
+  "update.restart": "Neu starten",
+  "update.unavailable": "Updates kommen über Google Play"
 }

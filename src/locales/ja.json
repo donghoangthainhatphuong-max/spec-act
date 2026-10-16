@@ -313,5 +313,12 @@
   "attach.play": "再生",
   "attach.download": "ダウンロード",
   "attach.loading": "読み込み中…",
-  "attach.more": "ほか {n} 件の添付"
+  "attach.more": "ほか {n} 件の添付",
+  "settings.github": "GitHub のオープンソース",
+  "settings.website": "公式サイト specact.com",
+  "settings.update": "アップデートを確認",
+  "update.latest": "最新バージョンです",
+  "update.downloaded": "アップデートをダウンロードしました",
+  "update.restart": "再起動",
+  "update.unavailable": "アップデートは Google Play から提供されます"
 }

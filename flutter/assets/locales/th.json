@@ -313,5 +313,12 @@
   "attach.play": "เล่น",
   "attach.download": "ดาวน์โหลด",
   "attach.loading": "กำลังโหลด…",
-  "attach.more": "ไฟล์แนบอีก {n} รายการ"
+  "attach.more": "ไฟล์แนบอีก {n} รายการ",
+  "settings.github": "โอเพนซอร์สบน GitHub",
+  "settings.website": "เว็บไซต์ specact.com",
+  "settings.update": "ตรวจสอบการอัปเดต",
+  "update.latest": "คุณใช้เวอร์ชันล่าสุดแล้ว",
+  "update.downloaded": "ดาวน์โหลดอัปเดตแล้ว",
+  "update.restart": "เริ่มใหม่",
+  "update.unavailable": "การอัปเดตมาจาก Google Play"
 }

@@ -313,5 +313,12 @@
   "attach.play": "تشغيل",
   "attach.download": "تنزيل",
   "attach.loading": "جارٍ التحميل…",
-  "attach.more": "+{n} مرفقات أخرى"
+  "attach.more": "+{n} مرفقات أخرى",
+  "settings.github": "مفتوح المصدر على GitHub",
+  "settings.website": "الموقع specact.com",
+  "settings.update": "التحقق من التحديثات",
+  "update.latest": "لديك أحدث إصدار",
+  "update.downloaded": "تم تنزيل التحديث",
+  "update.restart": "إعادة التشغيل",
+  "update.unavailable": "تصل التحديثات عبر Google Play"
 }

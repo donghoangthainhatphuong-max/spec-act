@@ -313,5 +313,12 @@
   "attach.play": "Play",
   "attach.download": "Download",
   "attach.loading": "Loading…",
-  "attach.more": "+{n} more attachments"
+  "attach.more": "+{n} more attachments",
+  "settings.github": "Open source on GitHub",
+  "settings.website": "Website specact.com",
+  "settings.update": "Check for updates",
+  "update.latest": "You have the latest version",
+  "update.downloaded": "Update downloaded",
+  "update.restart": "Restart",
+  "update.unavailable": "Updates are delivered through Google Play"
 }

@@ -16,16 +16,27 @@ import 'vault.dart';
 
 class RepoError implements Exception {
   RepoError(this.code);
-  final String code; // not-found | forbidden | offline | locked | wrong-password | comments-locked | too-many-images | not-a-post
+  final String
+  code; // not-found | forbidden | offline | locked | wrong-password | comments-locked | too-many-images | not-a-post
   @override
   String toString() => 'RepoError($code)';
 }
 
-const _folderFields = 'id,name,createdTime,modifiedTime,trashed,properties,owners(emailAddress,displayName)';
+const _folderFields =
+    'id,name,createdTime,modifiedTime,trashed,properties,owners(emailAddress,displayName)';
 
 /// One attachment ready to upload: a re-encoded photo, a video (+poster), a voice recording or a document.
 class NewMedia {
-  NewMedia({required this.main, this.thumb, this.w = 0, this.h = 0, required this.name, this.kind = 'image', String? mime, this.duration = 0}) : mime = mime ?? 'image/jpeg';
+  NewMedia({
+    required this.main,
+    this.thumb,
+    this.w = 0,
+    this.h = 0,
+    required this.name,
+    this.kind = 'image',
+    String? mime,
+    this.duration = 0,
+  }) : mime = mime ?? 'image/jpeg';
   final Uint8List main;
   final Uint8List? thumb;
   final int w, h;
@@ -36,8 +47,15 @@ class NewMedia {
 }
 
 class DriveRepo {
-  DriveRepo({required this.drive, required String email, String? name, required this.vault})
-      : me = (email: normEmail(email), name: (name == null || name.isEmpty) ? prettyName(email) : name);
+  DriveRepo({
+    required this.drive,
+    required String email,
+    String? name,
+    required this.vault,
+  }) : me = (
+         email: normEmail(email),
+         name: (name == null || name.isEmpty) ? prettyName(email) : name,
+       );
 
   final DriveClient drive;
   final Vault vault;
@@ -63,25 +81,55 @@ class DriveRepo {
   /* ================= layout ================= */
   Future<Map<String, String>> ensureLayout() async {
     if (_layout != null) return _layout!;
-    final root = await _findOrCreateFolder(Config.rootFolder, 'root', {'specact': 'root', 'v': '1'});
-    final posts = await _findOrCreateFolder(Config.postsFolder, root['id'] as String, {'specact': 'posts', 'v': '1'});
-    return _layout = {'rootId': root['id'] as String, 'postsId': posts['id'] as String};
+    final root = await _findOrCreateFolder(Config.rootFolder, 'root', {
+      'specact': 'root',
+      'v': '1',
+    });
+    final posts = await _findOrCreateFolder(
+      Config.postsFolder,
+      root['id'] as String,
+      {'specact': 'posts', 'v': '1'},
+    );
+    return _layout = {
+      'rootId': root['id'] as String,
+      'postsId': posts['id'] as String,
+    };
   }
 
-  Future<Map<String, dynamic>> _findOrCreateFolder(String name, String parentId, Map<String, String> props) async {
-    final found = await drive.list(q: "name = ${qs(name)} and ${qs(parentId)} in parents and mimeType = ${qs(mimeFolder)} and trashed = false", fields: 'id,name,properties,createdTime', orderBy: 'createdTime', pageSize: 10);
+  Future<Map<String, dynamic>> _findOrCreateFolder(
+    String name,
+    String parentId,
+    Map<String, String> props,
+  ) async {
+    final found = await drive.list(
+      q: "name = ${qs(name)} and ${qs(parentId)} in parents and mimeType = ${qs(mimeFolder)} and trashed = false",
+      fields: 'id,name,properties,createdTime',
+      orderBy: 'createdTime',
+      pageSize: 10,
+    );
     if (found.isNotEmpty) {
-      final hit = found.firstWhere((f) => (f['properties'] as Map?)?['specact'] != null, orElse: () => found.first);
-      if ((hit['properties'] as Map?)?['specact'] == null) await drive.updateMeta(hit['id'] as String, {'properties': props});
+      final hit = found.firstWhere(
+        (f) => (f['properties'] as Map?)?['specact'] != null,
+        orElse: () => found.first,
+      );
+      if ((hit['properties'] as Map?)?['specact'] == null)
+        await drive.updateMeta(hit['id'] as String, {'properties': props});
       return hit;
     }
     return drive.createFolder(name, parentId, props);
   }
 
   /* ================= keys of protected posts ================= */
-  Future<Map<String, dynamic>> _loadRawKeys() async => _rawKeys ??= Map<String, dynamic>.from((await vault.get('postkeys:${me.email}', <String, dynamic>{})) as Map);
+  Future<Map<String, dynamic>> _loadRawKeys() async =>
+      _rawKeys ??= Map<String, dynamic>.from(
+        (await vault.get('postkeys:${me.email}', <String, dynamic>{})) as Map,
+      );
 
-  Future<void> _rememberKey(String folderId, Uint8List raw, bool persist) async {
+  Future<void> _rememberKey(
+    String folderId,
+    Uint8List raw,
+    bool persist,
+  ) async {
     _keys[folderId] = rawKey(raw);
     if (persist) {
       final s = await _loadRawKeys();
@@ -100,13 +148,23 @@ class DriveRepo {
 
   bool hasKey(String folderId) => _keys.containsKey(folderId);
 
-  Future<void> unlockPost(String folderId, Map<String, dynamic> doc, String password, {bool remember = false}) async {
+  Future<void> unlockPost(
+    String folderId,
+    Map<String, dynamic> doc,
+    String password, {
+    bool remember = false,
+  }) async {
     if (doc['protection'] == null) return;
     try {
-      final p = await unlockProtection(Map<String, dynamic>.from(doc['protection'] as Map), password);
+      final p = await unlockProtection(
+        Map<String, dynamic>.from(doc['protection'] as Map),
+        password,
+      );
       await _rememberKey(folderId, p.raw, remember);
     } on CryptoError catch (e) {
-      throw RepoError(e.code == 'wrong-password' ? 'wrong-password' : 'forbidden');
+      throw RepoError(
+        e.code == 'wrong-password' ? 'wrong-password' : 'forbidden',
+      );
     }
   }
 
@@ -114,15 +172,25 @@ class DriveRepo {
   bool _isPost(Map f) => (f['properties'] as Map?)?['specact'] == 'post';
 
   /// Lists folder metadata, then reads post.json only for posts whose `rev` changed since [known].
-  Future<List<Map<String, dynamic>>> listPosts({required bool mine, List<Map<String, dynamic>> known = const []}) async {
+  Future<List<Map<String, dynamic>>> listPosts({
+    required bool mine,
+    List<Map<String, dynamic>> known = const [],
+  }) async {
     final L = await ensureLayout();
     List<Map<String, dynamic>> folders;
     if (mine) {
-      folders = await drive.list(q: "${qs(L['postsId']!)} in parents and mimeType = ${qs(mimeFolder)} and trashed = false", fields: _folderFields);
+      folders = await drive.list(
+        q: "${qs(L['postsId']!)} in parents and mimeType = ${qs(mimeFolder)} and trashed = false",
+        fields: _folderFields,
+      );
     } else {
-      final base = "sharedWithMe = true and mimeType = ${qs(mimeFolder)} and trashed = false";
+      final base =
+          "sharedWithMe = true and mimeType = ${qs(mimeFolder)} and trashed = false";
       try {
-        folders = await drive.list(q: "$base and properties has { key='specact' and value='post' }", fields: _folderFields);
+        folders = await drive.list(
+          q: "$base and properties has { key='specact' and value='post' }",
+          fields: _folderFields,
+        );
       } on DriveError catch (e) {
         if (e.status != 400) rethrow;
         folders = await drive.list(q: base, fields: _folderFields);
@@ -133,34 +201,53 @@ class DriveRepo {
     final todo = <Map<String, dynamic>>[];
     for (final f in folders.where(_isPost)) {
       final old = byId[f['id']];
-      final rev = ((f['properties'] as Map?)?['rev'] ?? f['modifiedTime']).toString();
+      final rev = ((f['properties'] as Map?)?['rev'] ?? f['modifiedTime'])
+          .toString();
       if (old != null && '${old['rev']}' == rev && old['locked'] != true) {
         out.add(old);
       } else {
         todo.add(f);
       }
     }
-    final fresh = await Future.wait(todo.map((f) async {
-      try {
-        return await _entryFromFolder(f);
-      } catch (e) {
-        if (e is DriveError && (e.notFound || e.forbidden)) return null;
-        return byId[f['id']];
-      }
-    }));
+    final fresh = await Future.wait(
+      todo.map((f) async {
+        try {
+          return await _entryFromFolder(f);
+        } catch (e) {
+          if (e is DriveError && (e.notFound || e.forbidden)) return null;
+          return byId[f['id']];
+        }
+      }),
+    );
     out.addAll(fresh.whereType<Map<String, dynamic>>());
-    out.sort((a, b) => ((b['createdAt'] ?? 0) as int).compareTo((a['createdAt'] ?? 0) as int));
+    out.sort(
+      (a, b) => ((b['createdAt'] ?? 0) as int).compareTo(
+        (a['createdAt'] ?? 0) as int,
+      ),
+    );
     return out;
   }
 
   Future<Map<String, String?>> _idsOf(Map f) async {
     final p = (f['properties'] as Map?) ?? const {};
-    if (p['pj'] != null && p['cj'] != null && p['lj'] != null) return {'pj': p['pj'], 'cj': p['cj'], 'mf': p['mf'], 'lj': p['lj']};
-    final kids = await drive.list(q: "${qs(f['id'] as String)} in parents and trashed = false", fields: 'id,name,mimeType');
-    String? find(String n) => kids.where((k) => k['name'] == n || k['name'] == brandName(n)).map((k) => k['id'] as String).firstOrNull;
+    if (p['pj'] != null && p['cj'] != null && p['lj'] != null)
+      return {'pj': p['pj'], 'cj': p['cj'], 'mf': p['mf'], 'lj': p['lj']};
+    final kids = await drive.list(
+      q: "${qs(f['id'] as String)} in parents and trashed = false",
+      fields: 'id,name,mimeType',
+    );
+    String? find(String n) => kids
+        .where((k) => k['name'] == n || k['name'] == brandName(n))
+        .map((k) => k['id'] as String)
+        .firstOrNull;
     final pj = find('post.json');
     if (pj == null) throw RepoError('not-a-post');
-    return {'pj': pj, 'cj': find('comments.json'), 'mf': find('media'), 'lj': find('likes.json')};
+    return {
+      'pj': pj,
+      'cj': find('comments.json'),
+      'mf': find('media'),
+      'lj': find('likes.json'),
+    };
   }
 
   Future<Map<String, dynamic>> _entryFromFolder(Map<String, dynamic> f) async {
@@ -171,11 +258,21 @@ class DriveRepo {
     return _decorate(post, f, id, ids, doc);
   }
 
-  Map<String, dynamic> _decorate(Map<String, dynamic> post, Map f, String id, Map<String, String?> ids, Map<String, dynamic> doc) {
+  Map<String, dynamic> _decorate(
+    Map<String, dynamic> post,
+    Map f,
+    String id,
+    Map<String, String?> ids,
+    Map<String, dynamic> doc,
+  ) {
     final owners = (f['owners'] as List?) ?? const [];
     final o0 = owners.isNotEmpty ? owners.first as Map : const {};
-    final ownerEmail = (post['owner']['email'] as String).isNotEmpty ? post['owner']['email'] as String : normEmail(o0['emailAddress']);
-    final ownerName = (post['owner']['name'] as String).isNotEmpty ? post['owner']['name'] as String : cleanName(o0['displayName'] ?? prettyName(ownerEmail), 120);
+    final ownerEmail = (post['owner']['email'] as String).isNotEmpty
+        ? post['owner']['email'] as String
+        : normEmail(o0['emailAddress']);
+    final ownerName = (post['owner']['name'] as String).isNotEmpty
+        ? post['owner']['name'] as String
+        : cleanName(o0['displayName'] ?? prettyName(ownerEmail), 120);
     return {
       ...post,
       'id': id,
@@ -183,7 +280,11 @@ class DriveRepo {
       'doc': doc,
       'owner': {'email': ownerEmail, 'name': ownerName},
       'mine': ownerEmail == me.email,
-      'rev': ((f['properties'] as Map?)?['rev'] ?? f['modifiedTime'] ?? post['updatedAt']).toString(),
+      'rev':
+          ((f['properties'] as Map?)?['rev'] ??
+                  f['modifiedTime'] ??
+                  post['updatedAt'])
+              .toString(),
     };
   }
 
@@ -204,7 +305,13 @@ class DriveRepo {
     } catch (e) {
       throw _mapErr(e);
     }
-    final post = _decorate(await openPostDoc(doc, _keys[id]), meta, id, ids, doc);
+    final post = _decorate(
+      await openPostDoc(doc, _keys[id]),
+      meta,
+      id,
+      ids,
+      doc,
+    );
     var role = 'owner';
     if (post['mine'] != true) {
       role = roleView;
@@ -212,7 +319,8 @@ class DriveRepo {
       if (cj != null) {
         try {
           final c = await drive.get(cj, 'capabilities(canEdit)');
-          if ((c['capabilities'] as Map?)?['canEdit'] == true) role = roleComment;
+          if ((c['capabilities'] as Map?)?['canEdit'] == true)
+            role = roleComment;
         } catch (_) {}
       }
     }
@@ -220,8 +328,13 @@ class DriveRepo {
   }
 
   /* ================= media ================= */
-  Future<Uint8List> mediaBytes(Map<String, dynamic> post, Map item, {bool thumb = false}) async {
-    final fileId = (thumb ? (item['thumb'] ?? item['id']) : item['id']) as String;
+  Future<Uint8List> mediaBytes(
+    Map<String, dynamic> post,
+    Map item, {
+    bool thumb = false,
+  }) async {
+    final fileId =
+        (thumb ? (item['thumb'] ?? item['id']) : item['id']) as String;
     final hit = _bytes[fileId];
     if (hit != null) return hit;
     // the encrypted copy on this phone first, then Drive
@@ -240,12 +353,15 @@ class DriveRepo {
   }
 
   /* ================= comments & likes ================= */
-  Future<({List<Map<String, dynamic>> comments, List<String> likes})> loadComments(Map<String, dynamic> post) async {
+  Future<({List<Map<String, dynamic>> comments, List<String> likes})>
+  loadComments(Map<String, dynamic> post) async {
     var comments = <Map<String, dynamic>>[];
     var likes = <String>[];
     final ids = post['ids'] as Map;
     if (ids['cj'] != null) {
-      final data = await drive.downloadJson(ids['cj'] as String).catchError((e) => _mapErrCheck(e));
+      final data = await drive
+          .downloadJson(ids['cj'] as String)
+          .catchError((e) => _mapErrCheck(e));
       final r = await _openComments(post, data);
       comments = r.comments;
       likes = r.likes;
@@ -259,25 +375,44 @@ class DriveRepo {
     return (comments: comments, likes: likes);
   }
 
-  Future<({List<Map<String, dynamic>> comments, List<String> likes})> _openComments(Map<String, dynamic> post, Map<String, dynamic> data) async {
+  Future<({List<Map<String, dynamic>> comments, List<String> likes})>
+  _openComments(Map<String, dynamic> post, Map<String, dynamic> data) async {
     final key = post['protected'] == true ? _keys[post['id']] : null;
     final out = <Map<String, dynamic>>[];
     for (final raw in (data['comments'] as List?) ?? const []) {
       final c = raw as Map;
-      final base = {'id': c['id'], 'by': normEmail(c['by']), 'name': cleanName(c['name'], 120), 'at': c['at']};
+      final base = {
+        'id': c['id'],
+        'by': normEmail(c['by']),
+        'name': cleanName(c['name'], 120),
+        'at': c['at'],
+      };
       if (c['enc'] != null) {
         if (key == null) continue;
         try {
-          out.add({...base, 'text': (await decryptJson(key, c['enc'] as String, 'comment:${c['id']}'))['text']});
+          out.add({
+            ...base,
+            'text': (await decryptJson(
+              key,
+              c['enc'] as String,
+              'comment:${c['id']}',
+            ))['text'],
+          });
         } catch (_) {}
       } else {
         out.add({...base, 'text': (c['text'] ?? '').toString()});
       }
     }
-    return (comments: out, likes: ((data['likes'] as List?) ?? []).map(normEmail).toList());
+    return (
+      comments: out,
+      likes: ((data['likes'] as List?) ?? []).map(normEmail).toList(),
+    );
   }
 
-  Future<List<Map<String, dynamic>>> _mutateComments(Map<String, dynamic> post, void Function(Map<String, dynamic>) fn) async {
+  Future<List<Map<String, dynamic>>> _mutateComments(
+    Map<String, dynamic> post,
+    void Function(Map<String, dynamic>) fn,
+  ) async {
     final cj = (post['ids'] as Map)['cj'] as String?;
     if (cj == null) throw RepoError('forbidden');
     final data = await drive.downloadJson(cj);
@@ -292,13 +427,21 @@ class DriveRepo {
     return (await _openComments(post, data)).comments;
   }
 
-  Future<List<Map<String, dynamic>>?> addComment(Map<String, dynamic> post, String text) async {
+  Future<List<Map<String, dynamic>>?> addComment(
+    Map<String, dynamic> post,
+    String text,
+  ) async {
     final value = text.trim();
     if (value.isEmpty) return null;
     if (post['locked'] == true) throw RepoError('locked');
     if (post['commentMode'] == 'locked') throw RepoError('comments-locked');
     final id = randomId(5);
-    final entry = <String, dynamic>{'id': id, 'by': me.email, 'name': me.name, 'at': DateTime.now().millisecondsSinceEpoch};
+    final entry = <String, dynamic>{
+      'id': id,
+      'by': me.email,
+      'name': me.name,
+      'at': DateTime.now().millisecondsSinceEpoch,
+    };
     if (post['protected'] == true) {
       final key = _keys[post['id']];
       if (key == null) throw RepoError('locked');
@@ -309,13 +452,17 @@ class DriveRepo {
     return _mutateComments(post, (d) => (d['comments'] as List).add(entry));
   }
 
-  Future<List<Map<String, dynamic>>> deleteComment(Map<String, dynamic> post, String commentId) => _mutateComments(post, (d) {
-        final list = d['comments'] as List;
-        final i = list.indexWhere((c) => (c as Map)['id'] == commentId);
-        if (i < 0) return;
-        if (normEmail((list[i] as Map)['by']) != me.email && post['mine'] != true) throw RepoError('forbidden');
-        list.removeAt(i);
-      });
+  Future<List<Map<String, dynamic>>> deleteComment(
+    Map<String, dynamic> post,
+    String commentId,
+  ) => _mutateComments(post, (d) {
+    final list = d['comments'] as List;
+    final i = list.indexWhere((c) => (c as Map)['id'] == commentId);
+    if (i < 0) return;
+    if (normEmail((list[i] as Map)['by']) != me.email && post['mine'] != true)
+      throw RepoError('forbidden');
+    list.removeAt(i);
+  });
 
   /// Likes live in likes.json, writable by everyone the post is open to.
   Future<List<String>> toggleLike(Map<String, dynamic> post) async {
@@ -324,7 +471,9 @@ class DriveRepo {
     try {
       final data = await drive.downloadJson(lj);
       final likes = ((data['likes'] as List?) ?? []).map(normEmail).toList();
-      data['likes'] = likes.contains(me.email) ? likes.where((x) => x != me.email).toList() : [...likes, me.email];
+      data['likes'] = likes.contains(me.email)
+          ? likes.where((x) => x != me.email).toList()
+          : [...likes, me.email];
       await drive.updateJson(lj, data);
       return List<String>.from(data['likes'] as List);
     } catch (e) {
@@ -333,15 +482,30 @@ class DriveRepo {
   }
 
   /* ================= sharing ================= */
-  Future<({List<Map<String, dynamic>> perms, Map<String, Map<String, dynamic>> map})> _permsByEmail(String fileId) async {
+  Future<
+    ({List<Map<String, dynamic>> perms, Map<String, Map<String, dynamic>> map})
+  >
+  _permsByEmail(String fileId) async {
     final perms = await drive.listPermissions(fileId);
-    return (perms: perms, map: {for (final p in perms) if (p['type'] == 'user' && p['emailAddress'] != null) normEmail(p['emailAddress']): p});
+    return (
+      perms: perms,
+      map: {
+        for (final p in perms)
+          if (p['type'] == 'user' && p['emailAddress'] != null)
+            normEmail(p['emailAddress']): p,
+      },
+    );
   }
 
-  Future<void> _setCommentAccess(String fileId, String email, bool allow) async {
+  Future<void> _setCommentAccess(
+    String fileId,
+    String email,
+    bool allow,
+  ) async {
     final have = (await _permsByEmail(fileId)).map[email];
     if (allow) {
-      if (have != null && (have['role'] == 'writer' || have['role'] == 'owner')) return;
+      if (have != null && (have['role'] == 'writer' || have['role'] == 'owner'))
+        return;
       try {
         await drive.addPermission(fileId, email: email, role: 'writer');
       } catch (e) {
@@ -358,15 +522,26 @@ class DriveRepo {
   }
 
   /// view -> reader on the folder; comment -> also writer on comments.json only; everyone who sees the post may like.
-  Future<void> _grant(String folderId, String? cj, String email, String role, String mode, String? lj) async {
+  Future<void> _grant(
+    String folderId,
+    String? cj,
+    String email,
+    String role,
+    String mode,
+    String? lj,
+  ) async {
     final folder = await _permsByEmail(folderId);
-    if (!folder.map.containsKey(email)) await drive.addPermission(folderId, email: email, role: 'reader');
-    if (cj != null) await _setCommentAccess(cj, email, canCommentWith(mode, role));
+    if (!folder.map.containsKey(email))
+      await drive.addPermission(folderId, email: email, role: 'reader');
+    if (cj != null)
+      await _setCommentAccess(cj, email, canCommentWith(mode, role));
     if (lj != null) await _setCommentAccess(lj, email, true);
   }
 
   Future<void> _setAnyone(String fileId, String role, bool enabled) async {
-    final any = (await _permsByEmail(fileId)).perms.where((p) => p['type'] == 'anyone').firstOrNull;
+    final any = (await _permsByEmail(
+      fileId,
+    )).perms.where((p) => p['type'] == 'anyone').firstOrNull;
     if (enabled) {
       if (any == null) {
         await drive.addPermission(fileId, type: 'anyone', role: role);
@@ -384,7 +559,10 @@ class DriveRepo {
 
   /// "Anyone with the link" is granted on individual FILES only (post.json + photos), never on the folder or comments.json.
   Future<void> _applyLink(String pj, List<Map<String, dynamic>> media) async {
-    final ids = [pj, ...media.expand((m) => [m['id'], m['thumb']])].whereType<String>().toSet();
+    final ids = [
+      pj,
+      ...media.expand((m) => [m['id'], m['thumb']]),
+    ].whereType<String>().toSet();
     for (final id in ids) {
       await _setAnyone(id, 'reader', true);
     }
@@ -403,33 +581,82 @@ class DriveRepo {
     void Function(String stage, int done, int total)? onProgress,
   }) async {
     final L = await ensureLayout();
-    if (media.length > Config.maxImagesPerPost) throw RepoError('too-many-images');
+    if (media.length > Config.maxImagesPerPost)
+      throw RepoError('too-many-images');
     final id = randomId(5);
     final createdAt = DateTime.now().millisecondsSinceEpoch;
-    final prot = (password != null && password.isNotEmpty) ? await createProtection(password, Config.postKdfIterations) : null;
+    final prot = (password != null && password.isNotEmpty)
+        ? await createProtection(password, Config.postKdfIterations)
+        : null;
     final aud = cleanAudience(audience, me.email);
     final mode = normMode(commentMode);
     final warnings = <String>[];
-    final folder = await drive.createFolder(folderNameFor(createdAt, id), L['postsId'], {'specact': 'post', 'v': '1', 'rev': '$createdAt'});
+    final folder = await drive.createFolder(
+      folderNameFor(createdAt, id),
+      L['postsId'],
+      {'specact': 'post', 'v': '1', 'rev': '$createdAt'},
+    );
     final folderId = folder['id'] as String;
     try {
       final mf = await drive.createFolder('media', folderId);
       final items = <Map<String, dynamic>>[];
       for (var i = 0; i < media.length; i++) {
         onProgress?.call('upload', i, media.length);
-        items.add(await _uploadMedia(media[i], mf['id'] as String, prot?.key, id));
+        items.add(
+          await _uploadMedia(media[i], mf['id'] as String, prot?.key, id),
+        );
       }
-      final card = await _linkCard(link, linkImage, mf['id'] as String, prot?.key, id);
-      final cj = await drive.createJson(brandName('comments.json'), folderId, {'v': 1, 'comments': [], 'likes': []});
-      final lj = await drive.createJson(brandName('likes.json'), folderId, {'v': 1, 'likes': []});
+      final card = await _linkCard(
+        link,
+        linkImage,
+        mf['id'] as String,
+        prot?.key,
+        id,
+      );
+      final cj = await drive.createJson(brandName('comments.json'), folderId, {
+        'v': 1,
+        'comments': [],
+        'likes': [],
+      });
+      final lj = await drive.createJson(brandName('likes.json'), folderId, {
+        'v': 1,
+        'likes': [],
+      });
       final doc = await buildPostDoc(
-        id: id, owner: {'email': me.email, 'name': me.name}, createdAt: createdAt, updatedAt: createdAt, text: text, media: items,
-        mentions: extractMentions(text), audience: aud, linkShare: linkShare, commentMode: mode, cj: cj['id'] as String, lj: lj['id'] as String,
-        protection: prot?.meta, key: prot?.key, link: card,
+        id: id,
+        owner: {'email': me.email, 'name': me.name},
+        createdAt: createdAt,
+        updatedAt: createdAt,
+        text: text,
+        media: items,
+        mentions: extractMentions(text),
+        audience: aud,
+        linkShare: linkShare,
+        commentMode: mode,
+        cj: cj['id'] as String,
+        lj: lj['id'] as String,
+        protection: prot?.meta,
+        key: prot?.key,
+        link: card,
       );
       final pj = await drive.createJson('post.json', folderId, doc);
-      final ids = <String, String?>{'pj': pj['id'] as String, 'cj': cj['id'] as String, 'lj': lj['id'] as String, 'mf': mf['id'] as String};
-      await drive.updateMeta(folderId, {'properties': {'specact': 'post', 'v': '1', 'rev': '$createdAt', 'pj': ids['pj'], 'cj': ids['cj'], 'lj': ids['lj'], 'mf': ids['mf']}});
+      final ids = <String, String?>{
+        'pj': pj['id'] as String,
+        'cj': cj['id'] as String,
+        'lj': lj['id'] as String,
+        'mf': mf['id'] as String,
+      };
+      await drive.updateMeta(folderId, {
+        'properties': {
+          'specact': 'post',
+          'v': '1',
+          'rev': '$createdAt',
+          'pj': ids['pj'],
+          'cj': ids['cj'],
+          'lj': ids['lj'],
+          'mf': ids['mf'],
+        },
+      });
 
       // nothing is shared until the content is complete
       onProgress?.call('share', 0, 0);
@@ -445,7 +672,15 @@ class DriveRepo {
       var isPublic = linkShare;
       if (isPublic) {
         try {
-          await _applyLink(ids['pj']!, card?['image'] == null ? items : [...items, {'id': card!['image'], 'thumb': null}]);
+          await _applyLink(
+            ids['pj']!,
+            card?['image'] == null
+                ? items
+                : [
+                    ...items,
+                    {'id': card!['image'], 'thumb': null},
+                  ],
+          );
           await _setAnyone(ids['lj']!, 'writer', true);
           if (mode == 'open') await _setAnyone(ids['cj']!, 'writer', true);
         } catch (_) {
@@ -459,7 +694,15 @@ class DriveRepo {
         await drive.updateJson(ids['pj']!, doc);
       }
       if (prot != null) await _rememberKey(folderId, prot.raw, true);
-      final post = _decorate(await openPostDoc(doc, prot?.key), {'properties': {'rev': '$createdAt'}}, folderId, ids, doc);
+      final post = _decorate(
+        await openPostDoc(doc, prot?.key),
+        {
+          'properties': {'rev': '$createdAt'},
+        },
+        folderId,
+        ids,
+        doc,
+      );
       return (post: {...post, 'role': 'owner'}, warnings: warnings);
     } catch (e) {
       try {
@@ -469,21 +712,69 @@ class DriveRepo {
     }
   }
 
-  Future<Map<String, dynamic>> _uploadMedia(NewMedia m, String mediaFolderId, SecretKey? key, String pid) async {
+  Future<Map<String, dynamic>> _uploadMedia(
+    NewMedia m,
+    String mediaFolderId,
+    SecretKey? key,
+    String pid,
+  ) async {
     final base = randomId(5);
-    Future<Map<String, dynamic>> put(Uint8List bytes, String stem, String mime, String ext, {bool large = false}) async {
-      Future<Map<String, dynamic>> create(String name, String mt, Uint8List data) =>
-          large ? drive.createFileLarge(name: name, parentId: mediaFolderId, mimeType: mt, data: data) : drive.createFile(name: name, parentId: mediaFolderId, mimeType: mt, data: data);
+    Future<Map<String, dynamic>> put(
+      Uint8List bytes,
+      String stem,
+      String mime,
+      String ext, {
+      bool large = false,
+    }) async {
+      Future<Map<String, dynamic>> create(
+        String name,
+        String mt,
+        Uint8List data,
+      ) => large
+          ? drive.createFileLarge(
+              name: name,
+              parentId: mediaFolderId,
+              mimeType: mt,
+              data: data,
+            )
+          : drive.createFile(
+              name: name,
+              parentId: mediaFolderId,
+              mimeType: mt,
+              data: data,
+            );
       if (key == null) return create('$stem.$ext', mime, bytes);
       // protected posts: bytes are sealed before upload and carry an opaque name
-      return create('$stem.bin', 'application/octet-stream', await encryptBytes(key, bytes, 'media:$pid'));
+      return create(
+        '$stem.bin',
+        'application/octet-stream',
+        await encryptBytes(key, bytes, 'media:$pid'),
+      );
     }
 
     final clean = m.name.replaceAll(RegExp(r'\.[^.]+$'), '');
-    final ext = m.kind == 'image' ? 'jpg' : (extOf(m.name).isNotEmpty ? extOf(m.name) : (m.mime.split('/').last));
-    final main = await put(m.main, key != null ? base : '${base}_$clean', m.mime, ext, large: m.kind != 'image');
-    final thumb = m.thumb == null ? null : await put(m.thumb!, '${base}_t', 'image/jpeg', 'jpg');
-    final item = <String, dynamic>{'id': main['id'], 'thumb': thumb?['id'], 'name': m.name, 'mime': m.mime, 'w': m.w, 'h': m.h, 'size': m.main.length};
+    final ext = m.kind == 'image'
+        ? 'jpg'
+        : (extOf(m.name).isNotEmpty ? extOf(m.name) : (m.mime.split('/').last));
+    final main = await put(
+      m.main,
+      key != null ? base : '${base}_$clean',
+      m.mime,
+      ext,
+      large: m.kind != 'image',
+    );
+    final thumb = m.thumb == null
+        ? null
+        : await put(m.thumb!, '${base}_t', 'image/jpeg', 'jpg');
+    final item = <String, dynamic>{
+      'id': main['id'],
+      'thumb': thumb?['id'],
+      'name': m.name,
+      'mime': m.mime,
+      'w': m.w,
+      'h': m.h,
+      'size': m.main.length,
+    };
     if (m.kind != 'image') {
       item['kind'] = m.kind;
       if (m.kind != 'file') item['duration'] = m.duration.round();
@@ -492,14 +783,27 @@ class DriveRepo {
   }
 
   /// The card's picture is one more file of the post (sealed like any photo in a protected post); the card keeps only its id.
-  Future<Map<String, dynamic>?> _linkCard(Map<String, dynamic>? link, NewMedia? image, String mediaFolderId, SecretKey? key, String pid) async {
+  Future<Map<String, dynamic>?> _linkCard(
+    Map<String, dynamic>? link,
+    NewMedia? image,
+    String mediaFolderId,
+    SecretKey? key,
+    String pid,
+  ) async {
     final card = cleanLink(link);
     if (card == null) return null;
     card['image'] = null;
     if (image != null) {
       try {
-        card['image'] = (await _uploadMedia(image, mediaFolderId, key, pid))['id'];
-      } catch (_) {/* a card without a picture is fine */}
+        card['image'] = (await _uploadMedia(
+          image,
+          mediaFolderId,
+          key,
+          pid,
+        ))['id'];
+      } catch (_) {
+        /* a card without a picture is fine */
+      }
     }
     return card;
   }
@@ -512,7 +816,8 @@ class DriveRepo {
     }
   }
 
-  Future<Map<String, dynamic>> quota() async => (await drive.about())['storageQuota'] as Map<String, dynamic>? ?? {};
+  Future<Map<String, dynamic>> quota() async =>
+      (await drive.about())['storageQuota'] as Map<String, dynamic>? ?? {};
 }
 
 String prettyJsonDebug(Object? o) => jsonEncode(o);

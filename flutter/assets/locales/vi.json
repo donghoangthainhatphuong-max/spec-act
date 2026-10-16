@@ -313,5 +313,12 @@
   "attach.play": "Phát",
   "attach.download": "Tải xuống",
   "attach.loading": "Đang tải…",
-  "attach.more": "+{n} tệp đính kèm nữa"
+  "attach.more": "+{n} tệp đính kèm nữa",
+  "settings.github": "Mã nguồn mở trên GitHub",
+  "settings.website": "Trang chủ specact.com",
+  "settings.update": "Kiểm tra cập nhật",
+  "update.latest": "Bạn đang dùng phiên bản mới nhất",
+  "update.downloaded": "Đã tải xong bản cập nhật",
+  "update.restart": "Khởi động lại",
+  "update.unavailable": "Bản cập nhật được cung cấp qua Google Play"
 }

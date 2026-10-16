@@ -313,5 +313,12 @@
   "attach.play": "재생",
   "attach.download": "다운로드",
   "attach.loading": "불러오는 중…",
-  "attach.more": "첨부 {n}개 더 있음"
+  "attach.more": "첨부 {n}개 더 있음",
+  "settings.github": "GitHub 오픈 소스",
+  "settings.website": "웹사이트 specact.com",
+  "settings.update": "업데이트 확인",
+  "update.latest": "최신 버전입니다",
+  "update.downloaded": "업데이트를 다운로드했습니다",
+  "update.restart": "다시 시작",
+  "update.unavailable": "업데이트는 Google Play를 통해 제공됩니다"
 }

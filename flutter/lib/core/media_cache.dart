@@ -36,8 +36,13 @@ class MediaCache {
   Future<void> put(String id, Uint8List bytes) async {
     try {
       if (!vault.unlocked || bytes.length > maxItemBytes) return;
-      await _store.write(id, await encryptBytes(await _key(), bytes, 'cache:$id'));
-    } catch (_) {/* only an optimisation */}
+      await _store.write(
+        id,
+        await encryptBytes(await _key(), bytes, 'cache:$id'),
+      );
+    } catch (_) {
+      /* only an optimisation */
+    }
   }
 
   Future<void> clear() => _store.clear();
