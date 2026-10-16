@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from '@/i18n';
 import AppIcon from '../ui/AppIcon.vue';
 import AppLogo from '../ui/AppLogo.vue';
+import BrandName from '../ui/BrandName.vue';
 import AppAvatar from '../ui/AppAvatar.vue';
 import RightRail from './RightRail.vue';
 import { useSessionStore } from '../../stores/session';
@@ -44,7 +45,7 @@ function onSearch(e) {
 
 <template>
   <header class="top">
-    <RouterLink class="brand" to="/"><AppLogo :size="26" /><span>SPECACT</span></RouterLink>
+    <RouterLink class="brand" to="/"><AppLogo :size="26" /><BrandName /></RouterLink>
     <span class="grow" />
     <span v-if="session.mode === 'demo'" class="demo-chip">{{ t('demo.badge') }}</span>
     <button class="icon-btn" :aria-label="t('theme.toggle')" :title="t('theme.toggle')" @click="prefs.toggleTheme()"><AppIcon :name="dark ? 'sun' : 'moon'" :size="20" /></button>
@@ -52,7 +53,7 @@ function onSearch(e) {
   </header>
   <div class="app">
     <aside class="side">
-      <RouterLink class="brand" to="/"><AppLogo :size="28" /><span>SPECACT</span></RouterLink>
+      <RouterLink class="brand" to="/"><AppLogo :size="28" /><BrandName /></RouterLink>
       <label class="search">
         <AppIcon name="search" :size="18" /><span class="sr">{{ t('search') }}</span>
         <input type="search" :value="ui.search" :placeholder="t('search')" autocomplete="off" @input="onSearch" />

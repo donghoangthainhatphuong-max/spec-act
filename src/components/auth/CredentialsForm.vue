@@ -5,6 +5,7 @@ import AppIcon from '../ui/AppIcon.vue';
 import { redirectUri } from '../../config';
 import { looksLikeClientId } from '../../services/googleAuth';
 import { copyText } from '../../composables/share';
+import { usePrefsStore } from '../../stores/prefs';
 import { useUiStore } from '../../stores/ui';
 
 const props = defineProps({
@@ -16,6 +17,12 @@ const props = defineProps({
 const emit = defineEmits(['submit', 'cancel']);
 const { t } = useI18n();
 const ui = useUiStore();
+const prefs = usePrefsStore();
+
+// first time here: accepting the Terms of Use and Privacy Policy is part of this page (no separate screen)
+const needConsent = computed(() => !prefs.consentOk);
+const agreed = ref(false);
+const parts = computed(() => t('consent.check').split(/(\{terms\}|\{privacy\})/).map((x) => (x === '{terms}' ? { link: 'terms', text: t('consent.termsLink') } : x === '{privacy}' ? { link: 'privacy', text: t('consent.privacyLink') } : { text: x })));
 
 const clientId = ref(props.initial.clientId);
 const clientSecret = ref(props.initial.clientSecret);
@@ -26,11 +33,12 @@ const touched = ref(false);
 const uri = redirectUri();
 const origin = location.origin;
 const idOk = computed(() => looksLikeClientId(clientId.value));
-const valid = computed(() => idOk.value && clientSecret.value.trim().length >= 8);
+const valid = computed(() => idOk.value && clientSecret.value.trim().length >= 8 && (!needConsent.value || agreed.value));
 
 function submit() {
   touched.value = true;
   if (!valid.value) return;
+  if (needConsent.value) prefs.acceptTerms();
   emit('submit', { clientId: clientId.value.trim(), clientSecret: clientSecret.value.trim(), keep: keep.value });
 }
 async function copy(text) { ui.toast((await copyText(text)) ? t('toast.copied') : t('error.generic')); }
@@ -78,9 +86,14 @@ async function copy(text) { ui.toast((await copyText(text)) ? t('toast.copied') 
     </div>
     <p class="hint"><AppIcon name="shield" :size="14" style="vertical-align:-2px" /> {{ t('creds.local') }}</p>
 
+    <label v-if="needConsent" class="consent-check">
+      <input v-model="agreed" type="checkbox" />
+      <span><template v-for="(p, i) in parts" :key="i"><RouterLink v-if="p.link" :to="{ name: p.link }" target="_blank">{{ p.text }}</RouterLink><template v-else>{{ p.text }}</template></template></span>
+    </label>
+
     <div class="actions-row">
       <button v-if="showCancel" type="button" class="btn" @click="emit('cancel')">{{ t('compose.cancel') }}</button>
-      <button class="btn primary lg block" :disabled="busy">{{ submitLabel || t('creds.save') }}</button>
+      <button class="btn primary lg block" :disabled="busy || (needConsent && !agreed)">{{ submitLabel || t('creds.save') }}</button>
     </div>
   </form>
 </template>

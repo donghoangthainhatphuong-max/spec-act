@@ -6,7 +6,7 @@
 
 ## 1. Bất biến của sản phẩm (không được phá)
 
-1. **Không có backend.** Trình duyệt chỉ nói chuyện với `accounts.google.com`, `oauth2.googleapis.com`, `www.googleapis.com`. Không thêm CDN, analytics, font ngoài, hay endpoint nào khác (CSP trong `docker/security-headers.conf` sẽ chặn; sửa CSP chỉ khi thật sự cần và phải nêu lý do).
+1. **Không có backend.** (Ngoại lệ duy nhất, tùy chọn: `VITE_LINK_PREVIEW_URL`, mặc định trống — dịch vụ do người vận hành chọn, trả về HTML của link đã dán; CSP của Docker chỉ thêm origin đó khi có đặt.) Trình duyệt chỉ nói chuyện với `accounts.google.com`, `oauth2.googleapis.com`, `www.googleapis.com`. Không thêm CDN, analytics, font ngoài, hay endpoint nào khác (CSP trong `docker/security-headers.conf.tpl` sẽ chặn; sửa CSP chỉ khi thật sự cần và phải nêu lý do).
 2. **Drive là nguồn sự thật cho dữ liệu và quyền truy cập.** Không tự phát minh hệ thống quyền riêng. `post.json.audience` chỉ là bản sao để hiển thị.
 3. **Mọi bí mật phía client** (client ID/secret, refresh token, khóa bài, cache chỉ mục) chỉ nằm trong `services/secureStore.js` (mã hóa 2 lớp: khóa thiết bị + PIN). Không bao giờ ghi chúng vào `localStorage`, URL, log, hay `.env`. Access token chỉ ở bộ nhớ.
 4. **Công khai bằng liên kết chỉ cấp quyền trên TỆP** (`post.json` + ảnh), **không bao giờ trên thư mục** và không trên `comments.json`. Mọi thay đổi liên quan phải giữ test "link sharing opens FILES only".
@@ -21,6 +21,8 @@
 
 13. **Mục media** có `kind` (`image` mặc định, `video`, `audio`, `file`; âm thanh và tệp không có ảnh thu nhỏ, hiện dạng danh sách chứ không vào lưới) qua `publicMedia()`; mọi nơi hiển thị/tải lên media phải xử lý tất cả; không bao giờ hiển thị tài liệu đính kèm (chỉ tải xuống) và giữ danh sách chặn trong `mediaKinds.js` (lưới ở bảng tin, khung xem, xem trước khi soạn, demo, bài có mật khẩu).
 12. **Đặt tên:** mọi thứ SPECACT tạo trên Drive mà người khác thấy được đều dùng tiền tố `__S.P.E.C.T.A.C.T__` (`brandName()` trong `postModel.js`). Việc tìm kiếm phải chấp nhận cả tên có tiền tố lẫn tên cũ.
+15. **Đồng ý điều khoản:** không ai qua được màn hình đầu tiên nếu chưa đồng ý Điều khoản sử dụng và Chính sách quyền riêng tư hiện hành (web: router guard + `ConsentView`; Flutter: `Phase.consent`). Phiên bản đã đồng ý là ngày `updated` trong `src/locales/pages/*.json`; khi đổi điều khoản phải đổi ngày đó **và** `TERMS_VERSION` trong `src/config.js` cùng `termsVersion` trong `flutter/lib/core/legal.dart` (test kiểm tra chúng khớp) rồi chạy `flutter/tool/sync_locales.sh`, để mọi người được hỏi lại.
+14. **Thương hiệu:** màu, logo, chữ logo và giọng nói theo [docs/BRAND.vi.md](docs/BRAND.vi.md) — dùng token (`--accent`, `--spark`… trong `src/styles/base.css`; `Brand`/`AppTheme` trong `flutter/lib/theme.dart`), không hard-code mã màu; màu mơ (`--spark`) chỉ là tia sáng nhỏ, không bao giờ cho chữ thường; chữ người dùng viết đặt bằng serif đọc.
 11. **Thả tim đi theo quyền xem bài, không theo quyền bình luận.** Tim nằm ở `likes.json` riêng (writer cho mọi người được xem, không có quyền gì khác). Không đưa tim trở lại `comments.json`.
 
 ## 2. Lỗi đã gặp → quy tắc
@@ -56,10 +58,17 @@
 - Mọi gọi Drive đi qua `services/drive.js`; mọi nghiệp vụ qua `services/repo.js` (và `demoRepo.js` có **cùng giao diện**). Component không gọi `fetch` trực tiếp.
 - Mọi chuỗi hiển thị qua `t('...')`; không hard-code tiếng Anh/Việt trong template.
 - Lỗi nghiệp vụ dùng `RepoError(code)`; UI ánh xạ `code` sang chuỗi i18n, không hiển thị `error.message` thô.
-- Giữ giao diện theo thiết kế v3 (token màu trong `styles/base.css`, phông Bricolage/Newsreader, accent xanh lục). Thêm CSS mới vào `styles/extra.css` hoặc scoped; không viết lại CSS thiết kế.
+- Giữ giao diện theo thiết kế v3 (token màu trong `styles/base.css`, phông Inter/Noto Serif, accent xanh lục). Thêm CSS mới vào `styles/extra.css` hoặc scoped; không viết lại CSS thiết kế.
 - Hỗ trợ RTL (dùng thuộc tính logic `inset-inline-*`, `margin-inline-*`).
 
 ## 5. Dọn dẹp sau khi làm
 
 - Dừng dev server (`pkill -f "vite --port"`) và container tự bật (`docker compose down`); không dừng container của dự án khác.
 - Không để file tạm trong repo.
+
+## Dữ liệu không tin cậy (XSS)
+- Mọi thứ đọc từ Drive do người khác viết (post.json, bình luận, lượt thích, tên) đều coi là độc hại. Chuẩn hóa qua `publicMedia`/`cleanName` trước khi dùng; không `v-html`/`innerHTML`; liên kết chỉ `https?://`; blob của tệp không phải media luôn là `application/octet-stream`.
+
+## Knowledge graph (Understand-Anything)
+- `.ua/knowledge-graph.json` là bản đồ của codebase (tệp, hàm, tầng kiến trúc, ai import ai). **Trước khi sửa code phải xem nó**: tìm node của tệp/hàm và các cạnh (`imports`, `calls`, `tested_by`) để biết còn ảnh hưởng đến đâu, đọc layer/tour để nắm bối cảnh. Không dựa vào trí nhớ về cấu trúc.
+- **Sau khi sửa code phải cập nhật**: chạy `/understand` (incremental; `.ua/config.json` có `autoUpdate: true` nên cũng tự cập nhật khi commit) và commit `.ua/` cùng thay đổi. Nếu graph cũ hơn commit gần nhất thì cập nhật trước khi bắt đầu.

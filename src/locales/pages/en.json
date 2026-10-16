@@ -116,7 +116,8 @@
       {
         "h": "2. What Google receives",
         "body": [
-          "The app talks directly from your browser to Google (accounts.google.com, oauth2.googleapis.com, www.googleapis.com). Google processes that data under Google’s Privacy Policy. SPECACT asks for the Google Drive permission so it can create the SPECACT folder, read and write your posts, read posts shared with you, and manage who can open them. It does not touch other files in your Drive."
+          "The app talks directly from your browser to Google (accounts.google.com, oauth2.googleapis.com, www.googleapis.com). Google processes that data under Google’s Privacy Policy. SPECACT asks for the Google Drive permission so it can create the SPECACT folder, read and write your posts, read posts shared with you, and manage who can open them. It does not touch other files in your Drive.",
+          "Link previews are off by default. If the person running this site configures a preview service, a link you paste into a post is sent to that service (and nowhere else) so it can return the page's title and description; the preview text and picture are then stored in your own Drive with the post. Ask whoever runs the site which service that is."
         ]
       },
       {

@@ -17,7 +17,7 @@ SPECACT không giữ dữ liệu của bạn — **Google Drive của bạn là 
 ## Đặc tả tối thiểu cho ứng dụng khác
 
 - Thư mục gốc `SPECACT/` (property `specact=root`); bài ở `SPECACT/posts/<ngày>_<id>/` (properties `specact=post`, `rev`, `pj`, `cj`, `lj`, `mf`).
-- `post.json` (`v: 1`): `id, owner, createdAt, updatedAt, text, media[], mentions[], audience{}, linkShare, commentMode, cj, lj, protection`. Bài có mật khẩu mang `payload` AES-256-GCM (AAD `post:<id>`), khóa nội dung được bọc bằng khóa PBKDF2-SHA256.
+- `post.json` (`v: 1`): `id, owner, createdAt, updatedAt, text, media[], mentions[], link{}, audience{}, linkShare, commentMode, cj, lj, protection`. Bài có mật khẩu mang `payload` AES-256-GCM (AAD `post:<id>`), khóa nội dung được bọc bằng khóa PBKDF2-SHA256. `link` tùy chọn là thẻ xem trước liên kết `{ url, title, description, site, image }`: `image` là id một tệp trong thư mục `media/` của chính bài, chỉ nhận URL `http(s)` và mọi trường đều là văn bản thuần — ứng dụng đọc không bao giờ được render như HTML.
 - `comments.json`: `{ v:1, comments[], likes[] }` (bình luận của bài có mật khẩu mang `enc`; mảng `likes` là di sản).
 - `likes.json`: `{ v:1, likes[] }` — thả tim đi theo quyền *xem* bài, không phụ thuộc chế độ bình luận.
 - Chia sẻ = quyền Drive: *được xem* = `reader` trên thư mục; *được bình luận* = thêm `writer` **chỉ trên `comments.json`**; thả tim = `writer` trên `likes.json` cho mọi người được xem bài; công khai bằng liên kết = `anyone` `reader` **chỉ trên các tệp** (`post.json`, ảnh), không bao giờ trên thư mục.

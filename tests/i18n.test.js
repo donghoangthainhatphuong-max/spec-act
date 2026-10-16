@@ -44,3 +44,13 @@ describe('translations', () => {
     expect([...used].filter((k) => !(k in en) && !k.endsWith('.') && k !== 'comments.hint')).toEqual([]);
   });
 });
+
+describe('English-only pages', () => {
+  it('tEnglish ignores the selected language', async () => {
+    const { setLocale, t, tEnglish } = await import('../src/i18n');
+    await setLocale('fr');
+    expect(t('legal.updated', { date: 'X' })).not.toBe(tEnglish('legal.updated', { date: 'X' }));
+    expect(tEnglish('legal.updated', { date: 'X' })).toBe('Last updated X');
+    await setLocale('en');
+  });
+});

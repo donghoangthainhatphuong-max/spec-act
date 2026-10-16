@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
 import { useI18n } from '@/i18n';
 import AppAvatar from '../components/ui/AppAvatar.vue';
@@ -8,6 +8,7 @@ import SecureImage from '../components/ui/SecureImage.vue';
 import CameraDialog from '../components/post/CameraDialog.vue';
 import MentionTextarea from '../components/post/MentionTextarea.vue';
 import AudienceRow from '../components/post/AudienceRow.vue';
+import LinkCard from '../components/post/LinkCard.vue';
 import { useDraftStore } from '../stores/draft';
 import { usePeopleStore } from '../stores/people';
 import { usePostsStore } from '../stores/posts';
@@ -17,6 +18,7 @@ import { config } from '../config';
 import { listOf } from '../i18n';
 import { labelOf } from '../services/mediaKinds';
 import { isEmail, normEmail } from '../services/mentions';
+import { fetchPreview, firstUrl, previewEnabled } from '../services/linkPreview';
 
 const props = defineProps({ id: { type: String, default: '' } });
 const { t } = useI18n();
@@ -43,6 +45,24 @@ const dragging = ref(false);
 const extraEmail = ref('');
 
 const editing = computed(() => !!props.id);
+
+// a pasted link becomes a preview card (Open Graph) — only when a preview service is configured, and never twice for a link the person closed
+const fetchingLink = ref(false);
+let linkTimer = 0;
+let linkSeq = 0;
+watch(() => draft.text, (text) => {
+  clearTimeout(linkTimer);
+  const url = firstUrl(text);
+  if (!previewEnabled() || !url || draft.card || draft.dismissed.includes(url)) return;
+  linkTimer = setTimeout(async () => {
+    const mine = ++linkSeq;
+    fetchingLink.value = true;
+    const res = await fetchPreview(url);
+    fetchingLink.value = false;
+    if (mine === linkSeq && res && !draft.card && !draft.dismissed.includes(url) && firstUrl(draft.text) === url) draft.setCard(res.link, res.image);
+  }, 700);
+});
+onBeforeUnmount(() => clearTimeout(linkTimer));
 const ids = computed(() => Object.keys(draft.audience));
 const line = computed(() => (ids.value.length ? t('post.visibleTo', { names: listOf(ids.value.map((e) => people.nameFor(e))) }) : t('compose.onlyMe')));
 
@@ -116,10 +136,10 @@ async function publish() {
     if (editing.value) {
       res = await posts.update(original.value, {
         text: draft.text, files, keepMedia: draft.photos.filter((p) => p.kind === 'old').map((p) => p.media.id),
-        audience: draft.audience, linkShare: draft.linkShare, commentMode: draft.commentMode, newPassword: pw || undefined,
+        audience: draft.audience, linkShare: draft.linkShare, commentMode: draft.commentMode, newPassword: pw || undefined, ...draft.linkInput(!!original.value?.link),
       }, (p) => { progress.value = p; });
     } else {
-      res = await posts.create({ text: draft.text, files, audience: draft.audience, password: draft.protect ? pw : undefined, linkShare: draft.linkShare, commentMode: draft.commentMode }, (p) => { progress.value = p; });
+      res = await posts.create({ text: draft.text, files, audience: draft.audience, password: draft.protect ? pw : undefined, linkShare: draft.linkShare, commentMode: draft.commentMode, ...draft.linkInput(false) }, (p) => { progress.value = p; });
     }
     done.value = true;
     draft.reset();
@@ -160,6 +180,8 @@ onBeforeRouteLeave(async () => {
       <label class="sr" for="draft">{{ t('compose.placeholder') }}</label>
       <MentionTextarea ref="textarea" v-model="draft.text" input-id="draft" :placeholder="t('compose.placeholder')" @submit="publish" />
       <p class="hint mention-hint"><AppIcon name="at" :size="14" />{{ t('compose.mentionHint') }}</p>
+      <LinkCard v-if="draft.card" :link="draft.card.link" :post="original" :image-url="draft.card.imageUrl" removable @remove="draft.dropCard()" />
+      <p v-else-if="fetchingLink" class="hint" aria-live="polite"><AppIcon name="external" :size="14" />{{ t('attach.loading') }}</p>
       <div class="thumbs">
         <div v-for="p in draft.photos" :key="p.key" class="thumb" :class="{ tile: p.type === 'audio' || p.type === 'file' }">
           <div v-if="p.type === 'audio' || p.type === 'file'" class="tile-body">

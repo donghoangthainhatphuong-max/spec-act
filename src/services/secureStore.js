@@ -195,6 +195,7 @@ class SecureStore {
   /** Delete the vault and everything in it. */
   async wipe() {
     this.lock();
+    try { if (typeof caches !== 'undefined') await caches.delete('specact-media-v1'); } catch { /* nothing cached */ }
     const db = await openDb();
     await new Promise((resolve, reject) => {
       const t = db.transaction([META, RECORDS], 'readwrite');

@@ -69,6 +69,10 @@ Photos are redrawn through a canvas before upload, so **EXIF (GPS, device, captu
 - Two people writing `comments.json`/`likes.json` at once: the last write wins (read–modify–write, no locking).
 - Viewers can copy or screenshot — revoking access does not un-see.
 
+## Photo cache and download speed
+
+- Photos are downloaded once per device. The downloaded bytes (still sealed, for password-protected posts) are kept in the browser's Cache Storage (the app's cache folder on Android), **encrypted with a key held in the PIN vault**, so nothing readable sits on disk and a locked app cannot read it. Erasing local data deletes the cache.
+
 ## Reporting a vulnerability
 
 Open a private issue on the repository or contact the maintainer. Please do not include real keys in reports.

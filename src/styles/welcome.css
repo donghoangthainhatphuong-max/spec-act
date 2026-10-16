@@ -1,8 +1,8 @@
 /* ---------- welcome ---------- */
 .welcome { min-height: 100vh; min-height: 100dvh; display: grid; grid-template-columns: 1.05fr 1fr; }
 .art, .hero-ctx { --av-l: .9; --av-c: .06; --av-fl: .36; --av-fc: .1; }
-.art { position: relative; overflow: hidden; background: var(--hero); color: #E6F1EC; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 36px; padding: 48px 32px; }
-.orbit .avatar.me { background: #F4F7F5; color: #15453A; }
+.art { position: relative; overflow: hidden; background: var(--hero); color: #EAF3EE; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 36px; padding: 48px 32px; }
+.orbit .avatar.me { background: #F4F7F5; color: #0C3A31; }
 .orbit .core.face { background: rgba(255,255,255,.07); display: grid; place-items: center; }
 .orbit .core.face .avatar { width: 64%; height: 64%; font-size: clamp(20px, 3vw, 30px); }
 .orbit.sm { width: min(250px, 100%); }
@@ -12,7 +12,7 @@
 .orbit line.fresh { stroke-dasharray: 60; stroke-dashoffset: 60; animation: draw .45s cubic-bezier(.5,0,.2,1) forwards; }
 .orbit .sat.fresh { animation: popin .45s .15s cubic-bezier(.3,.7,.4,1.5) both; }
 .orbit .sat { transition: opacity .2s; }
-.orbit-card { position: relative; overflow: hidden; background: var(--hero); color: #E6F1EC; border-radius: 26px; padding: 30px 20px 24px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+.orbit-card { position: relative; overflow: hidden; background: var(--hero); color: #EAF3EE; border-radius: 26px; padding: 30px 20px 24px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
 .orbit-card::before, .art::before { content: ""; position: absolute; inset: 0; background: repeating-radial-gradient(circle at 50% 46%, transparent 0 58px, rgba(255,255,255,.035) 58px 59px); pointer-events: none; }
 .orbit-card::before { background: repeating-radial-gradient(circle at 50% 42%, transparent 0 40px, rgba(255,255,255,.035) 40px 41px); }
 .orbit { position: relative; width: min(440px, 78%); aspect-ratio: 1; }
@@ -24,9 +24,9 @@
 .orbit .sat { position: absolute; transform: translate(-50%, -50%); display: grid; place-items: center; }
 .orbit .sat.lit .avatar { box-shadow: 0 0 0 4px var(--hero), 0 10px 24px -6px rgba(0,0,0,.5); }
 .orbit .sat.dim .avatar { background: transparent; color: rgba(255,255,255,.45); box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.28); }
-.orbit .sat .tick { position: absolute; right: -2px; bottom: -2px; width: 22px; height: 22px; border-radius: 50%; background: #7CCFB0; color: #07130E; display: grid; place-items: center; box-shadow: 0 0 0 3px var(--hero); }
+.orbit .sat .tick { position: absolute; right: -2px; bottom: -2px; width: 22px; height: 22px; border-radius: 50%; background: #8FDCB8; color: #07130E; display: grid; place-items: center; box-shadow: 0 0 0 3px var(--hero); }
 .orbit-card .cap { position: relative; font-family: var(--read); font-style: italic; font-size: 17px; line-height: 1.4; text-align: center; color: #F1F7F4; max-width: 26ch; text-wrap: balance; }
-.art .quote { position: relative; font-family: var(--read); font-style: italic; font-size: clamp(19px, 2vw, 24px); line-height: 1.35; text-align: center; max-width: 24ch; color: #F1F7F4; text-wrap: balance; font-variation-settings: "opsz" 48; }
+.art .quote { position: relative; font-family: var(--read); font-style: italic; font-size: clamp(19px, 2vw, 24px); line-height: 1.35; text-align: center; max-width: 24ch; color: #F1F7F4; text-wrap: balance; }
 .play .core { animation: core .9s cubic-bezier(.2,.7,.2,1) both; }
 .play .ring { animation: fade .8s .2s both; }
 .play line { stroke-dasharray: 60; stroke-dashoffset: 60; animation: draw .7s calc(.55s + var(--d) * .18s) cubic-bezier(.5,0,.2,1) forwards; }
@@ -43,7 +43,7 @@
 .panel .tools .select { min-height: 40px; border-radius: 999px; background-color: var(--sunken); border-color: transparent; font-size: 14px; }
 .panel .body { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 22px; max-width: 440px; width: 100%; margin: 0 auto; padding: 40px 0; }
 .panel .brand { padding: 0; margin: 0; }
-.panel h1 { font-size: clamp(34px, 4.6vw, 52px); line-height: 1.06; letter-spacing: -.024em; font-weight: 660; font-variation-settings: "opsz" 96; text-wrap: balance; }
+.panel h1 { font-size: clamp(34px, 4.6vw, 52px); line-height: 1.18; letter-spacing: -.02em; font-weight: 680; text-wrap: balance; }
 .panel .sub { font-size: 16.5px; color: var(--muted); line-height: 1.55; text-wrap: pretty; }
 .panel .g svg { flex: none; }
 .panel details { border-top: 1px solid var(--line); padding-top: 16px; }

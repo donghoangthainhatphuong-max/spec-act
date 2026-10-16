@@ -2,43 +2,47 @@
    SPECACT — design v3
    Neutral surfaces + one evergreen accent. Colour comes from
    people (soft avatar tints) and their photos, never from chrome.
-   UI type: Bricolage Grotesque. People's words: Newsreader.
+   UI type: Inter (SpecAct Sans). People's words: Noto Serif (SpecAct Serif). One file per family — see assets/fonts.css.
    ============================================================ */
 :root, [data-theme="light"] {
-  --bg: #F3F4F2;
+  --bg: #F6F3EC;
   --surface: #FFFFFF;
-  --sunken: #EBEDEA;
-  --line: #DFE2DE;
-  --text: #191C1A;
-  --muted: #5E6661;
-  --accent: #1B6650;
-  --accent-soft: #E1EEE8;
+  --sunken: #EFEBE2;
+  --line: #E4DFD3;
+  --text: #1A1F1C;
+  --muted: #646D66;
+  --accent: #14594A;
+  --accent-soft: #DDF0E7;
   --on-accent: #FFFFFF;
-  --hero: #15453A;
+  --hero: #0C3A31;
+  --spark: #EE7F43;
+  --spark-soft: #FDE7D8;
   --danger: #B3261E;
   --shadow: 0 1px 0 rgba(20,30,25,.04), 0 14px 34px -20px rgba(20,30,25,.22);
   --av-l: .9; --av-c: .05; --av-fl: .4; --av-fc: .09;
   color-scheme: light;
 }
 [data-theme="dark"] {
-  --bg: #0F1211;
-  --surface: #171B19;
-  --sunken: #1F2421;
-  --line: #29302C;
-  --text: #E8ECE9;
-  --muted: #98A29C;
-  --accent: #7CCFB0;
-  --accent-soft: #1C2E27;
-  --on-accent: #07130E;
-  --hero: #112620;
+  --bg: #0D1311;
+  --surface: #141B18;
+  --sunken: #1B2420;
+  --line: #27312C;
+  --text: #EAEFEB;
+  --muted: #9AA79F;
+  --accent: #8FDCB8;
+  --accent-soft: #1A2D26;
+  --on-accent: #06130D;
+  --hero: #0E2A23;
+  --spark: #FFA46B;
+  --spark-soft: #3A2517;
   --danger: #F2B8B5;
   --shadow: 0 1px 0 rgba(0,0,0,.4), 0 18px 40px -22px rgba(0,0,0,.8);
   --av-l: .35; --av-c: .055; --av-fl: .88; --av-fc: .07;
   color-scheme: dark;
 }
 :root {
-  --ui: "Bricolage Grotesque Variable", system-ui, -apple-system, "Segoe UI", "Noto Sans", "Noto Sans Thai", "Noto Sans Devanagari", "Noto Sans Arabic", "PingFang SC", "Hiragino Sans", "Malgun Gothic", sans-serif;
-  --read: "Newsreader Variable", "Iowan Old Style", Georgia, "Noto Serif", "Noto Serif Thai", "Noto Naskh Arabic", "Songti SC", "Hiragino Mincho ProN", serif;
+  --ui: "SpecAct Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", "Noto Sans Thai", "Noto Sans Devanagari", "Noto Sans Arabic", "PingFang SC", "Hiragino Sans", "Malgun Gothic", sans-serif;
+  --read: "SpecAct Serif", "Noto Serif", Georgia, "Iowan Old Style", "Noto Serif Thai", "Noto Naskh Arabic", "Songti SC", "Hiragino Mincho ProN", serif;
   --r-lg: 24px; --r: 16px; --r-sm: 12px;
 }
 * { box-sizing: border-box; }

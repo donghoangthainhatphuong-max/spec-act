@@ -24,6 +24,9 @@ const bool = (key, def) => {
   return ['1', 'true', 'yes', 'on'].includes(String(v).toLowerCase());
 };
 
+/** Date of the Terms / Privacy text people must have accepted (same value as `updated` in src/locales/pages/*.json). Bump both when the terms change. */
+export const TERMS_VERSION = '2026-10-12';
+
 export const LANGS = [
   ['en', 'English'], ['vi', 'Tiếng Việt'], ['zh', '中文'], ['ja', '日本語'], ['ko', '한국어'], ['ru', 'Русский'], ['fr', 'Français'],
   ['de', 'Deutsch'], ['es', 'Español'], ['th', 'ไทย'], ['id', 'Bahasa Indonesia'], ['hi', 'हिन्दी'], ['ar', 'العربية'], ['tr', 'Türkçe'],
@@ -45,6 +48,8 @@ export const config = Object.freeze({
   postsFolder: str('VITE_DRIVE_POSTS_FOLDER', 'posts'),
   sharedFolder: str('VITE_DRIVE_SHARED_FOLDER', 'shared'),
   chatUrl: str('VITE_CHAT_URL_TEMPLATE', 'https://mail.google.com/chat/?authuser={me}#chat/dm/{email}'),
+  // Open Graph link previews are fetched through an address you choose ({url} = the pasted link); empty = off, nothing leaves the device
+  linkPreviewUrl: (() => { const v = str('VITE_LINK_PREVIEW_URL', ''); try { return /^(https:\/\/|\/(?!\/))/i.test(v) && new URL(v.replace('{url}', 'x'), 'https://x.invalid') ? v : ''; } catch { return ''; } })(),
   groupShared: bool('VITE_GROUP_SHARED', true),
   oauthScopes: str('VITE_OAUTH_SCOPES', 'https://www.googleapis.com/auth/drive').split(/[\s,]+/).filter(Boolean),
   oauthRedirectUri: str('VITE_OAUTH_REDIRECT_URI', ''),

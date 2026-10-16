@@ -64,18 +64,58 @@ export function cleanAudience(aud, ownerEmail) {
   return out;
 }
 
+const DRIVE_ID_RE = /^[A-Za-z0-9_-]{1,200}$/;
+const DRIVE_ID = { test: (v) => typeof v === 'string' && DRIVE_ID_RE.test(v) };
+const SAFE_MIME = /^(image\/(jpeg|png|gif|webp|avif|heic|heif)|video\/[a-z0-9.+-]+|audio\/[a-z0-9.+-]+)$/i;
+// control characters and bidi overrides ("evil\u202Efdp.exe") let a name pretend to be something else
+// eslint-disable-next-line no-control-regex
+const UNSAFE_CHARS = /[\u0000-\u001f\u007f\u200e\u200f\u202a-\u202e\u2066-\u2069\ufeff]/g;
+export const cleanName = (s, max = 200) => String(s ?? '').replace(UNSAFE_CHARS, '').replace(/[\\/]/g, '_').slice(0, max);
+const nat = (n) => (Number.isFinite(+n) && +n > 0 ? Math.min(Math.round(+n), 1e12) : 0);
+
+/**
+ * Normalise one attachment. post.json is written by another person and cannot be trusted: ids must look like
+ * Drive ids, and only media types the browser plays passively keep their type — anything else is a plain
+ * download labelled application/octet-stream, so it can never be rendered as a page.
+ */
+/** One line/paragraph of untrusted text: control and bidi characters out, whitespace collapsed, length-limited. */
+export const cleanText = (s, max = 300) => String(s ?? '').replace(UNSAFE_CHARS, ' ').replace(/\s+/g, ' ').trim().slice(0, max);
+
+/**
+ * The link card of a post (Open Graph data somebody else wrote): only http(s) addresses, plain limited text, and the
+ * preview picture is just the id of a file in the post's own Drive folder.
+ */
+export function cleanLink(raw) {
+  if (!raw || typeof raw !== 'object') return null;
+  let url = '';
+  try { const u = new URL(String(raw.url)); if (u.protocol === 'http:' || u.protocol === 'https:') url = u.href.slice(0, 2000); } catch { /* not a link */ }
+  if (!url) return null;
+  return {
+    url,
+    title: cleanText(raw.title, 200),
+    description: cleanText(raw.description, 500),
+    site: cleanText(raw.site, 80),
+    image: DRIVE_ID.test(raw.image) ? raw.image : null,
+  };
+}
+
 export function publicMedia(m) {
-  const out = { id: m.id, thumb: m.thumb || null, name: m.name || '', mime: m.mime || 'image/jpeg', w: m.w || 0, h: m.h || 0, size: m.size || 0 };
-  if (m.kind === 'video' || String(m.mime).startsWith('video/')) { out.kind = 'video'; out.duration = m.duration || 0; }
-  else if (m.kind === 'audio') { out.kind = 'audio'; out.duration = m.duration || 0; }
-  else if (m.kind === 'file') out.kind = 'file';
+  const id = DRIVE_ID.test(m?.id) ? String(m.id) : '';
+  const declared = String(m?.mime || '').toLowerCase().split(';')[0].trim();
+  let kind = 'file';
+  if (SAFE_MIME.test(declared)) kind = declared.startsWith('video/') ? 'video' : declared.startsWith('audio/') ? 'audio' : m?.kind === 'file' ? 'file' : 'image';
+  const out = { id, thumb: DRIVE_ID.test(m?.thumb) ? String(m.thumb) : null, name: cleanName(m?.name), mime: kind === 'file' ? 'application/octet-stream' : declared, w: nat(m?.w), h: nat(m?.h), size: nat(m?.size) };
+  if (kind === 'video' || kind === 'audio') { out.kind = kind; out.duration = nat(m?.duration); }
+  else if (kind === 'file') out.kind = 'file';
   return out;
 }
 
 /** The JSON written to post.json. For protected posts the sensitive part is sealed in `payload`. */
-export async function buildPostDoc({ id, owner, createdAt, updatedAt, text, media, mentions, audience, linkShare, commentMode, cj, lj, protection, key }) {
+export async function buildPostDoc({ id, owner, createdAt, updatedAt, text, media, mentions, audience, linkShare, commentMode, cj, lj, protection, key, link }) {
   const body = { text: text || '', media: (media || []).map(publicMedia), mentions: mentions || [] };
-  const base = { v: SCHEMA, id, owner: { email: normEmail(owner.email), name: owner.name || '' }, createdAt, updatedAt, audience: cleanAudience(audience, owner.email), linkShare: !!linkShare, commentMode: normMode(commentMode), cj: cj || null, lj: lj || null };
+  const card = cleanLink(link);
+  if (card) body.link = card; // sits inside the sealed payload of a protected post
+  const base = { v: SCHEMA, id, owner: { email: normEmail(owner.email), name: cleanName(owner.name, 120) }, createdAt, updatedAt, audience: cleanAudience(audience, owner.email), linkShare: !!linkShare, commentMode: normMode(commentMode), cj: cj || null, lj: lj || null };
   if (protection) {
     if (!key) throw new Error('content key required');
     return { ...base, protection, payload: await encryptJson(key, body, `post:${id}`) };
@@ -87,7 +127,7 @@ export async function buildPostDoc({ id, owner, createdAt, updatedAt, text, medi
 export async function openPostDoc(doc, key) {
   if (!doc || doc.v !== SCHEMA) throw Object.assign(new Error('unsupported-version'), { code: 'unsupported-version' });
   const isProtected = !!doc.protection;
-  let body = { text: doc.text || '', media: doc.media || [], mentions: doc.mentions || [] };
+  let body = { text: doc.text || '', media: doc.media || [], mentions: doc.mentions || [], link: doc.link };
   let locked = false;
   if (isProtected) {
     if (key) body = await decryptJson(key, doc.payload, `post:${doc.id}`);
@@ -105,7 +145,8 @@ export async function openPostDoc(doc, key) {
     cj: doc.cj || null,
     lj: doc.lj || null,
     text: body.text || '',
-    media: (body.media || []).map(publicMedia),
+    link: cleanLink(body.link),
+    media: (Array.isArray(body.media) ? body.media : []).map(publicMedia).filter((m) => m.id),
     mentions: body.mentions || [],
     audience: cleanAudience(doc.audience, doc.owner?.email),
     protection: doc.protection || null,
@@ -128,6 +169,7 @@ export function toEntry(post, { id, ids, rev }) {
     commentMode: post.commentMode,
     text: snip.text,
     truncated: snip.truncated,
+    link: post.protected ? null : (post.link || null),
     // the feed card shows the first photos/videos and lists audio and documents next to them
     mediaCount: post.protected ? 0 : post.media.filter(isVisual).length,
     media: post.protected ? [] : post.media.filter(isVisual).slice(0, ENTRY_MEDIA),

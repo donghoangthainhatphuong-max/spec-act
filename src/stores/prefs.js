@@ -1,9 +1,11 @@
 import { defineStore } from 'pinia';
-import { ref, watch } from 'vue';
-import { config } from '../config';
+import { computed, ref, watch } from 'vue';
+import { TERMS_VERSION, config } from '../config';
 import { detectLanguage, setLocale } from '../i18n';
 
 const KEY = 'specact.prefs';
+const CONSENT_KEY = 'specact.consent';
+const readConsent = () => { try { return JSON.parse(localStorage.getItem(CONSENT_KEY) || 'null'); } catch { return null; } };
 const read = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
 
 /** Non-sensitive, per-device preferences (kept in localStorage). */
@@ -14,6 +16,14 @@ export const usePrefsStore = defineStore('prefs', () => {
   const autoLock = ref(Number.isFinite(saved.autoLock) ? saved.autoLock : config.autoLockMinutes);
   const notify = ref(typeof saved.notify === 'boolean' ? saved.notify : config.notifyEmail);
 
+  // acceptance of the Terms of Use and Privacy Policy: which version, and when (kept on this device only)
+  const consent = ref(readConsent());
+  const consentOk = computed(() => consent.value?.v === TERMS_VERSION);
+  function acceptTerms() {
+    consent.value = { v: TERMS_VERSION, at: new Date().toISOString() };
+    try { localStorage.setItem(CONSENT_KEY, JSON.stringify(consent.value)); } catch { /* private mode: asked again next time */ }
+  }
+
   const mq = typeof matchMedia === 'function' ? matchMedia('(prefers-color-scheme: dark)') : null;
   const systemDark = ref(!!mq?.matches);
   mq?.addEventListener?.('change', (e) => { systemDark.value = e.matches; });
@@ -21,7 +31,7 @@ export const usePrefsStore = defineStore('prefs', () => {
   const resolvedTheme = () => (theme.value === 'system' ? (systemDark.value ? 'dark' : 'light') : theme.value);
   const applyTheme = () => {
     document.documentElement.dataset.theme = resolvedTheme();
-    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', resolvedTheme() === 'dark' ? '#0F1211' : '#F3F4F2');
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', resolvedTheme() === 'dark' ? '#0D1311' : '#F6F3EC');
   };
 
   watch([lang, theme, autoLock, notify], () => {
@@ -36,5 +46,5 @@ export const usePrefsStore = defineStore('prefs', () => {
   }
   const toggleTheme = () => { theme.value = resolvedTheme() === 'dark' ? 'light' : 'dark'; };
 
-  return { lang, theme, autoLock, notify, resolvedTheme, systemDark, init, toggleTheme };
+  return { consent, consentOk, acceptTerms, lang, theme, autoLock, notify, resolvedTheme, systemDark, init, toggleTheme };
 });

@@ -17,7 +17,7 @@ SPECACT does not keep your data — **your Google Drive is the only place it is 
 ## Minimal spec for other apps
 
 - Root folder `SPECACT/` (property `specact=root`); posts in `SPECACT/posts/<date>_<id>/` (properties `specact=post`, `rev`, `pj`, `cj`, `lj`, `mf`).
-- `post.json` (`v: 1`): `id, owner, createdAt, updatedAt, text, media[], mentions[], audience{}, linkShare, commentMode, cj, lj, protection`. Password-protected posts carry an AES-256-GCM `payload` (AAD `post:<id>`) with the content key wrapped by a PBKDF2-SHA256 key.
+- `post.json` (`v: 1`): `id, owner, createdAt, updatedAt, text, media[], mentions[], link{}, audience{}, linkShare, commentMode, cj, lj, protection`. Password-protected posts carry an AES-256-GCM `payload` (AAD `post:<id>`) with the content key wrapped by a PBKDF2-SHA256 key. Optional `link` is a link-preview card `{ url, title, description, site, image }`: `image` is the id of a file in the post's own `media/` folder, only `http(s)` URLs are accepted and every field is plain text — readers must never render it as HTML.
 - `comments.json`: `{ v:1, comments[], likes[] }` (comments of protected posts carry `enc`; the `likes` array is legacy).
 - `likes.json`: `{ v:1, likes[] }` — liking follows who may *see* the post, independent of the comment mode.
 - Sharing = Drive permissions: *can view* = `reader` on the folder; *can comment* = also `writer` **on `comments.json` only**; liking = `writer` on `likes.json` for everyone who can see the post; public by link = `anyone` `reader` **on the files only** (`post.json`, photos), never on the folder.

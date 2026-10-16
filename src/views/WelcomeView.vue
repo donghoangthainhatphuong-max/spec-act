@@ -8,6 +8,7 @@ import { useRouter } from 'vue-router';
 import { useI18n } from '@/i18n';
 import AppIcon from '../components/ui/AppIcon.vue';
 import AppLogo from '../components/ui/AppLogo.vue';
+import BrandName from '../components/ui/BrandName.vue';
 import OrbitGraphic from '../components/ui/OrbitGraphic.vue';
 import LegalLinks from '../components/layout/LegalLinks.vue';
 import PinPad from '../components/auth/PinPad.vue';
@@ -146,7 +147,7 @@ async function demo() { await session.enterDemo(); router.replace('/'); }
       </div>
 
       <div class="body">
-        <div class="brand"><AppLogo :size="30" /><span>SPECACT</span></div>
+        <div class="brand"><AppLogo :size="30" /><BrandName /></div>
 
         <p v-if="noticeText" class="notice" role="alert"><AppIcon name="alert" :size="18" />{{ noticeText }}</p>
 

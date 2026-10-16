@@ -17,10 +17,12 @@ export const useDraftStore = defineStore('draft', () => {
   const password = ref('');
   const linkShare = ref(false);
   const commentMode = ref('shared');
+  const card = ref(null); // link preview: { link, imageFile, imageUrl, old }
+  const dismissed = ref([]); // addresses whose preview the person closed — not offered again
   const editing = ref(null);
   const lockedProtection = ref(false); // editing an already protected post: protection can't be toggled
   let seq = 0;
-  const snapshot = () => JSON.stringify([text.value, photos.value.map((p) => p.key), manual.value, protect.value, linkShare.value, commentMode.value, password.value]);
+  const snapshot = () => JSON.stringify([text.value, photos.value.map((p) => p.key), manual.value, protect.value, linkShare.value, commentMode.value, password.value, card.value?.link.url || '']);
   const baseline = ref(snapshot()); // taken when the draft was opened, to tell real changes from untouched edits
 
   const mentions = computed(() => extractMentions(text.value).filter((e) => !people.isMe(e)));
@@ -65,8 +67,26 @@ export const useDraftStore = defineStore('draft', () => {
     photos.value = photos.value.filter((x) => x.key !== key);
   }
 
+  function setCard(link, imageFile = null) {
+    if (card.value?.imageUrl) URL.revokeObjectURL(card.value.imageUrl);
+    card.value = { link, imageFile, imageUrl: imageFile ? URL.createObjectURL(imageFile) : '', old: false };
+  }
+  function dropCard() {
+    if (card.value) dismissed.value = [...dismissed.value, card.value.link.url];
+    if (card.value?.imageUrl) URL.revokeObjectURL(card.value.imageUrl);
+    card.value = null;
+  }
+  /** What the repo gets: nothing to say (keep / none), a new card, or `null` to remove the one the post had. */
+  function linkInput(hadLink) {
+    if (card.value && !card.value.old) return { link: card.value.link, linkImage: card.value.imageFile };
+    if (!card.value && hadLink) return { link: null };
+    return {};
+  }
+
   function reset() {
     for (const p of photos.value) if (p.url) URL.revokeObjectURL(p.url);
+    if (card.value?.imageUrl) URL.revokeObjectURL(card.value.imageUrl);
+    card.value = null; dismissed.value = [];
     text.value = ''; photos.value = []; manual.value = {}; roles.value = {}; protect.value = false; password.value = ''; linkShare.value = false; commentMode.value = 'shared'; editing.value = null; lockedProtection.value = false;
     baseline.value = snapshot();
   }
@@ -82,10 +102,11 @@ export const useDraftStore = defineStore('draft', () => {
     lockedProtection.value = post.protected;
     linkShare.value = post.linkShare;
     commentMode.value = post.commentMode || 'shared';
+    if (post.link) card.value = { link: post.link, imageFile: null, imageUrl: '', old: true };
     baseline.value = snapshot();
   }
 
   const dirty = computed(() => snapshot() !== baseline.value);
 
-  return { text, photos, manual, roles, protect, password, linkShare, commentMode, editing, lockedProtection, mentions, audience, isMentionOnly, room, dirty, toggle, setRole, remove, addEmail, addFiles, removePhoto, reset, loadFrom };
+  return { card, dismissed, setCard, dropCard, linkInput, text, photos, manual, roles, protect, password, linkShare, commentMode, editing, lockedProtection, mentions, audience, isMentionOnly, room, dirty, toggle, setRole, remove, addEmail, addFiles, removePhoto, reset, loadFrom };
 });

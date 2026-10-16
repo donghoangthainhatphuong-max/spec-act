@@ -7,6 +7,7 @@ import AppIcon from '../ui/AppIcon.vue';
 import ChatButton from '../ui/ChatButton.vue';
 import AvatarPile from '../ui/AvatarPile.vue';
 import RichText from './RichText.vue';
+import LinkCard from './LinkCard.vue';
 import PhotoGrid from './PhotoGrid.vue';
 import AttachmentList from './AttachmentList.vue';
 import { isVisual } from '../../services/mediaKinds';
@@ -147,6 +148,7 @@ const ariaPeople = computed(() => listOf(audienceEmails.value.map((e) => people.
     <SealedBox v-if="locked" :post="view" @unlocked="emit('unlocked')" />
     <template v-else>
       <p v-if="view.text" class="post-text"><RichText :text="view.text" /><template v-if="view.truncated && !detail"> <RouterLink class="readmore" :to="{ name: 'post', params: { id: view.id } }">{{ t('post.readMore') }}</RouterLink></template></p>
+      <LinkCard v-if="view.link && !view.locked" :link="view.link" :post="view" />
       <PhotoGrid :post="view" :media="visualMedia" :total="mediaTotal" :detail="detail" @open="openPhoto" />
       <AttachmentList :post="view" :items="attachments" :more="moreFiles" />
     </template>

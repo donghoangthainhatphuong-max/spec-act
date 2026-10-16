@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SPECACT — brand sheet</title>
+<style>
+  @font-face { font-family: 'SpecAct Sans'; font-weight: 100 900; src: url('../../src/assets/fonts/inter-variable.woff2') format('woff2'); }
+  @font-face { font-family: 'SpecAct Serif'; font-weight: 400; src: url('../../src/assets/fonts/notoserif-regular.woff2') format('woff2'); }
+  @font-face { font-family: 'SpecAct Serif'; font-style: italic; font-weight: 400; src: url('../../src/assets/fonts/notoserif-italic.woff2') format('woff2'); }
+  :root { --bg:#F6F3EC; --surface:#fff; --sunken:#EFEBE2; --line:#E4DFD3; --text:#1A1F1C; --muted:#646D66; --accent:#14594A; --hero:#0C3A31; --spark:#EE7F43; color-scheme: light; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0D1311; --surface:#141B18; --sunken:#1B2420; --line:#27312C; --text:#EAEFEB; --muted:#9AA79F; --accent:#8FDCB8; --hero:#0E2A23; --spark:#FFA46B; color-scheme: dark; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family: "SpecAct Sans", system-ui, -apple-system, "Segoe UI", sans-serif; line-height:1.5; }
+  main { max-width: 980px; margin: 0 auto; padding: 40px 20px 80px; }
+  h1 { font-size: clamp(34px, 6vw, 56px); letter-spacing: -.04em; line-height: 1.05; margin: 0 0 12px; }
+  h2 { font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 56px 0 16px; }
+  p { max-width: 62ch; }
+  .read { font-family: "SpecAct Serif", "Noto Serif", Georgia, "Iowan Old Style", serif; font-size: 20px; line-height: 1.5; }
+  .hero { background: linear-gradient(135deg,#1B7A63,#0C3A31); color:#F6F3EC; border-radius: 32px; padding: 48px 32px; display:flex; gap:36px; align-items:center; flex-wrap: wrap; }
+  .hero svg { flex: none; }
+  .wm { font-size: 44px; letter-spacing: -.035em; line-height:1; }
+  .wm b { font-weight: 800; color:#8FDCB8; } .wm span { font-weight: 500; }
+  .grid { display:grid; gap:14px; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); }
+  .card { background:var(--surface); border:1px solid var(--line); border-radius:24px; padding:20px; }
+  .sw { border-radius: 20px; overflow:hidden; border:1px solid var(--line); background:var(--surface); }
+  .sw i { display:block; height: 92px; } .sw div { padding: 10px 14px 12px; font-size: 13px; } .sw b { display:block; font-size:15px; } .sw code { color:var(--muted); }
+  .row { display:flex; gap:16px; flex-wrap:wrap; align-items:center; }
+  .tilt { display:flex; justify-content:center; padding: 24px 0; } .tilt i { width:84px; height:106px; border-radius:16px; border:3px solid #fff; box-shadow:0 10px 24px rgba(0,0,0,.18); margin: 0 -8px; }
+  .say td { padding: 10px 14px; border-bottom:1px solid var(--line); vertical-align: top; } .say { border-collapse: collapse; width:100%; background:var(--surface); border-radius:20px; overflow:hidden; border:1px solid var(--line); }
+  .yes { color: var(--accent); font-weight:700; } .no { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--spark); }
+  .btn { display:inline-block; background:var(--accent); color: var(--bg); padding:14px 26px; border-radius:99px; font-weight:700; }
+  .badge { display:inline-grid; place-items:center; min-width:24px; height:24px; padding:0 8px; border-radius:99px; background:var(--spark); color:#2A1405; font-weight:700; font-size:13px; }
+</style>
+</head>
+<body>
+<main>
+  <section class="hero">
+    <svg width="148" height="148" viewBox="0 0 64 64" aria-hidden="true">
+      <defs><mask id="k" maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64"><rect width="64" height="64" fill="#fff"/><circle cx="32" cy="29.5" r="4.3"/><rect x="29.8" y="30.5" width="4.4" height="11" rx="2.2"/></mask></defs>
+      <circle cx="32" cy="32" r="27" fill="none" stroke="#F6F3EC" stroke-width="2.4" opacity=".4"/>
+      <circle cx="32" cy="32" r="15.5" fill="#F6F3EC" mask="url(#k)"/>
+      <circle cx="51.1" cy="12.9" r="4.2" fill="#FF9A62"/><circle cx="27.3" cy="58.6" r="3.4" fill="#FF9A62"/><circle cx="6.6" cy="22.8" r="3.4" fill="#FF9A62"/>
+    </svg>
+    <div>
+      <div class="wm" aria-label="specact"><span>spec</span><b>act</b></div>
+      <h1 style="color:#F6F3EC;margin-top:18px">Your data is your personal asset.</h1>
+      <p class="read" style="color:#cfe3d9;margin:0">Private moments that belong only to you and the people closest to you.</p>
+    </div>
+  </section>
+
+  <h2>The idea</h2>
+  <p class="read">One moment in the middle, the few people who can see it around it. The disc has a keyhole — private by default. The ring is your circle. The three apricot dots are the people you chose, placed unevenly on purpose.</p>
+
+  <h2>Colour</h2>
+  <div class="grid">
+    <div class="sw"><i style="background:#14594A"></i><div><b>Forest</b><code>#14594A</code> · accent</div></div>
+    <div class="sw"><i style="background:#0C3A31"></i><div><b>Deep forest</b><code>#0C3A31</code> · hero</div></div>
+    <div class="sw"><i style="background:#EE7F43"></i><div><b>Apricot</b><code>#EE7F43</code> · spark</div></div>
+    <div class="sw"><i style="background:#8FDCB8"></i><div><b>Mint</b><code>#8FDCB8</code> · accent on dark</div></div>
+    <div class="sw"><i style="background:#F6F3EC"></i><div><b>Paper</b><code>#F6F3EC</code> · background</div></div>
+    <div class="sw"><i style="background:#EFEBE2"></i><div><b>Sunken</b><code>#EFEBE2</code></div></div>
+    <div class="sw"><i style="background:#E4DFD3"></i><div><b>Line</b><code>#E4DFD3</code></div></div>
+    <div class="sw"><i style="background:#1A1F1C"></i><div><b>Ink</b><code>#1A1F1C</code> · text</div></div>
+    <div class="sw"><i style="background:#0D1311"></i><div><b>Night</b><code>#0D1311</code> · dark bg</div></div>
+  </div>
+  <p style="margin-top:16px">Apricot is a spark — a few small doses per screen, never body text. <span class="badge">3</span> <span class="btn" style="margin-left:12px">Create a post</span></p>
+
+  <h2>Type</h2>
+  <div class="card">
+    <div style="font-size:44px;font-weight:800;letter-spacing:-.04em;line-height:1.05">Inter</div>
+    <p style="color:var(--muted);margin:6px 0 18px">Interface — clear, with Vietnamese tone marks stacked correctly: Tiếng Việt ắ ằ ẳ ẵ ặ ế ề ể ễ ệ ố ồ ổ ỗ ộ ớ ờ ở ỡ ợ ứ ừ ử ữ ự.</p>
+    <div class="read" style="font-size:28px">Noto Serif — what people write is set like writing: “Những khoảnh khắc riêng tư, chỉ thuộc về bạn và người thân.”</div>
+    <p class="read" style="color:var(--muted);margin:10px 0 0">Weekend in Da Lat. The pine forest was so quiet — shared only with you.</p>
+  </div>
+
+  <h2>Signature visuals</h2>
+  <div class="card tilt"><i style="background:linear-gradient(135deg,#E0A370,#B4683A);transform:rotate(-12deg)"></i><i style="background:linear-gradient(135deg,#7CCFB0,#2E8A6D);transform:translateY(-8px);width:96px;height:120px"></i><i style="background:linear-gradient(135deg,#6C8FD6,#3C5BA8);transform:rotate(10deg)"></i></div>
+
+  <h2>Voice</h2>
+  <table class="say">
+    <tr><td class="yes">Only you can see this.</td><td class="no">Access restricted to authorised principals.</td></tr>
+    <tr><td class="yes">Your data stays in your Google Drive.</td><td class="no">Military-grade encryption!!!</td></tr>
+    <tr><td class="yes">Something went wrong. Try again.</td><td class="no">Error 0x80004005</td></tr>
+  </table>
+  <p style="color:var(--muted);margin-top:24px">Full guide: <a href="../BRAND.md">BRAND.md</a> · <a href="../BRAND.vi.md">BRAND.vi.md</a></p>
+</main>
+</body>
+</html>

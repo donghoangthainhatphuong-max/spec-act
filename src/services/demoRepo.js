@@ -10,7 +10,7 @@ import mountains from '../assets/samples/mountains.jpg?url';
 import { randomId } from './crypto';
 import { classify } from './mediaKinds';
 import { extractMentions, normEmail, prettyName } from './mentions';
-import { ROLE_COMMENT, byNewest, cleanAudience, toEntry } from './postModel';
+import { ROLE_COMMENT, byNewest, cleanAudience, cleanLink, toEntry } from './postModel';
 import { RepoError } from './repo';
 
 export const DEMO_PASSWORD = 'specact';
@@ -33,6 +33,7 @@ export class DemoRepo {
     const now = Date.now();
     this.me = DEMO_ME;
     this.keys = new Set();
+    this.linkImages = new Map(); // link-card picture id -> object URL
     this.posts = new Map();
     this.comments = new Map();
     this.contacts = Object.entries(PEOPLE).map(([email, name], i) => ({ email, name, addedAt: now - i * 1000 }));
@@ -104,7 +105,17 @@ export class DemoRepo {
     this.keys.add(id);
     return this.openPost(id);
   }
+  /** The demo keeps a link card's picture only in this page. */
+  #card(link, image, id) {
+    const card = cleanLink(link);
+    if (!card) return null;
+    card.image = null;
+    if (image) { card.image = id; this.linkImages.set(id, URL.createObjectURL(image)); }
+    return card;
+  }
+
   async mediaUrl(_post, item, { thumb = false } = {}) {
+    if (this.linkImages.has(item.id)) return this.linkImages.get(item.id);
     if (thumb && item.poster) return item.poster;
     if (item.url) return item.url;
     return IMG[String(item.id).replace('img:', '')] || '';
@@ -122,6 +133,7 @@ export class DemoRepo {
     const prot = !!input.password;
     const p = this.#full({ id, owner: DEMO_ME.email, at: Date.now(), text, media: files, audience: cleanAudience(input.audience, DEMO_ME.email), protected: prot });
     p.linkShare = !!input.linkShare;
+    p.link = this.#card(input.link, input.linkImage, `l${id}`);
     p.commentMode = ['open', 'shared', 'locked'].includes(input.commentMode) ? input.commentMode : 'shared';
     this.posts.set(id, p);
     this.comments.set(id, { comments: [], likes: [] });
@@ -137,6 +149,7 @@ export class DemoRepo {
     const keep = new Set(input.keepMedia || cur.media.map((m) => m.id));
     const added = (input.files || []).map((f, i) => this.#upload(f, `u${post.id}${Date.now()}${i}`));
     const text = input.text ?? cur.text;
+    if (input.link !== undefined) cur.link = input.link === null ? null : (input.link.url === cur.link?.url && !input.linkImage ? cur.link : this.#card(input.link, input.linkImage, `l${post.id}${Date.now()}`));
     Object.assign(cur, {
       text, media: [...cur.media.filter((m) => keep.has(m.id)), ...added], mentions: extractMentions(text), updatedAt: Date.now(),
       audience: cleanAudience(input.audience ?? cur.audience, DEMO_ME.email), linkShare: input.linkShare ?? cur.linkShare, commentMode: input.commentMode ?? cur.commentMode,

@@ -23,10 +23,11 @@ export const qs = (v) => `'${String(v).replace(/\\/g, '\\\\').replace(/'/g, "\\'
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+/** Caps parallel requests; a high-priority job (the photo someone just opened) jumps ahead of queued thumbnails. */
 class Limiter {
   constructor(max) { this.max = max; this.active = 0; this.queue = []; }
-  async run(fn) {
-    while (this.active >= this.max) await new Promise((r) => this.queue.push(r));
+  async run(fn, { high = false } = {}) {
+    while (this.active >= this.max) await new Promise((r) => (high ? this.queue.unshift(r) : this.queue.push(r)));
     this.active++;
     try { return await fn(); } finally { this.active--; this.queue.shift()?.(); }
   }
@@ -36,13 +37,13 @@ export class DriveClient {
   /**
    * @param {{ getToken: () => Promise<string>, onUnauthorized?: () => Promise<string>, concurrency?: number }} opts
    */
-  constructor({ getToken, onUnauthorized, concurrency = 6 }) {
+  constructor({ getToken, onUnauthorized, concurrency = 10 }) {
     this.getToken = getToken;
     this.onUnauthorized = onUnauthorized;
     this.limiter = new Limiter(concurrency);
   }
 
-  async request(url, { method = 'GET', headers = {}, body, raw = false, retries = 3 } = {}) {
+  async request(url, { method = 'GET', headers = {}, body, raw = false, retries = 3, high = false } = {}) {
     return this.limiter.run(async () => {
       let token = await this.getToken();
       let refreshed = false;
@@ -78,7 +79,7 @@ export class DriveClient {
         const ct = res.headers.get('content-type') || '';
         return ct.includes('json') ? res.json() : res.text();
       }
-    });
+    }, { high });
   }
 
   /* ---------- account ---------- */
@@ -183,8 +184,13 @@ export class DriveClient {
     const res = await this.request(`${API}/files/${encodeURIComponent(id)}?alt=media`, { raw: true });
     return JSON.parse(await res.text());
   }
-  async downloadBytes(id) {
-    const res = await this.request(`${API}/files/${encodeURIComponent(id)}?alt=media`, { raw: true });
+  /**
+   * File content as bytes. (A query-string token would let the browser skip the CORS pre-flight, but Google's real
+   * servers answer that form with 403 — so the Authorization header is the only form used. Speed comes from the
+   * on-device cache, the larger connection pool and the priority queue instead.)
+   */
+  async downloadBytes(id, { high = false } = {}) {
+    const res = await this.request(`${API}/files/${encodeURIComponent(id)}?alt=media`, { raw: true, high });
     return new Uint8Array(await res.arrayBuffer());
   }
 

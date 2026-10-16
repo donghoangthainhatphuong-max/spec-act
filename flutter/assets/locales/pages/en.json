@@ -1,0 +1,181 @@
+{
+  "about": {
+    "title": "About SPECACT",
+    "lead": "SPECACT — Secure Personal Ecosystem for Content, Access, and Control Trust — is a way to share what you write and photograph with exactly the people you choose, while your data stays yours.",
+    "sections": [
+      {
+        "h": "Our core goal",
+        "body": [
+          "To give every person a personal content space they fully own and control — and to make sharing from it safe, selective and portable across any website or app they trust.",
+          "SPECACT is not a social network. There is no feed we curate, no audience we collect, no algorithm between you and the people you share with. It is a network of personal content under your control: sovereign, owned and controlled."
+        ]
+      },
+      {
+        "h": "Five principles",
+        "list": [
+          "Personal — your space, your rules: who sees, who comments, what is protected, what is public.",
+          "Sovereign — your data lives in your own Google Drive. No provider in the middle can store, read, moderate or change it.",
+          "Decentralised & portable — the data format is open and documented, so many websites and apps can share one personal data source of yours without copying or migrating it.",
+          "Controlled sharing — access is real Drive permission, not a promise: whoever has no permission cannot read, even with the link. Password protection adds client-side encryption on top.",
+          "Secure by default — keys and tokens stay on your device, encrypted twice and locked by your PIN; the page only ever talks to Google."
+        ]
+      },
+      {
+        "h": "What this means in practice",
+        "list": [
+          "Delete the app and your posts are still in your Drive, readable by any compatible app.",
+          "Change where you view your content without changing where it lives.",
+          "Revoke someone’s access in one click — it is enforced by Google Drive, not by us.",
+          "Host SPECACT yourself: it is static files under the MIT license."
+        ]
+      },
+      {
+        "h": "Honest limits",
+        "body": [
+          "Your data is stored by Google and is subject to Google’s terms. A website host could serve altered code — self-host, or use a build you have verified, to remove that risk. Revoking access cannot erase what someone has already seen or saved."
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "title": "Terms of Use",
+    "lead": "Plain-language terms for using SPECACT. By using the app you agree to them.",
+    "sections": [
+      {
+        "h": "1. What SPECACT is",
+        "body": [
+          "SPECACT is open-source software (MIT license) that runs in your browser and stores your content in your own Google Drive using your own Google account and your own Google OAuth client. The operator of the website that serves it only delivers static files; they do not host, receive or process your content."
+        ]
+      },
+      {
+        "h": "2. Your account and keys",
+        "list": [
+          "You need a Google account and must create and keep your own OAuth client ID and secret.",
+          "Your PIN, keys and passwords are your responsibility. A lost PIN can only be fixed by erasing local data and signing in again; a lost post password cannot be recovered.",
+          "You must follow Google’s terms of service and API policies."
+        ]
+      },
+      {
+        "h": "3. Your content",
+        "list": [
+          "You own what you create and are solely responsible for it and for whom you share it with.",
+          "Do not use SPECACT to store or share content that is unlawful, infringes others’ rights, or exposes other people’s private data without permission.",
+          "Because content lives in your Drive, neither the project nor the site operator can review, remove or restore it."
+        ]
+      },
+      {
+        "h": "4. Sharing and access",
+        "body": [
+          "Sharing uses Google Drive permissions. When you share, mention, make a post public by link, or allow comments, you decide who can access it and you can change that at any time. Anything already seen, copied or downloaded by someone cannot be taken back."
+        ]
+      },
+      {
+        "h": "5. Acceptable use",
+        "list": [
+          "Do not attempt to break, probe or overload other people’s data or Google’s services through the app.",
+          "Do not use the app to harass, defraud or spam others.",
+          "Self-hosters must not alter the app to collect users’ keys, tokens or content."
+        ]
+      },
+      {
+        "h": "6. No warranty",
+        "body": [
+          "The software is provided “as is”, without warranty of any kind. It may contain bugs; back up what matters (your data is already ordinary files in Drive). Test with a throw-away account before relying on it."
+        ]
+      },
+      {
+        "h": "7. Limitation of liability",
+        "body": [
+          "To the extent permitted by law, the authors, contributors and operators are not liable for loss of data, unauthorised access caused by a weak PIN or password, shared content, or any indirect damages arising from use of the software."
+        ]
+      },
+      {
+        "h": "8. Changes and contact",
+        "body": [
+          "These terms may change; the date above shows the latest version. If an operator runs this software for others they should publish their own contact details and any additional terms here."
+        ]
+      },
+      {
+        "h": "Note",
+        "body": [
+          "This text is a general template for an open-source project and is not legal advice. Operators should have it reviewed for their jurisdiction."
+        ]
+      }
+    ]
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "lead": "Short version: the project has no server that receives your content, so it cannot collect it. Here is exactly what happens to your data.",
+    "sections": [
+      {
+        "h": "1. What we collect",
+        "body": [
+          "The SPECACT software collects nothing: no analytics, no trackers, no accounts of its own. Your posts, photos, comments, contacts and index are stored only in your Google Drive. The website host that delivers the static files may keep ordinary web-server access logs (IP address, time, requested file) under its own policy."
+        ]
+      },
+      {
+        "h": "2. What Google receives",
+        "body": [
+          "The app talks directly from your browser to Google (accounts.google.com, oauth2.googleapis.com, www.googleapis.com). Google processes that data under Google’s Privacy Policy. SPECACT asks for the Google Drive permission so it can create the SPECACT folder, read and write your posts, read posts shared with you, and manage who can open them. It does not touch other files in your Drive.",
+          "Link previews are off by default. If the person running this site configures a preview service, a link you paste into a post is sent to that service (and nowhere else) so it can return the page's title and description; the preview text and picture are then stored in your own Drive with the post. Ask whoever runs the site which service that is."
+        ]
+      },
+      {
+        "h": "3. What is stored on your device",
+        "list": [
+          "IndexedDB (encrypted twice: device key + your PIN): your OAuth client ID and secret, refresh token, post keys, cached index and contacts.",
+          "localStorage (not secret): language, theme, auto-lock and notification preferences.",
+          "sessionStorage: a short-lived sign-in state and code during the Google redirect.",
+          "No cookies are set. Access tokens are kept only in memory.",
+          "Camera and microphone: only when you open the in-app camera or voice recorder (microphone only while filming or recording sound). Captures go into your post draft and then to your Drive; nothing else receives them."
+        ]
+      },
+      {
+        "h": "4. Who can see your content",
+        "body": [
+          "Only people you grant Google Drive access to, and — for posts you make public by link — anyone who has the link and is signed in with Google. Password-protected posts are encrypted in your browser before upload, so even people with Drive access need the password. People you share with can see your name, e-mail address and the other recipients listed on a post."
+        ]
+      },
+      {
+        "h": "5. Photos",
+        "body": [
+          "Photos are re-encoded in your browser before upload, which removes EXIF metadata such as GPS location and camera details."
+        ]
+      },
+      {
+        "h": "6. Sharing with third parties",
+        "body": [
+          "The project does not sell or share your data. The “Message” buttons simply open Google Chat in a new tab; SPECACT does not read, send or store chat messages. Other websites or apps you choose to connect to your own data source act under their own policies."
+        ]
+      },
+      {
+        "h": "7. Your control",
+        "list": [
+          "Revoke any person’s or link’s access at any time from the post page.",
+          "Delete posts (to the Drive trash, or permanently — set by the operator).",
+          "Sign out to revoke the app’s token; erase local data in Settings; revoke the app at myaccount.google.com/permissions.",
+          "Export or move your data: it is ordinary JSON and image files in your Drive."
+        ]
+      },
+      {
+        "h": "8. Children",
+        "body": [
+          "SPECACT is not directed to children under the age required by Google to hold an account."
+        ]
+      },
+      {
+        "h": "9. Changes and contact",
+        "body": [
+          "This policy may be updated; the date above shows the latest version. Operators who deploy SPECACT for others should add their own contact information and describe their web-server logging here."
+        ]
+      },
+      {
+        "h": "Note",
+        "body": [
+          "This text is a general template for an open-source project and is not legal advice. Operators should have it reviewed for their jurisdiction."
+        ]
+      }
+    ]
+  },
+  "updated": "2026-10-12"
+}

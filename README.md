@@ -8,7 +8,7 @@
 
 [English](README.md) · [Tiếng Việt](README.vi.md) · [中文](README.zh.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Русский](README.ru.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Español](README.es.md) · [ไทย](README.th.md) · [Bahasa Indonesia](README.id.md) · [हिन्दी](README.hi.md) · [العربية](README.ar.md) · [Türkçe](README.tr.md)
 
-[Architecture](docs/ARCHITECTURE.md) · [Security](docs/SECURITY.md) · [Google setup](docs/GOOGLE_SETUP.md) · [Open format](docs/OPEN_FORMAT.md)
+[Architecture](docs/ARCHITECTURE.md) · [Security](docs/SECURITY.md) · [Google setup](docs/GOOGLE_SETUP.md) · [Open format](docs/OPEN_FORMAT.md) · [Brand](docs/BRAND.md)
 
 </div>
 
@@ -80,6 +80,7 @@ docker compose up -d --build
 | `VITE_ENABLE_DEMO` | `true` | Enable demo mode |
 | `VITE_DRIVE_ROOT_FOLDER` / `VITE_DRIVE_POSTS_FOLDER` | `SPECACT` / `posts` | Folder names in Drive |
 | `VITE_CHAT_URL_TEMPLATE` | `https://mail.google.com/chat/?authuser={me}#chat/dm/{email}` | Link that opens a Google Chat conversation (`{me}` = your e-mail, `{email}` = the friend's) |
+| `VITE_LINK_PREVIEW_URL` | _(empty = off)_ | Link previews (Open Graph): address of a service that returns a page's HTML, `{url}` = the pasted link. Browsers can't read other sites (CORS) and SPECACT has no backend, so you pick the service — it sees every link you paste. Docker adds its origin to the CSP automatically. |
 | `VITE_DRIVE_SHARED_FOLDER` / `VITE_GROUP_SHARED` | `shared` / `true` | Folder holding shortcuts to posts shared with you; turn grouping on/off |
 | `VITE_OAUTH_SCOPES` | `…/auth/drive` | OAuth scopes (full `drive` is needed to open posts others shared) |
 | `VITE_OAUTH_REDIRECT_URI` | *(auto)* | Override the redirect URI if needed |

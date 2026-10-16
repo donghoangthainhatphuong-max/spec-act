@@ -11,6 +11,25 @@ export default defineConfig(({ mode }) => {
     base,
     plugins: [
       vue(),
+      {
+        // `npm run dev` serves the same /link-preview endpoint the Docker service does
+        name: 'specact-link-preview',
+        apply: 'serve',
+        configureServer(server) {
+          server.middlewares.use('/link-preview', async (req, res) => {
+            const { handle } = await import('./docker/link-preview/server.mjs');
+            const rest = req.url.replace(/^\//, ''); // Connect strips the mount path
+            req.url = `/link-preview${rest.startsWith('?') || !rest ? rest : `/${rest}`}`;
+            await handle(req, res);
+          });
+        },
+      },
+      {
+        // hosts without nginx (GitHub Pages, S3, …) cannot send the CSP header, so ship it inside the page too
+        name: 'specact-csp',
+        apply: 'build',
+        transformIndexHtml: () => [{ tag: 'meta', injectTo: 'head-prepend', attrs: { 'http-equiv': 'Content-Security-Policy', content: "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; connect-src 'self' https://www.googleapis.com https://oauth2.googleapis.com; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'" } }],
+      },
       VitePWA({
         registerType: 'prompt', // never reload under the user's feet (an open draft, an unlocked vault) — they choose when
         injectRegister: false,
@@ -24,8 +43,8 @@ export default defineConfig(({ mode }) => {
           scope: base,
           display: 'standalone',
           orientation: 'any',
-          background_color: '#F3F4F2',
-          theme_color: '#1B6650',
+          background_color: '#F6F3EC',
+          theme_color: '#14594A',
           categories: ['social', 'productivity', 'photo'],
           icons: [
             { src: 'icons/icon-192.png', sizes: '192x192', type: 'image/png' },

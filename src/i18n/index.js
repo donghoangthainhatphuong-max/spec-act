@@ -19,6 +19,13 @@ export function t(key, params) {
   return s;
 }
 
+/** English text regardless of the selected language (pages that only exist in English must not mix two languages). */
+export function tEnglish(key, params) {
+  let s = en[key] ?? key;
+  if (params) s = s.replace(/\{(\w+)\}/g, (m, k) => (params[k] != null ? String(params[k]) : m));
+  return s;
+}
+
 /** Same shape components expect from a composable. */
 export function useI18n() { return { t, locale }; }
 export const currentLocale = () => locale.value;

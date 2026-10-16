@@ -22,3 +22,22 @@ services:
       - no-new-privileges:true
     cap_drop:
       - ALL
+
+  # Optional: link previews (Open Graph cards for pasted links). Start with `docker compose --profile preview up -d`
+  # and set VITE_LINK_PREVIEW_URL=/link-preview?url={url} in .env. It fetches pages on YOUR server; see docker/link-preview/server.mjs.
+  link-preview:
+    profiles: [preview]
+    image: node:22-alpine
+    container_name: spec-act-link-preview
+    command: ["node", "/app/server.mjs"]
+    volumes:
+      - ./docker/link-preview/server.mjs:/app/server.mjs:ro
+    expose:
+      - "8787"
+    user: node
+    restart: unless-stopped
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL

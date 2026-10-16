@@ -1,0 +1,9 @@
+# Rendered at container start by 40-specact-env.sh (adds the link-preview service, if one is configured, to connect-src).
+# nginx does not inherit add_header from the server block once a location sets its own,
+# so the headers are repeated here and included from every location.
+add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; connect-src 'self' https://www.googleapis.com https://oauth2.googleapis.com__CONNECT_EXTRA__; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'" always;
+add_header X-Content-Type-Options "nosniff" always;
+add_header X-Frame-Options "DENY" always;
+add_header Referrer-Policy "no-referrer" always;
+add_header Permissions-Policy "camera=(self), microphone=(self), geolocation=(), payment=(), usb=(), interest-cohort=()" always;
+add_header Cross-Origin-Opener-Policy "same-origin-allow-popups" always;

@@ -9,7 +9,8 @@ import { config } from '../config';
 import { b64d, b64e, createProtection, decryptBytes, decryptJson, encryptBytes, encryptJson, importRawKey, randomId, rewrapProtection, unlockProtection } from './crypto';
 import { DriveError, MIME_FOLDER, MIME_SHORTCUT, qs } from './drive';
 import { normEmail, extractMentions, prettyName } from './mentions';
-import { ROLE_COMMENT, ROLE_VIEW, buildPostDoc, canCommentWith, normMode, byNewest, cleanAudience, emptyIndex, folderNameFor, isBranded, brandName, shortcutNameFor, openPostDoc, toEntry } from './postModel';
+import { cacheGet, cachePut } from './mediaCache';
+import { ROLE_COMMENT, ROLE_VIEW, cleanLink, buildPostDoc, canCommentWith, normMode, byNewest, cleanAudience, emptyIndex, folderNameFor, isBranded, brandName, shortcutNameFor, openPostDoc, toEntry } from './postModel';
 import { prepareMedia } from './image';
 import { extOf } from './mediaKinds';
 import { debounce, mapLimit } from './util';
@@ -391,19 +392,36 @@ export class DriveRepo {
     return item;
   }
 
+  /** The card's picture is one more file of the post (sealed like any photo in a protected post); the card keeps only its id. */
+  async #linkCard(link, imageFile, mediaFolderId, key, pid) {
+    const card = cleanLink(link);
+    if (!card) return null;
+    card.image = null;
+    if (imageFile) {
+      try { card.image = (await this.#uploadImage(imageFile, mediaFolderId, key, pid)).id; } catch { /* a card without a picture is fine */ }
+    }
+    return card;
+  }
+  #withLinkImage(media, link) { return link?.image ? [...media, { id: link.image, thumb: null }] : media; }
+
   /** Object URL for a media file (decrypted when the post is protected). */
   async mediaUrl(post, item, { thumb = false } = {}) {
     const fileId = thumb ? (item.thumb || item.id) : item.id;
     if (this.blobs.has(fileId)) return this.blobs.get(fileId);
     if (this.inflight.has(fileId)) return this.inflight.get(fileId);
     const job = (async () => {
-      let bytes = await this.drive.downloadBytes(fileId);
+      // first the encrypted copy on this device, then Drive; an opened photo (not a thumbnail) goes to the front of the queue
+      let bytes = await cacheGet(fileId);
+      if (!bytes) {
+        bytes = await this.drive.downloadBytes(fileId, { high: !thumb });
+        cachePut(fileId, bytes);
+      }
       if (post?.protected) {
         const key = this.#keyFor(post.id);
         if (!key) throw new RepoError('locked');
         bytes = await decryptBytes(key, bytes, `media:${post.pid}`);
       }
-      const url = URL.createObjectURL(new Blob([bytes], { type: item.mime || 'image/jpeg' }));
+      const url = URL.createObjectURL(new Blob([bytes], { type: item.kind === 'file' || !item.mime ? 'application/octet-stream' : item.mime }));
       this.blobs.set(fileId, url);
       this.#trimBlobs();
       return url;
@@ -446,11 +464,12 @@ export class DriveRepo {
         media.push(await this.#uploadImage(files[i], mf.id, prot?.key, id));
       }
       onProgress({ stage: 'save', done: files.length, total: files.length });
+      const link = await this.#linkCard(input.link, input.linkImage, mf.id, prot?.key, id);
       const cj = await this.drive.createJson(brandName('comments.json'), folder.id, { v: 1, comments: [], likes: [] });
       const lj = await this.drive.createJson(brandName('likes.json'), folder.id, { v: 1, likes: [] });
       const doc = await buildPostDoc({
         id, owner: this.me, createdAt, updatedAt: createdAt, text, media, mentions, audience,
-        linkShare: !!input.linkShare, commentMode: normMode(input.commentMode), cj: cj.id, lj: lj.id, protection: prot?.protection || null, key: prot?.key,
+        linkShare: !!input.linkShare, commentMode: normMode(input.commentMode), cj: cj.id, lj: lj.id, protection: prot?.protection || null, key: prot?.key, link,
       });
       const pj = await this.drive.createJson('post.json', folder.id, doc);
       await this.drive.updateMeta(folder.id, { properties: { specact: 'post', v: '1', rev: String(createdAt), pj: pj.id, cj: cj.id, lj: lj.id, mf: mf.id } });
@@ -462,7 +481,7 @@ export class DriveRepo {
         try { await this.#grant(folder.id, cj.id, email, role, doc.commentMode, lj.id); } catch (e) { warnings.push({ email, error: e }); delete doc.audience[email]; }
       }
       if (doc.linkShare) {
-        try { await this.#applyLink({ ids, media }, true); } catch (e) { doc.linkShare = false; warnings.push({ email: '*', error: e }); }
+        try { await this.#applyLink({ ids, media: this.#withLinkImage(media, link) }, true); } catch (e) { doc.linkShare = false; warnings.push({ email: '*', error: e }); }
       }
       if (doc.linkShare) {
         try { await this.#setAnyoneComment(lj.id, true); } catch (e) { warnings.push({ email: '*', error: e }); }
@@ -506,6 +525,13 @@ export class DriveRepo {
     onProgress({ stage: 'save' });
     const updatedAt = Date.now();
     const text = input.text ?? post.text;
+    // link card: undefined keeps it, null removes it, an object replaces it (with its new picture, if any)
+    let link = post.link || null;
+    let dropImage = null;
+    if (input.link !== undefined) {
+      if (link?.image && (input.link === null || input.link.url !== link.url || input.linkImage)) dropImage = link.image;
+      link = input.link === null ? null : (input.link.url === link?.url && !input.linkImage ? link : await this.#linkCard(input.link, input.linkImage, post.ids.mf, key, post.pid));
+    }
     // Permissions are only touched when the caller names an audience. Whoever Drive says has access but this post
     // never listed was shared by hand in the Drive UI: keep them unless the caller derived the list from Drive itself.
     const touchAudience = input.audience !== undefined;
@@ -526,19 +552,20 @@ export class DriveRepo {
     const commentMode = normMode(input.commentMode ?? post.commentMode);
     const doc = await buildPostDoc({
       id: post.pid, owner: post.owner, createdAt: post.createdAt, updatedAt,
-      text, media: [...kept, ...added], mentions: extractMentions(text), audience, linkShare, commentMode, cj: post.ids.cj, lj: post.ids.lj, protection, key,
+      text, media: [...kept, ...added], mentions: extractMentions(text), audience, linkShare, commentMode, cj: post.ids.cj, lj: post.ids.lj, protection, key, link,
     });
     await this.drive.updateJson(post.ids.pj, doc);
     await this.drive.updateMeta(post.id, { properties: { rev: String(updatedAt) } });
 
     // drop files that are no longer referenced
     const dropped = post.media.filter((m) => !keepIds.has(m.id));
+    if (dropImage) { try { await this.drive.remove(dropImage); } catch { /* already gone */ } this.#forgetBlob(dropImage); }
     for (const m of dropped) for (const fid of [m.id, m.thumb]) if (fid) { try { await this.drive.remove(fid); } catch { /* already gone */ } this.#forgetBlob(fid); }
 
     const warnings = touchAudience ? await this.#applyAudience(post, audience, truth?.audience, commentMode) : [];
-    if (linkShare !== post.linkShare || (linkShare && added.length)) {
+    if (linkShare !== post.linkShare || (linkShare && (added.length || (link?.image && link.image !== post.link?.image)))) {
       // when only photos were added, just the new files need opening up; a toggle touches every file
-      const files = linkShare !== post.linkShare ? [...kept, ...added] : added;
+      const files = linkShare !== post.linkShare ? this.#withLinkImage([...kept, ...added], link) : [...added, ...(link?.image && link.image !== post.link?.image ? [{ id: link.image, thumb: null }] : [])];
       try { await this.#applyLink({ ids: post.ids, media: files, pj: linkShare !== post.linkShare }, linkShare); } catch (e) { doc.linkShare = post.linkShare; warnings.push({ email: '*', error: e }); }
     }
     if (commentMode !== post.commentMode || linkShare !== post.linkShare) {

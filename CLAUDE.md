@@ -6,7 +6,7 @@ Read everything before changing code. Each rule below exists because a real mist
 
 ## 1. Product invariants (never break)
 
-1. **No backend.** The browser only talks to `accounts.google.com`, `oauth2.googleapis.com`, `www.googleapis.com`. Do not add CDNs, analytics, external fonts or any other endpoint (the CSP in `docker/security-headers.conf` blocks them; change the CSP only when truly needed and say why).
+1. **No backend.** (The one optional exception: `VITE_LINK_PREVIEW_URL`, empty by default — a service the operator chooses that returns a pasted link's HTML; the Docker CSP is extended with its origin only when set.) The browser only talks to `accounts.google.com`, `oauth2.googleapis.com`, `www.googleapis.com`. Do not add CDNs, analytics, external fonts or any other endpoint (the CSP in `docker/security-headers.conf.tpl` blocks them; change the CSP only when truly needed and say why).
 2. **Drive is the source of truth for data and access.** Do not invent a separate permission system. `post.json.audience` is only a mirror for display.
 3. **Every client-side secret** (client ID/secret, refresh token, post keys, index cache) lives only in `services/secureStore.js` (two layers: device key + PIN). Never write them to `localStorage`, URLs, logs or `.env`. The access token stays in memory.
 4. **Public-by-link grants permission on FILES only** (`post.json` + photos) — **never on the folder** and never on `comments.json`. Keep the test "link sharing opens FILES only" green.
@@ -18,6 +18,8 @@ Read everything before changing code. Each rule below exists because a real mist
 10. When data / privacy / sharing behaviour changes, update `src/locales/pages/*.json` (Terms / Privacy / About, both `en` and `vi`, same structure — `tests/pages.test.js`) in the same commit.
 13. **Media items** carry `kind` (`image` default, `video`, `audio`, `file`; audio and files have no thumbnail and are listed, not gridded) via `publicMedia()`; any code that renders or uploads media must handle all of them; never render an attached document (download only) and keep the deny-list in `mediaKinds.js` (feed grid, viewer, composer previews, demo repo, protected posts).
 12. **Naming:** everything SPECACT creates in Drive that others can see uses the `__S.P.E.C.T.A.C.T__` prefix (`brandName()` in `postModel.js`). Lookups must accept both prefixed and older plain names.
+15. **Terms acceptance:** nobody gets past the first screen without accepting the current Terms of Use and Privacy Policy (web: router guard + `ConsentView`; Flutter: `Phase.consent`). The accepted version is the `updated` date of `src/locales/pages/*.json`; when the terms change, bump that date **and** `TERMS_VERSION` in `src/config.js` and `termsVersion` in `flutter/lib/core/legal.dart` (tests check they match) and run `flutter/tool/sync_locales.sh`, so everyone is asked again.
+14. **Brand:** colours, logo, wordmark and tone come from [docs/BRAND.md](docs/BRAND.md) — use the tokens (`--accent`, `--spark`… in `src/styles/base.css`; `Brand`/`AppTheme` in `flutter/lib/theme.dart`), never hard-coded hex values; apricot (`--spark`) is a small spark, never body text; user-written text is set in the reading serif.
 11. **Liking follows who can see the post, not who can comment.** Likes live in their own `likes.json` (writer for everyone who can see the post, no other rights). Do not move likes back into `comments.json`.
 
 ## 2. Mistakes made → rules
@@ -53,10 +55,17 @@ Read everything before changing code. Each rule below exists because a real mist
 - All Drive calls go through `services/drive.js`; all business logic through `services/repo.js` (`demoRepo.js` has the **same interface**). Components never call `fetch` directly.
 - Every visible string goes through `t('...')`; no hard-coded English/Vietnamese in templates.
 - Business errors use `RepoError(code)`; the UI maps `code` to an i18n string and never shows raw `error.message`.
-- Keep to design v3 (colour tokens in `styles/base.css`, Bricolage/Newsreader fonts, evergreen accent). New CSS goes in `styles/extra.css` or scoped; don't rewrite the design CSS.
+- Keep to design v3 (colour tokens in `styles/base.css`, Inter/Noto Serif fonts, evergreen accent). New CSS goes in `styles/extra.css` or scoped; don't rewrite the design CSS.
 - Support RTL (use logical properties `inset-inline-*`, `margin-inline-*`).
 
 ## 5. Clean up afterwards
 
 - Stop the dev server (`pkill -f "vite --port"`) and any container you started (`docker compose down`); never stop another project's container.
 - Leave no temporary files in the repo.
+
+## Untrusted input (XSS)
+- Everything read from Drive that someone else wrote (post.json, comments, likes, names) is hostile. Normalise it through `publicMedia`/`cleanName` before use; never `v-html`/`innerHTML` it; links only `https?://`; blobs of non-media attachments are always `application/octet-stream`.
+
+## Knowledge graph (Understand-Anything)
+- `.ua/knowledge-graph.json` is the map of this codebase (files, functions, layers, who-imports-whom). **Before editing any code, consult it**: find the file/function node and its edges (`imports`, `calls`, `tested_by`) to see what else is affected, and read the layer/tour for context. Don't rely on memory of the structure.
+- **After editing code, update it**: run `/understand` (incremental; `.ua/config.json` has `autoUpdate: true`, so it also refreshes on commit) and make sure `.ua/` is committed with the code change. If the graph is older than the last commit, refresh it before you start.

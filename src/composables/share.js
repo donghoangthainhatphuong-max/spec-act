@@ -11,7 +11,10 @@ export function postLink(post) {
 
 /** Google Chat conversation with one person, opened in a new tab (SPECACT never reads or sends chat messages). */
 export function chatLink(me, email) {
-  return config.chatUrl.replaceAll('{me}', encodeURIComponent(me || '')).replaceAll('{email}', encodeURIComponent(email));
+  const url = config.chatUrl.replaceAll('{me}', encodeURIComponent(me || '')).replaceAll('{email}', encodeURIComponent(email));
+  // the template comes from configuration; only ever open it as an https page (never javascript:, data:, …)
+  try { if (new URL(url).protocol === 'https:') return url; } catch { /* fall through */ }
+  return `https://mail.google.com/chat/#chat/dm/${encodeURIComponent(email)}`;
 }
 
 export function openChat(me, email) {

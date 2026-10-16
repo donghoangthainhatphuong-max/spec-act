@@ -116,7 +116,8 @@
       {
         "h": "2. Google nhận gì",
         "body": [
-          "Ứng dụng nói chuyện trực tiếp từ trình duyệt của bạn tới Google (accounts.google.com, oauth2.googleapis.com, www.googleapis.com). Google xử lý dữ liệu đó theo Chính sách quyền riêng tư của Google. SPECACT xin quyền Google Drive để tạo thư mục SPECACT, đọc/ghi bài của bạn, đọc bài được chia sẻ cho bạn và quản lý ai mở được chúng. Nó không đụng vào các file khác trong Drive."
+          "Ứng dụng nói chuyện trực tiếp từ trình duyệt của bạn tới Google (accounts.google.com, oauth2.googleapis.com, www.googleapis.com). Google xử lý dữ liệu đó theo Chính sách quyền riêng tư của Google. SPECACT xin quyền Google Drive để tạo thư mục SPECACT, đọc/ghi bài của bạn, đọc bài được chia sẻ cho bạn và quản lý ai mở được chúng. Nó không đụng vào các file khác trong Drive.",
+          "Xem trước liên kết mặc định tắt. Nếu người vận hành trang này cấu hình một dịch vụ xem trước, đường link bạn dán vào bài sẽ được gửi tới dịch vụ đó (và không nơi nào khác) để lấy tiêu đề, mô tả của trang; phần chữ và ảnh xem trước sau đó được lưu trong Drive của chính bạn cùng với bài. Hãy hỏi người vận hành trang đó là dịch vụ nào."
         ]
       },
       {

@@ -27,7 +27,7 @@ describe('documentation', () => {
   });
 
   it('relative links in markdown point to files that exist', () => {
-    const files = ['CLAUDE.md', 'CLAUDE.vi.md', ...fs.readdirSync('.').filter((f) => /^README.*\.md$/.test(f)), ...fs.readdirSync('docs').map((f) => `docs/${f}`)];
+    const files = ['CLAUDE.md', 'CLAUDE.vi.md', ...fs.readdirSync('.').filter((f) => /^README.*\.md$/.test(f)), ...fs.readdirSync('docs').filter((f) => f.endsWith('.md')).map((f) => `docs/${f}`)];
     for (const f of files) {
       const text = fs.readFileSync(f, 'utf8');
       for (const m of text.matchAll(/\]\((?!https?:|#|mailto:)([^)\s#]+)(?:#[^)]*)?\)/g)) {

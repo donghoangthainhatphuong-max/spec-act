@@ -1,19 +1,24 @@
 <script setup>
 import { computed, ref, watch } from 'vue';
-import { useI18n } from '@/i18n';
+import { tEnglish, useI18n } from '@/i18n';
 import AppIcon from '../components/ui/AppIcon.vue';
 import AppLogo from '../components/ui/AppLogo.vue';
+import BrandName from '../components/ui/BrandName.vue';
 import LegalLinks from '../components/layout/LegalLinks.vue';
 import { LANGS, config } from '../config';
 import { usePrefsStore } from '../stores/prefs';
 
 const props = defineProps({ page: { type: String, required: true } }); // about | terms | privacy
-const { t, locale } = useI18n();
+const { t: tUi, locale } = useI18n();
 const prefs = usePrefsStore();
 
 const loaders = import.meta.glob('../locales/pages/*.json');
 const docs = ref({});
 const native = computed(() => !!loaders[`../locales/pages/${locale.value}.json`]);
+// Only English and Vietnamese have these texts. For any other language the WHOLE page is English — text, labels, dates, direction —
+// so two languages are never mixed on one screen.
+const t = (key, params) => (native.value ? tUi(key, params) : tEnglish(key, params));
+const pageLocale = computed(() => (native.value ? locale.value : 'en'));
 const doc = computed(() => (docs.value[native.value ? locale.value : 'en'] || {})[props.page]);
 const meta = computed(() => docs.value[native.value ? locale.value : 'en'] || {});
 
@@ -25,17 +30,17 @@ watch([locale], async () => {
 }, { immediate: true });
 
 const updated = computed(() => {
-  try { return new Intl.DateTimeFormat(locale.value, { dateStyle: 'long' }).format(new Date(meta.value.updated)); } catch { return meta.value.updated || ''; }
+  try { return new Intl.DateTimeFormat(pageLocale.value, { dateStyle: 'long' }).format(new Date(meta.value.updated)); } catch { return meta.value.updated || ''; }
 });
 const contact = config.legalContact;
 </script>
 
 <template>
-  <div class="legal-page">
+  <div class="legal-page" :lang="pageLocale" :dir="native ? undefined : 'ltr'">
     <header class="legal-top">
-      <RouterLink class="brand" to="/"><AppLogo :size="26" /><span>SPECACT</span></RouterLink>
+      <RouterLink class="brand" to="/"><AppLogo :size="26" /><BrandName /></RouterLink>
       <span class="grow" />
-      <label class="sr" for="legal-lang">{{ t('settings.language') }}</label>
+      <label class="sr" for="legal-lang">{{ tUi('settings.language') }}</label>
       <select id="legal-lang" v-model="prefs.lang" class="select sm"><option v-for="[c, n] in LANGS" :key="c" :value="c">{{ n }}</option></select>
     </header>
 
@@ -52,7 +57,7 @@ const contact = config.legalContact;
       <p v-if="contact" class="hint">{{ t('legal.contact') }}: <a :href="'mailto:' + contact">{{ contact }}</a></p>
     </main>
 
-    <footer class="legal-foot"><LegalLinks /></footer>
+    <footer class="legal-foot"><LegalLinks :english="!native" /></footer>
   </div>
 </template>
 

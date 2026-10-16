@@ -7,7 +7,7 @@
 .post-head a.name:hover { text-decoration: underline; text-underline-offset: 3px; }
 .post-head .meta { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); flex-wrap: wrap; margin-top: 2px; }
 .post-head .scope { display: inline-flex; align-items: center; gap: 5px; }
-.post-text { padding: 0 18px 16px; font-family: var(--read); font-size: 18px; line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere; font-variation-settings: "opsz" 18; }
+.post-text { padding: 0 18px 16px; font-family: var(--read); font-size: 18px; line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere; }
 .post.detail .post-text { font-size: 21px; line-height: 1.5; }
 .photos { display: grid; gap: 3px; }
 .photos.n1 { grid-template-columns: 1fr; }
@@ -22,8 +22,8 @@
 .actions { display: flex; align-items: center; gap: 2px; padding: 8px 10px; }
 .actions .btn { border: 0; background: transparent; color: var(--muted); min-height: 40px; padding: 0 12px; font-weight: 550; }
 .actions .btn:hover { background: var(--sunken); color: var(--text); }
-.actions .btn.on { color: var(--accent); }
-.actions .btn.on svg { color: var(--accent); }
+.actions .btn.on { color: var(--spark); }
+.actions .btn.on svg { color: var(--spark); }
 .pop svg { animation: pop .45s cubic-bezier(.3,.7,.4,1.6); }
 @keyframes pop { 0% { transform: scale(1); } 35% { transform: scale(1.45); } 100% { transform: scale(1); } }
 .peek { padding: 0 18px 16px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; }

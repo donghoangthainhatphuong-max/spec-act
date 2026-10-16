@@ -13,7 +13,7 @@ RUN npm run build
 FROM nginxinc/nginx-unprivileged:1.27-alpine
 USER root
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
-COPY docker/security-headers.conf /etc/nginx/security-headers.conf
+COPY docker/security-headers.conf.tpl /etc/nginx/security-headers.conf.tpl
 COPY docker/40-specact-env.sh /docker-entrypoint.d/40-specact-env.sh
 COPY --from=build /app/dist /usr/share/nginx/html
 RUN chmod +x /docker-entrypoint.d/40-specact-env.sh

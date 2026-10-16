@@ -1,0 +1,3571 @@
+{
+  "version": "1.0.0",
+  "gitCommitHash": "456ce85c81dc25cf8c7ce8cba77fba1cbf513f42",
+  "generatedAt": "2026-10-13T09:27:56.056Z",
+  "files": {
+    ".dockerignore": {
+      "filePath": ".dockerignore",
+      "contentHash": "43f719c8cda47ec24cc9c9df4f981d36dbdaaf884177c3119171f3e2ba1b3c82",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 10,
+      "hasStructuralAnalysis": false
+    },
+    ".env": {
+      "filePath": ".env",
+      "contentHash": "5558ca246986600a1d05a14db45d7130ea11eaa633b2a2c1eaa4f10ccc2f5740",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 75,
+      "hasStructuralAnalysis": false
+    },
+    ".env.example": {
+      "filePath": ".env.example",
+      "contentHash": "5558ca246986600a1d05a14db45d7130ea11eaa633b2a2c1eaa4f10ccc2f5740",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 75,
+      "hasStructuralAnalysis": false
+    },
+    ".github/workflows/ci.yml": {
+      "filePath": ".github/workflows/ci.yml",
+      "contentHash": "25980ced7d9726d6e1e1aceabc343610df961c8f3249fd14162b8e57ee8f7e74",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 16,
+      "hasStructuralAnalysis": false
+    },
+    ".ua/config.json": {
+      "filePath": ".ua/config.json",
+      "contentHash": "18404742994ee107540a258156e45d05518dc8113075faf23559748e6fedb92e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": false
+    },
+    "CLAUDE.md": {
+      "filePath": "CLAUDE.md",
+      "contentHash": "d55a69b2e08c1347e9c7e2cd3a3e8bdf428a0865bd493f8f5ef1f5821e8dc042",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 70,
+      "hasStructuralAnalysis": false
+    },
+    "CLAUDE.vi.md": {
+      "filePath": "CLAUDE.vi.md",
+      "contentHash": "da6abc73faf8fdab28b1e6c0547a0cf9c6c9a34a47a74c71178569305be6289d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 73,
+      "hasStructuralAnalysis": false
+    },
+    "Dockerfile": {
+      "filePath": "Dockerfile",
+      "contentHash": "83d1851da71d02286ce9abfb01522c39a97d45231de9e545a1f9b285309f1b4f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 23,
+      "hasStructuralAnalysis": false
+    },
+    "README.md": {
+      "filePath": "README.md",
+      "contentHash": "5df34f9e52d4979b2b1ef21cf9a045e9f9d87ad7f28670993415c057c8c27035",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 154,
+      "hasStructuralAnalysis": false
+    },
+    "README.vi.md": {
+      "filePath": "README.vi.md",
+      "contentHash": "894442e01db9be5c65e584a2e6ba080cd50735bf81e8550ff2ca365fafe31c45",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 165,
+      "hasStructuralAnalysis": false
+    },
+    "docker-compose.yml": {
+      "filePath": "docker-compose.yml",
+      "contentHash": "b9f0252d1c6078e507d4b2ba255aa841e6140ebd771c425135f60f32688192a3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 25,
+      "hasStructuralAnalysis": false
+    },
+    "docker/40-specact-env.sh": {
+      "filePath": "docker/40-specact-env.sh",
+      "contentHash": "2dc3b0b5d4cec6352a04cad709cc96618734027dc800ae744c4bc91acdafccde",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 18,
+      "hasStructuralAnalysis": false
+    },
+    "docker/nginx.conf": {
+      "filePath": "docker/nginx.conf",
+      "contentHash": "8f322cdcd7f2ba0c197b5f108cc51c809a60e90b400c61490131ea9a705d4fdf",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 55,
+      "hasStructuralAnalysis": false
+    },
+    "docker/security-headers.conf": {
+      "filePath": "docker/security-headers.conf",
+      "contentHash": "ff9d2ad3933afc3a679f768ab004ec4887cfce672202780c86d294cf1cdb92a6",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": false
+    },
+    "docs/ARCHITECTURE.md": {
+      "filePath": "docs/ARCHITECTURE.md",
+      "contentHash": "a6973ab1054b31417038f8647c42efdf027493dcbf7748e77da3a47095167f90",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 108,
+      "hasStructuralAnalysis": false
+    },
+    "docs/ARCHITECTURE.vi.md": {
+      "filePath": "docs/ARCHITECTURE.vi.md",
+      "contentHash": "a4b5979d1b129c8b420368960311955a074d5ad065580a57fc808b883bfdc1c5",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 108,
+      "hasStructuralAnalysis": false
+    },
+    "docs/GOOGLE_SETUP.md": {
+      "filePath": "docs/GOOGLE_SETUP.md",
+      "contentHash": "5ad9c5c1060a69bfd8e8b3b42448063ae328ffdb810b7030cfe77752e62860dd",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 47,
+      "hasStructuralAnalysis": false
+    },
+    "docs/GOOGLE_SETUP.vi.md": {
+      "filePath": "docs/GOOGLE_SETUP.vi.md",
+      "contentHash": "03adf09d488a5e252457b88d5f4d0e9ba548e524868bd6732d48700a17cba040",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 47,
+      "hasStructuralAnalysis": false
+    },
+    "docs/OPEN_FORMAT.md": {
+      "filePath": "docs/OPEN_FORMAT.md",
+      "contentHash": "ef28a1aea4c025ae28fc4be52b5eb9323203d70059f46eee243e2b2849059d7b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 26,
+      "hasStructuralAnalysis": false
+    },
+    "docs/OPEN_FORMAT.vi.md": {
+      "filePath": "docs/OPEN_FORMAT.vi.md",
+      "contentHash": "4b29a97ddb08ab38bd75cc02655203959637711a593b36a099bb56bf3a2be636",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 26,
+      "hasStructuralAnalysis": false
+    },
+    "docs/SECURITY.md": {
+      "filePath": "docs/SECURITY.md",
+      "contentHash": "f9d868db2b1b398a62e131e0264f1cf34f55094ea8e5518f77af7022e3cb173e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 75,
+      "hasStructuralAnalysis": false
+    },
+    "docs/SECURITY.vi.md": {
+      "filePath": "docs/SECURITY.vi.md",
+      "contentHash": "441540270b405942f5792ac0b36988c5c121bb9b444d94ababf21a015a5aa749",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 75,
+      "hasStructuralAnalysis": false
+    },
+    "eslint.config.js": {
+      "filePath": "eslint.config.js",
+      "contentHash": "041a6b33511bcfdb4695a700f1854e492e6f24679eed30fe1f59a0f011eb7992",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@eslint/js",
+          "specifiers": [
+            "js"
+          ]
+        },
+        {
+          "source": "eslint-plugin-vue",
+          "specifiers": [
+            "pluginVue"
+          ]
+        },
+        {
+          "source": "globals",
+          "specifiers": [
+            "globals"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 19,
+      "hasStructuralAnalysis": true
+    },
+    "index.html": {
+      "filePath": "index.html",
+      "contentHash": "69141a0f2aa5aa2bb37b86c248548e9cdd032cba55b9ebc081f7847eca7edbbc",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 22,
+      "hasStructuralAnalysis": false
+    },
+    "package.json": {
+      "filePath": "package.json",
+      "contentHash": "14cdcadfb29e39c836eefb4d97cbbadbd232b8bb69c4f16841ca51bf2ad03409",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 44,
+      "hasStructuralAnalysis": false
+    },
+    "public/env-config.js": {
+      "filePath": "public/env-config.js",
+      "contentHash": "36be3f5dd332a4b6808f837274fe14278fcc47d43d759c990793bfe78a6c47d1",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 3,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/gen-icons.mjs": {
+      "filePath": "scripts/gen-icons.mjs",
+      "contentHash": "660e04c334a10ab827c8e2283d66005dcb113bf324eca65c5857e569ce106701",
+      "functions": [
+        {
+          "name": "logo",
+          "params": [
+            "size",
+            "pad"
+          ],
+          "exported": false,
+          "lineCount": 6
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "sharp",
+          "specifiers": [
+            "sharp"
+          ]
+        },
+        {
+          "source": "node:fs/promises",
+          "specifiers": [
+            "mkdir"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 18,
+      "hasStructuralAnalysis": true
+    },
+    "src/App.vue": {
+      "filePath": "src/App.vue",
+      "contentHash": "a021700ed123beb1a1d55cc9a8f832b188506b2a15744f92c3708e350057089e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 58,
+      "hasStructuralAnalysis": false
+    },
+    "src/assets/fonts.css": {
+      "filePath": "src/assets/fonts.css",
+      "contentHash": "ef9722b0ffbaeb607dfd09e2dec706d9af2b02ecd6db65a303da487b8bdb196b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 73,
+      "hasStructuralAnalysis": false
+    },
+    "src/components/auth/ChangePinDialog.vue": {
+      "filePath": "src/components/auth/ChangePinDialog.vue",
+      "contentHash": "64a50e612a0c09f284f02f96022c718e71f10cfd3a1d6f2f5fdf1d9639bd5f66",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 73,
+      "hasStructuralAnalysis": false
+    },
+    "src/components/auth/CredentialsForm.vue": {
+      "filePath": "src/components/auth/CredentialsForm.vue",
+      "contentHash": "fb97f321bbe61de4de4af4d29363e5f8149d61ea3649c02e95725462ae192696",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 103,
+      "hasStructuralAnalysis": false
+    },
+    "src/components/auth/PinPad.vue": {
+      "filePath": "src/components/auth/PinPad.vue",
+      "contentHash": "a09e4ec27d71041d9a33acdd7e3148b08ccf5c15bc3077e50e260c13ace36eb9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 86,
+      "hasStructuralAnalysis": false
+    },
+    "src/components/layout/AppShell.vue": {
+      "filePath": "src/components/layout/AppShell.vue",
+      "contentHash": "5365562550625b24002a652d8a3024dd6843e45873b4f76c12e7808e200bbf37",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 102,
+      "hasStructuralAnalysis": false
+    },
+    "src/components/layout/DriveCard.vue": {
+      "filePath": "src/components/layout/DriveCard.vue",
+      "contentHash": "3ae5e5aa536e836ade590011c408caa7e56ff08a398e3305cf23c0eeb768c15d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 24,
+      "hasStructuralAnalysis": false
+    },
+    "src/components/layout/LegalLinks.vue": {
+      "filePath": "src/components/layout/LegalLinks.vue",
+      "contentHash": "268a9c979a83fde2eec7101d1144fb671a0bbd6fe2e60d7a10560f2c2a41d536",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 21,
+      "hasStructuralAnalysis": false
+    },
+    "src/components/layout/RightRail.vue": {
+      "filePath": "src/components/layout/RightRail.vue",
+      "contentHash": "d207367ef048a14d5375a3515e510e67a6d9640c5e21161e44066df553f79d93",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 83,
+      "hasStructuralAnalysis": false
+    },
+    "src/components/post/AttachmentList.vue": {
+      "filePath": "src/components/post/AttachmentList.vue",
+      "contentHash": "0d0698c795f47104b0551ff58031428a716f6d4d677f17080930eebfd547e527",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 72,
+      "hasStructuralAnalysis": false
+    },
+    "src/components/post/AudienceRow.vue": {
+      "filePath": "src/components/post/AudienceRow.vue",
+      "contentHash": "e677f0493dda19e02cd1a096bd3164e3ae561997cb38c480589eb933d1ffc5a9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 41,
+      "hasStructuralAnalysis": false
+    },
+    "src/components/post/CameraDialog.vue": {
+      "filePath": "src/components/post/CameraDialog.vue",
+      "contentHash": "dee26c4543edd2a6295cefc367f1bc3b13f508f447368dec9ae9c44d6b5c0aef",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 250,
+      "hasStructuralAnalysis": false
+    },
+    "src/components/post/MentionTextarea.vue": {
+      "filePath": "src/components/post/MentionTextarea.vue",
+      "contentHash": "21c8f170ea68cfb7c39c0fba3f25a25c20db3dda291367598bdb558a07636dd6",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 95,
+      "hasStructuralAnalysis": false
+    },
+    "src/components/post/PhotoGrid.vue": {
+      "filePath": "src/components/post/PhotoGrid.vue",
+      "contentHash": "e7a1cdd7b94c84ba709150c5328e17c07ace3679cacb3f1660c10cc144f185e9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 48,
+      "hasStructuralAnalysis": false
+    },
+    "src/components/post/PostCard.vue": {
+      "filePath": "src/components/post/PostCard.vue",
+      "contentHash": "56ee74717e3cf1afd8e88d9d693ffc8d7bf01797b84f0b012effca71dd8adec0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 177,
+      "hasStructuralAnalysis": false
+    },
+    "src/components/post/RichText.vue": {
+      "filePath": "src/components/post/RichText.vue",
+      "contentHash": "f3936dd4bd095ba6cca918171d3996dfce99d3ec2e2312f0d1fda2ed113c3778",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 18,
+      "hasStructuralAnalysis": false
+    },
+    "src/components/post/SealedBox.vue": {
+      "filePath": "src/components/post/SealedBox.vue",
+      "contentHash": "e4fbc789a6795385629ea955a14c10e74044bf8e5aef75b66216b671a5cbb8db",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 83,
+      "hasStructuralAnalysis": false
+    },
+    "src/components/ui/AppAvatar.vue": {
+      "filePath": "src/components/ui/AppAvatar.vue",
+      "contentHash": "cefb0dc3cf369757518e2be5b837b6e543b2c48a6d4729a53c2a74719eb344e7",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 28,
+      "hasStructuralAnalysis": false
+    },
+    "src/components/ui/AppIcon.vue": {
+      "filePath": "src/components/ui/AppIcon.vue",
+      "contentHash": "0db4d5c5aa63e4d9521529ca2e5ffd898a515f03e17d868a5fc6b76f03db06fc",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 63,
+      "hasStructuralAnalysis": false
+    },
+    "src/components/ui/AppLogo.vue": {
+      "filePath": "src/components/ui/AppLogo.vue",
+      "contentHash": "245d9cbc80639dbe407bc13e2da38da4805f00616b6e6e9800c3e30501fa7107",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 13,
+      "hasStructuralAnalysis": false
+    },
+    "src/components/ui/AvatarPile.vue": {
+      "filePath": "src/components/ui/AvatarPile.vue",
+      "contentHash": "fa315b4102316e5721cc4ad79130de7bb9bbbff4e34b6993cce1e983d6fcd4ab",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 21,
+      "hasStructuralAnalysis": false
+    },
+    "src/components/ui/ChatButton.vue": {
+      "filePath": "src/components/ui/ChatButton.vue",
+      "contentHash": "64a9bcbfef825e0395470aa40ea525ba160eaf8b782d3155b687db394fac0e6a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 24,
+      "hasStructuralAnalysis": false
+    },
+    "src/components/ui/ConfirmDialog.vue": {
+      "filePath": "src/components/ui/ConfirmDialog.vue",
+      "contentHash": "74e9ed8d47e379c8e40256b24c16ca9d10d89b62ffcea4f10c04c631f2918749",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 33,
+      "hasStructuralAnalysis": false
+    },
+    "src/components/ui/Lightbox.vue": {
+      "filePath": "src/components/ui/Lightbox.vue",
+      "contentHash": "9a617a148a2f63139501eb800a36fafcf0d076fd0de13a4344e7cd514c076577",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 165,
+      "hasStructuralAnalysis": false
+    },
+    "src/components/ui/OrbitGraphic.vue": {
+      "filePath": "src/components/ui/OrbitGraphic.vue",
+      "contentHash": "0096e63e1ca8262e7f0e54f54f3eaf528e0a508e2e4252239e326008cc761e56",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 43,
+      "hasStructuralAnalysis": false
+    },
+    "src/components/ui/SecureImage.vue": {
+      "filePath": "src/components/ui/SecureImage.vue",
+      "contentHash": "3542920c103478e3226b93e9813d19f04c4d61d3bf31b5ebb8b5f170b48672f3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 54,
+      "hasStructuralAnalysis": false
+    },
+    "src/components/ui/ToastHost.vue": {
+      "filePath": "src/components/ui/ToastHost.vue",
+      "contentHash": "68471fdd2457cc291c8ef239733e6a5be1779cda1e80995fe4c136da396832c7",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 19,
+      "hasStructuralAnalysis": false
+    },
+    "src/composables/format.js": {
+      "filePath": "src/composables/format.js",
+      "contentHash": "17c5c9bfc8a5a22fe0d02b31428e27b78bf13119fcf3ab18d5544e15a6eb961a",
+      "functions": [
+        {
+          "name": "plainMentions",
+          "params": [
+            "text",
+            "nameFor"
+          ],
+          "exported": true,
+          "lineCount": 3
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "../services/mentions",
+          "specifiers": [
+            "tokenize"
+          ]
+        }
+      ],
+      "exports": [
+        "plainMentions"
+      ],
+      "totalLines": 7,
+      "hasStructuralAnalysis": true
+    },
+    "src/composables/share.js": {
+      "filePath": "src/composables/share.js",
+      "contentHash": "d95cfbbb3dd8d9ffe7426aba80ab87f42b3ab6dfeb1992fa6d336eed2b3fe7b7",
+      "functions": [
+        {
+          "name": "postLink",
+          "params": [
+            "post"
+          ],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "chatLink",
+          "params": [
+            "me",
+            "email"
+          ],
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "openChat",
+          "params": [
+            "me",
+            "email"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "copyText",
+          "params": [
+            "text"
+          ],
+          "exported": true,
+          "lineCount": 14
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "../config",
+          "specifiers": [
+            "config"
+          ]
+        }
+      ],
+      "exports": [
+        "postLink",
+        "chatLink",
+        "openChat",
+        "copyText"
+      ],
+      "totalLines": 38,
+      "hasStructuralAnalysis": true
+    },
+    "src/composables/useAutoLock.js": {
+      "filePath": "src/composables/useAutoLock.js",
+      "contentHash": "f8bba881a2560770fa8f1e05cfc5d933a6736dd2cb3f9e4b1f9f1ad7c828f152",
+      "functions": [
+        {
+          "name": "useAutoLock",
+          "params": [],
+          "exported": true,
+          "lineCount": 34
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "vue",
+          "specifiers": [
+            "onBeforeUnmount",
+            "onMounted",
+            "watch"
+          ]
+        },
+        {
+          "source": "../stores/session",
+          "specifiers": [
+            "useSessionStore"
+          ]
+        },
+        {
+          "source": "../stores/prefs",
+          "specifiers": [
+            "usePrefsStore"
+          ]
+        }
+      ],
+      "exports": [
+        "useAutoLock"
+      ],
+      "totalLines": 40,
+      "hasStructuralAnalysis": true
+    },
+    "src/config.js": {
+      "filePath": "src/config.js",
+      "contentHash": "a3ca5158efe90820c221f75945569a626a0628f98c9ef7c0595573eefed86e9f",
+      "functions": [
+        {
+          "name": "raw",
+          "params": [
+            "key"
+          ],
+          "exported": false,
+          "lineCount": 4
+        },
+        {
+          "name": "str",
+          "params": [
+            "key",
+            "def"
+          ],
+          "exported": false,
+          "lineCount": 1
+        },
+        {
+          "name": "int",
+          "params": [
+            "key",
+            "def"
+          ],
+          "exported": false,
+          "lineCount": 4
+        },
+        {
+          "name": "num",
+          "params": [
+            "key",
+            "def"
+          ],
+          "exported": false,
+          "lineCount": 4
+        },
+        {
+          "name": "bool",
+          "params": [
+            "key",
+            "def"
+          ],
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "redirectUri",
+          "params": [],
+          "exported": true,
+          "lineCount": 4
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "LANGS",
+        "config",
+        "redirectUri"
+      ],
+      "totalLines": 77,
+      "hasStructuralAnalysis": true
+    },
+    "src/i18n/index.js": {
+      "filePath": "src/i18n/index.js",
+      "contentHash": "92ae52412c0fa850bed3dc4326e8bb7493c75ecfbc3916e05c5832f162551e57",
+      "functions": [
+        {
+          "name": "t",
+          "params": [
+            "key",
+            "params"
+          ],
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "useI18n",
+          "params": [],
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "currentLocale",
+          "params": [],
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "detectLanguage",
+          "params": [],
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "setLocale",
+          "params": [
+            "code"
+          ],
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "ago",
+          "params": [
+            "ts"
+          ],
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "listOf",
+          "params": [
+            "names"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "formatBytes",
+          "params": [
+            "n"
+          ],
+          "exported": true,
+          "lineCount": 8
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "vue",
+          "specifiers": [
+            "ref",
+            "shallowRef"
+          ]
+        },
+        {
+          "source": "../locales/en.json",
+          "specifiers": [
+            "en"
+          ]
+        },
+        {
+          "source": "../config",
+          "specifiers": [
+            "LANGS",
+            "config"
+          ]
+        }
+      ],
+      "exports": [
+        "locale",
+        "t",
+        "useI18n",
+        "currentLocale",
+        "detectLanguage",
+        "setLocale",
+        "ago",
+        "listOf",
+        "formatBytes"
+      ],
+      "totalLines": 74,
+      "hasStructuralAnalysis": true
+    },
+    "src/locales/en.json": {
+      "filePath": "src/locales/en.json",
+      "contentHash": "b08d9d124cac31b64aeaa060d5799be28f412a325223a87e9bca79e1cd90f494",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 302,
+      "hasStructuralAnalysis": false
+    },
+    "src/locales/pages/en.json": {
+      "filePath": "src/locales/pages/en.json",
+      "contentHash": "f72cc2d3e1a3edefc7b432eb795c057bd5332648aa14ece3b618fe27c12c183c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 180,
+      "hasStructuralAnalysis": false
+    },
+    "src/locales/pages/vi.json": {
+      "filePath": "src/locales/pages/vi.json",
+      "contentHash": "df557d8d5debfe8afe3fb1bf2e561f03953f173f113ad59c0e32d3bc5ac8697c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 180,
+      "hasStructuralAnalysis": false
+    },
+    "src/locales/vi.json": {
+      "filePath": "src/locales/vi.json",
+      "contentHash": "a9554ee1c7925083879b30112204cac9d46ee85e6fc653f4681503c13d3da22e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 302,
+      "hasStructuralAnalysis": false
+    },
+    "src/main.js": {
+      "filePath": "src/main.js",
+      "contentHash": "609175503b1a8822635fabd1c418444310979baa1278b264759f7a156b1eb9a3",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "vue",
+          "specifiers": [
+            "createApp"
+          ]
+        },
+        {
+          "source": "pinia",
+          "specifiers": [
+            "createPinia"
+          ]
+        },
+        {
+          "source": "virtual:pwa-register",
+          "specifiers": [
+            "registerSW"
+          ]
+        },
+        {
+          "source": "./App.vue",
+          "specifiers": [
+            "App"
+          ]
+        },
+        {
+          "source": "./router",
+          "specifiers": [
+            "router"
+          ]
+        },
+        {
+          "source": "./stores/prefs",
+          "specifiers": [
+            "usePrefsStore"
+          ]
+        },
+        {
+          "source": "./stores/session",
+          "specifiers": [
+            "useSessionStore"
+          ]
+        },
+        {
+          "source": "./stores/ui",
+          "specifiers": [
+            "useUiStore"
+          ]
+        },
+        {
+          "source": "./i18n",
+          "specifiers": [
+            "t"
+          ]
+        },
+        {
+          "source": "./services/googleAuth",
+          "specifiers": [
+            "captureRedirect"
+          ]
+        },
+        {
+          "source": "./assets/fonts.css",
+          "specifiers": []
+        },
+        {
+          "source": "./styles/base.css",
+          "specifiers": []
+        },
+        {
+          "source": "./styles/shell.css",
+          "specifiers": []
+        },
+        {
+          "source": "./styles/feed.css",
+          "specifiers": []
+        },
+        {
+          "source": "./styles/compose.css",
+          "specifiers": []
+        },
+        {
+          "source": "./styles/pages.css",
+          "specifiers": []
+        },
+        {
+          "source": "./styles/welcome.css",
+          "specifiers": []
+        },
+        {
+          "source": "./styles/overlays.css",
+          "specifiers": []
+        },
+        {
+          "source": "./styles/extra.css",
+          "specifiers": []
+        }
+      ],
+      "exports": [],
+      "totalLines": 47,
+      "hasStructuralAnalysis": true
+    },
+    "src/router/index.js": {
+      "filePath": "src/router/index.js",
+      "contentHash": "dfe0c9d5bf1a4b9b614628aa64be4257c8ad32595578ff6c78e383923f77ea4e",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "vue-router",
+          "specifiers": [
+            "createRouter",
+            "createWebHashHistory"
+          ]
+        },
+        {
+          "source": "../config",
+          "specifiers": [
+            "config"
+          ]
+        },
+        {
+          "source": "../stores/session",
+          "specifiers": [
+            "useSessionStore"
+          ]
+        },
+        {
+          "source": "../stores/ui",
+          "specifiers": [
+            "useUiStore"
+          ]
+        }
+      ],
+      "exports": [
+        "router"
+      ],
+      "totalLines": 53,
+      "hasStructuralAnalysis": true
+    },
+    "src/services/crypto.js": {
+      "filePath": "src/services/crypto.js",
+      "contentHash": "ff9a46449c58773e0984fa972f73f4809882ffaff5ba17697d2b506e6d017675",
+      "functions": [
+        {
+          "name": "subtle",
+          "params": [],
+          "exported": false,
+          "lineCount": 1
+        },
+        {
+          "name": "b64e",
+          "params": [
+            "bytes"
+          ],
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "b64d",
+          "params": [
+            "str"
+          ],
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "b64urlEncode",
+          "params": [
+            "bytes"
+          ],
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "utf8",
+          "params": [
+            "s"
+          ],
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "fromUtf8",
+          "params": [
+            "b"
+          ],
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "randomBytes",
+          "params": [
+            "n"
+          ],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "randomId",
+          "params": [],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "sha256Hex",
+          "params": [
+            "input"
+          ],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "deriveKey",
+          "params": [
+            "secret",
+            "salt",
+            "iterations"
+          ],
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "generateDeviceKey",
+          "params": [],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "newRawKey",
+          "params": [],
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "importRawKey",
+          "params": [
+            "raw"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "encryptBytes",
+          "params": [
+            "key",
+            "bytes",
+            "aad"
+          ],
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "decryptBytes",
+          "params": [
+            "key",
+            "packed",
+            "aad"
+          ],
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "encryptJson",
+          "params": [
+            "key",
+            "value",
+            "aad"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "decryptJson",
+          "params": [
+            "key",
+            "text",
+            "aad"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "createProtection",
+          "params": [
+            "password",
+            "iterations"
+          ],
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "unlockProtection",
+          "params": [
+            "protection",
+            "password"
+          ],
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "rewrapProtection",
+          "params": [
+            "raw",
+            "newPassword",
+            "iterations"
+          ],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "pkcePair",
+          "params": [],
+          "exported": true,
+          "lineCount": 5
+        }
+      ],
+      "classes": [
+        {
+          "name": "CryptoError",
+          "methods": [
+            "constructor"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 3
+        }
+      ],
+      "imports": [],
+      "exports": [
+        "CryptoError",
+        "b64e",
+        "b64d",
+        "b64urlEncode",
+        "utf8",
+        "fromUtf8",
+        "randomBytes",
+        "randomId",
+        "sha256Hex",
+        "deriveKey",
+        "generateDeviceKey",
+        "newRawKey",
+        "importRawKey",
+        "encryptBytes",
+        "decryptBytes",
+        "encryptJson",
+        "decryptJson",
+        "createProtection",
+        "unlockProtection",
+        "rewrapProtection",
+        "pkcePair"
+      ],
+      "totalLines": 141,
+      "hasStructuralAnalysis": true
+    },
+    "src/services/demoRepo.js": {
+      "filePath": "src/services/demoRepo.js",
+      "contentHash": "bfbabb354d60ffa4ad3b5659c3e18a5feba42dd13fb5ef5857517780c78ad566",
+      "functions": [
+        {
+          "name": "tick",
+          "params": [],
+          "exported": false,
+          "lineCount": 1
+        },
+        {
+          "name": "media",
+          "params": [
+            "...keys"
+          ],
+          "exported": false,
+          "lineCount": 1
+        }
+      ],
+      "classes": [
+        {
+          "name": "DemoRepo",
+          "methods": [
+            "constructor",
+            "restoreKeys",
+            "ensureLayout",
+            "loadIndex",
+            "syncIndex",
+            "loadContacts",
+            "refreshContacts",
+            "saveContacts",
+            "hasKey",
+            "openPost",
+            "unlockAndOpen",
+            "mediaUrl",
+            "createPost",
+            "updatePost",
+            "deletePost",
+            "forgetShared",
+            "setAccess",
+            "setCommentMode",
+            "setLinkShare",
+            "readAudience",
+            "loadComments",
+            "addComment",
+            "deleteComment",
+            "toggleLike",
+            "quota",
+            "dispose",
+            "flush"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 146
+        }
+      ],
+      "imports": [
+        {
+          "source": "../assets/samples/lanterns.jpg?url",
+          "specifiers": [
+            "lanterns"
+          ]
+        },
+        {
+          "source": "../assets/samples/river.jpg?url",
+          "specifiers": [
+            "river"
+          ]
+        },
+        {
+          "source": "../assets/samples/wall.jpg?url",
+          "specifiers": [
+            "wall"
+          ]
+        },
+        {
+          "source": "../assets/samples/desk.jpg?url",
+          "specifiers": [
+            "desk"
+          ]
+        },
+        {
+          "source": "../assets/samples/mountains.jpg?url",
+          "specifiers": [
+            "mountains"
+          ]
+        },
+        {
+          "source": "./crypto",
+          "specifiers": [
+            "randomId"
+          ]
+        },
+        {
+          "source": "./mediaKinds",
+          "specifiers": [
+            "classify"
+          ]
+        },
+        {
+          "source": "./mentions",
+          "specifiers": [
+            "extractMentions",
+            "normEmail",
+            "prettyName"
+          ]
+        },
+        {
+          "source": "./postModel",
+          "specifiers": [
+            "ROLE_COMMENT",
+            "byNewest",
+            "cleanAudience",
+            "toEntry"
+          ]
+        },
+        {
+          "source": "./repo",
+          "specifiers": [
+            "RepoError"
+          ]
+        }
+      ],
+      "exports": [
+        "DEMO_PASSWORD",
+        "DEMO_ME",
+        "DemoRepo",
+        "prettyName",
+        "ROLE_COMMENT"
+      ],
+      "totalLines": 179,
+      "hasStructuralAnalysis": true
+    },
+    "src/services/drive.js": {
+      "filePath": "src/services/drive.js",
+      "contentHash": "2902a21afc8a52ba7924e3f68cc599e082763e33dd1fc680b55b9017f53481c1",
+      "functions": [
+        {
+          "name": "qs",
+          "params": [
+            "v"
+          ],
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "sleep",
+          "params": [
+            "ms"
+          ],
+          "exported": false,
+          "lineCount": 1
+        }
+      ],
+      "classes": [
+        {
+          "name": "DriveError",
+          "methods": [
+            "constructor",
+            "notFound",
+            "forbidden"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "Limiter",
+          "methods": [
+            "constructor",
+            "run"
+          ],
+          "properties": [],
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "DriveClient",
+          "methods": [
+            "constructor",
+            "request",
+            "about",
+            "list",
+            "get",
+            "createFolder",
+            "createShortcut",
+            "updateMeta",
+            "trash",
+            "remove",
+            "createFile",
+            "createFileLarge",
+            "createJson",
+            "updateContent",
+            "updateJson",
+            "downloadJson",
+            "downloadBytes",
+            "listPermissions",
+            "addPermission",
+            "updatePermission",
+            "removePermission"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 188
+        }
+      ],
+      "imports": [],
+      "exports": [
+        "MIME_FOLDER",
+        "MIME_SHORTCUT",
+        "DriveError",
+        "qs",
+        "DriveClient"
+      ],
+      "totalLines": 223,
+      "hasStructuralAnalysis": true
+    },
+    "src/services/events.js": {
+      "filePath": "src/services/events.js",
+      "contentHash": "89c2fa58664285f85fb2deeb82ab34bdb0c0d87c85a4fd85ec3294ee6cef56a2",
+      "functions": [
+        {
+          "name": "on",
+          "params": [
+            "evt",
+            "fn"
+          ],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "emit",
+          "params": [
+            "evt",
+            "payload"
+          ],
+          "exported": true,
+          "lineCount": 3
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "on",
+        "emit"
+      ],
+      "totalLines": 11,
+      "hasStructuralAnalysis": true
+    },
+    "src/services/googleAuth.js": {
+      "filePath": "src/services/googleAuth.js",
+      "contentHash": "3dbbb6b890552b1f9a34b0b413ee081b6d8065613148448b67cef59361310d91",
+      "functions": [
+        {
+          "name": "ss",
+          "params": [],
+          "exported": false,
+          "lineCount": 1
+        },
+        {
+          "name": "buildSignInUrl",
+          "params": [],
+          "exported": true,
+          "lineCount": 20
+        },
+        {
+          "name": "startSignIn",
+          "params": [
+            "creds"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "captureRedirect",
+          "params": [],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "hasPendingResult",
+          "params": [],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "takePendingResult",
+          "params": [],
+          "exported": true,
+          "lineCount": 15
+        },
+        {
+          "name": "tokenRequest",
+          "params": [
+            "body"
+          ],
+          "exported": false,
+          "lineCount": 23
+        },
+        {
+          "name": "exchangeCode",
+          "params": [],
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "refreshAccessToken",
+          "params": [],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "revokeToken",
+          "params": [
+            "token"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "looksLikeClientId",
+          "params": [
+            "s"
+          ],
+          "exported": true,
+          "lineCount": 1
+        }
+      ],
+      "classes": [
+        {
+          "name": "AuthError",
+          "methods": [
+            "constructor"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 3
+        }
+      ],
+      "imports": [
+        {
+          "source": "../config",
+          "specifiers": [
+            "config",
+            "redirectUri"
+          ]
+        },
+        {
+          "source": "./crypto",
+          "specifiers": [
+            "b64urlEncode",
+            "pkcePair",
+            "randomBytes"
+          ]
+        }
+      ],
+      "exports": [
+        "AuthError",
+        "buildSignInUrl",
+        "startSignIn",
+        "captureRedirect",
+        "hasPendingResult",
+        "takePendingResult",
+        "exchangeCode",
+        "refreshAccessToken",
+        "revokeToken",
+        "looksLikeClientId"
+      ],
+      "totalLines": 128,
+      "hasStructuralAnalysis": true
+    },
+    "src/services/image.js": {
+      "filePath": "src/services/image.js",
+      "contentHash": "2c8b046a128ed59c0c2a8ddb40551e11bb42112e50127348dd817a796d7875f5",
+      "functions": [
+        {
+          "name": "fitWithin",
+          "params": [
+            "w",
+            "h",
+            "max"
+          ],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "canvasBlob",
+          "params": [
+            "canvas",
+            "quality"
+          ],
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "render",
+          "params": [
+            "bitmap",
+            "max",
+            "quality"
+          ],
+          "exported": false,
+          "lineCount": 14
+        },
+        {
+          "name": "prepareImage",
+          "params": [
+            "file"
+          ],
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "isVideoFile",
+          "params": [
+            "f"
+          ],
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "loadVideo",
+          "params": [
+            "url"
+          ],
+          "exported": false,
+          "lineCount": 9
+        },
+        {
+          "name": "seek",
+          "params": [
+            "v",
+            "t"
+          ],
+          "exported": false,
+          "lineCount": 1
+        },
+        {
+          "name": "prepareVideo",
+          "params": [
+            "file"
+          ],
+          "exported": true,
+          "lineCount": 18
+        },
+        {
+          "name": "plainPoster",
+          "params": [],
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "safeName",
+          "params": [
+            "name",
+            "fallback"
+          ],
+          "exported": false,
+          "lineCount": 1
+        },
+        {
+          "name": "prepareAudio",
+          "params": [
+            "file"
+          ],
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "prepareFile",
+          "params": [
+            "file"
+          ],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "prepareMedia",
+          "params": [
+            "file"
+          ],
+          "exported": true,
+          "lineCount": 8
+        }
+      ],
+      "classes": [
+        {
+          "name": "ImageError",
+          "methods": [
+            "constructor"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 3
+        }
+      ],
+      "imports": [
+        {
+          "source": "../config",
+          "specifiers": [
+            "config"
+          ]
+        },
+        {
+          "source": "./mediaKinds",
+          "specifiers": [
+            "classify",
+            "mimeOf"
+          ]
+        }
+      ],
+      "exports": [
+        "ImageError",
+        "fitWithin",
+        "prepareImage",
+        "isVideoFile",
+        "prepareVideo",
+        "prepareAudio",
+        "prepareFile",
+        "prepareMedia"
+      ],
+      "totalLines": 129,
+      "hasStructuralAnalysis": true
+    },
+    "src/services/mediaKinds.js": {
+      "filePath": "src/services/mediaKinds.js",
+      "contentHash": "e65bff96b1e93b3b6aaf0d9e45a669c13f3e09b57c79bd4faa45d51e2bfa4899",
+      "functions": [
+        {
+          "name": "extOf",
+          "params": [
+            "name"
+          ],
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "mimeOf",
+          "params": [
+            "file"
+          ],
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "classify",
+          "params": [
+            "file"
+          ],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "limitMb",
+          "params": [
+            "kind"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "isVisual",
+          "params": [
+            "m"
+          ],
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "humanSize",
+          "params": [
+            "bytes"
+          ],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "labelOf",
+          "params": [
+            "name"
+          ],
+          "exported": true,
+          "lineCount": 1
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "../config",
+          "specifiers": [
+            "config"
+          ]
+        }
+      ],
+      "exports": [
+        "extOf",
+        "mimeOf",
+        "classify",
+        "limitMb",
+        "isVisual",
+        "humanSize",
+        "labelOf"
+      ],
+      "totalLines": 63,
+      "hasStructuralAnalysis": true
+    },
+    "src/services/mentions.js": {
+      "filePath": "src/services/mentions.js",
+      "contentHash": "4f5d4d7392f8d0cf4dac5620bab1294da0eec360254e2fc681a07807f8395a7a",
+      "functions": [
+        {
+          "name": "normEmail",
+          "params": [
+            "s"
+          ],
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "isEmail",
+          "params": [
+            "s"
+          ],
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "extractMentions",
+          "params": [
+            "text"
+          ],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "tokenize",
+          "params": [
+            "text"
+          ],
+          "exported": true,
+          "lineCount": 19
+        },
+        {
+          "name": "activeMentionQuery",
+          "params": [
+            "text",
+            "caret"
+          ],
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "prettyName",
+          "params": [
+            "email"
+          ],
+          "exported": true,
+          "lineCount": 4
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "EMAIL_RE",
+        "normEmail",
+        "isEmail",
+        "extractMentions",
+        "tokenize",
+        "activeMentionQuery",
+        "prettyName"
+      ],
+      "totalLines": 51,
+      "hasStructuralAnalysis": true
+    },
+    "src/services/postModel.js": {
+      "filePath": "src/services/postModel.js",
+      "contentHash": "6cfdc0cce11f1a4793ee692c2caf34c8497debc36a02a62c4920583a4f902905",
+      "functions": [
+        {
+          "name": "normMode",
+          "params": [
+            "m"
+          ],
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "canCommentWith",
+          "params": [
+            "mode",
+            "role"
+          ],
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "brandName",
+          "params": [
+            "name"
+          ],
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "isBranded",
+          "params": [
+            "name"
+          ],
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "shortcutNameFor",
+          "params": [
+            "ownerName",
+            "createdAt"
+          ],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "folderNameFor",
+          "params": [
+            "createdAt",
+            "id"
+          ],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "snippetOf",
+          "params": [
+            "text"
+          ],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "cleanAudience",
+          "params": [
+            "aud",
+            "ownerEmail"
+          ],
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "cleanName",
+          "params": [
+            "s"
+          ],
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "nat",
+          "params": [
+            "n"
+          ],
+          "exported": false,
+          "lineCount": 1
+        },
+        {
+          "name": "publicMedia",
+          "params": [
+            "m"
+          ],
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "buildPostDoc",
+          "params": [],
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "openPostDoc",
+          "params": [
+            "doc",
+            "key"
+          ],
+          "exported": true,
+          "lineCount": 27
+        },
+        {
+          "name": "toEntry",
+          "params": [
+            "post"
+          ],
+          "exported": true,
+          "lineCount": 25
+        },
+        {
+          "name": "emptyIndex",
+          "params": [
+            "email"
+          ],
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "byNewest",
+          "params": [
+            "a",
+            "b"
+          ],
+          "exported": true,
+          "lineCount": 1
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "./crypto",
+          "specifiers": [
+            "decryptJson",
+            "encryptJson"
+          ]
+        },
+        {
+          "source": "./mediaKinds",
+          "specifiers": [
+            "isVisual"
+          ]
+        },
+        {
+          "source": "./mentions",
+          "specifiers": [
+            "normEmail"
+          ]
+        }
+      ],
+      "exports": [
+        "SCHEMA",
+        "SNIPPET_LENGTH",
+        "ENTRY_MEDIA",
+        "ENTRY_AUDIENCE",
+        "ROLE_VIEW",
+        "ROLE_COMMENT",
+        "COMMENT_MODES",
+        "normMode",
+        "canCommentWith",
+        "BRAND_PREFIX",
+        "brandName",
+        "isBranded",
+        "shortcutNameFor",
+        "folderNameFor",
+        "snippetOf",
+        "cleanAudience",
+        "cleanName",
+        "publicMedia",
+        "buildPostDoc",
+        "openPostDoc",
+        "toEntry",
+        "emptyIndex",
+        "byNewest"
+      ],
+      "totalLines": 162,
+      "hasStructuralAnalysis": true
+    },
+    "src/services/repo.js": {
+      "filePath": "src/services/repo.js",
+      "contentHash": "97f82aab77a4a6ae5186ac5a6f3ccbfc6bfab7ea94ce614d2675a81f84a62b4f",
+      "functions": [
+        {
+          "name": "isPostFolder",
+          "params": [
+            "f"
+          ],
+          "exported": false,
+          "lineCount": 1
+        },
+        {
+          "name": "stable",
+          "params": [
+            "idx"
+          ],
+          "exported": false,
+          "lineCount": 1
+        }
+      ],
+      "classes": [
+        {
+          "name": "RepoError",
+          "methods": [
+            "constructor"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "DriveRepo",
+          "methods": [
+            "constructor",
+            "ensureLayout",
+            "loadIndex",
+            "syncIndex",
+            "loadContacts",
+            "refreshContacts",
+            "saveContacts",
+            "hasKey",
+            "restoreKeys",
+            "unlockPost",
+            "openPost",
+            "unlockAndOpen",
+            "mediaUrl",
+            "createPost",
+            "updatePost",
+            "deletePost",
+            "forgetShared",
+            "setAccess",
+            "setCommentMode",
+            "setLinkShare",
+            "readAudience",
+            "loadComments",
+            "addComment",
+            "deleteComment",
+            "toggleLike",
+            "quota",
+            "dispose",
+            "flush"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 775
+        }
+      ],
+      "imports": [
+        {
+          "source": "../config",
+          "specifiers": [
+            "config"
+          ]
+        },
+        {
+          "source": "./crypto",
+          "specifiers": [
+            "b64d",
+            "b64e",
+            "createProtection",
+            "decryptBytes",
+            "decryptJson",
+            "encryptBytes",
+            "encryptJson",
+            "importRawKey",
+            "randomId",
+            "rewrapProtection",
+            "unlockProtection"
+          ]
+        },
+        {
+          "source": "./drive",
+          "specifiers": [
+            "DriveError",
+            "MIME_FOLDER",
+            "MIME_SHORTCUT",
+            "qs"
+          ]
+        },
+        {
+          "source": "./mentions",
+          "specifiers": [
+            "normEmail",
+            "extractMentions",
+            "prettyName"
+          ]
+        },
+        {
+          "source": "./postModel",
+          "specifiers": [
+            "ROLE_COMMENT",
+            "ROLE_VIEW",
+            "buildPostDoc",
+            "canCommentWith",
+            "normMode",
+            "byNewest",
+            "cleanAudience",
+            "emptyIndex",
+            "folderNameFor",
+            "isBranded",
+            "brandName",
+            "shortcutNameFor",
+            "openPostDoc",
+            "toEntry"
+          ]
+        },
+        {
+          "source": "./image",
+          "specifiers": [
+            "prepareMedia"
+          ]
+        },
+        {
+          "source": "./mediaKinds",
+          "specifiers": [
+            "extOf"
+          ]
+        },
+        {
+          "source": "./util",
+          "specifiers": [
+            "debounce",
+            "mapLimit"
+          ]
+        }
+      ],
+      "exports": [
+        "RepoError",
+        "DriveRepo"
+      ],
+      "totalLines": 800,
+      "hasStructuralAnalysis": true
+    },
+    "src/services/secureStore.js": {
+      "filePath": "src/services/secureStore.js",
+      "contentHash": "75b2b1703e81d7ca7630d82361c468997e7e90ea84e3b9e88a1ee00a21df9d45",
+      "functions": [
+        {
+          "name": "openDb",
+          "params": [],
+          "exported": false,
+          "lineCount": 15
+        },
+        {
+          "name": "tx",
+          "params": [
+            "store",
+            "mode",
+            "fn"
+          ],
+          "exported": false,
+          "lineCount": 12
+        },
+        {
+          "name": "req",
+          "params": [
+            "r"
+          ],
+          "exported": false,
+          "lineCount": 1
+        },
+        {
+          "name": "idbGet",
+          "params": [
+            "store",
+            "key"
+          ],
+          "exported": false,
+          "lineCount": 1
+        },
+        {
+          "name": "idbPut",
+          "params": [
+            "store",
+            "key",
+            "value"
+          ],
+          "exported": false,
+          "lineCount": 1
+        },
+        {
+          "name": "idbDel",
+          "params": [
+            "store",
+            "key"
+          ],
+          "exported": false,
+          "lineCount": 1
+        },
+        {
+          "name": "idbAll",
+          "params": [
+            "store"
+          ],
+          "exported": false,
+          "lineCount": 5
+        }
+      ],
+      "classes": [
+        {
+          "name": "VaultError",
+          "methods": [
+            "constructor"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "SecureStore",
+          "methods": [
+            "constructor",
+            "unlocked",
+            "exists",
+            "status",
+            "create",
+            "unlock",
+            "verify",
+            "lock",
+            "get",
+            "set",
+            "remove",
+            "changePin",
+            "wipe"
+          ],
+          "properties": [],
+          "exported": false,
+          "lineCount": 143
+        }
+      ],
+      "imports": [
+        {
+          "source": "../config",
+          "specifiers": [
+            "config"
+          ]
+        },
+        {
+          "source": "./crypto",
+          "specifiers": [
+            "b64d",
+            "b64e",
+            "decryptBytes",
+            "deriveKey",
+            "encryptBytes",
+            "fromUtf8",
+            "generateDeviceKey",
+            "randomBytes",
+            "utf8"
+          ]
+        }
+      ],
+      "exports": [
+        "VaultError",
+        "vault",
+        "_internals"
+      ],
+      "totalLines": 211,
+      "hasStructuralAnalysis": true
+    },
+    "src/services/util.js": {
+      "filePath": "src/services/util.js",
+      "contentHash": "9563aeb9c2d42ea400eea1d54ccd8f7cf9af8b2e9fe5af9176de168e63441ce3",
+      "functions": [
+        {
+          "name": "mapLimit",
+          "params": [
+            "items",
+            "limit",
+            "fn"
+          ],
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "sleep",
+          "params": [
+            "ms"
+          ],
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "debounce",
+          "params": [
+            "fn",
+            "ms"
+          ],
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "clone",
+          "params": [
+            "v"
+          ],
+          "exported": true,
+          "lineCount": 1
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "mapLimit",
+        "sleep",
+        "debounce",
+        "clone"
+      ],
+      "totalLines": 25,
+      "hasStructuralAnalysis": true
+    },
+    "src/stores/draft.js": {
+      "filePath": "src/stores/draft.js",
+      "contentHash": "fbed182209325c3ec642ae8cd14b2c13d69b4a3121d979cb8a592b5f0f45b6e3",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "pinia",
+          "specifiers": [
+            "defineStore"
+          ]
+        },
+        {
+          "source": "vue",
+          "specifiers": [
+            "computed",
+            "ref"
+          ]
+        },
+        {
+          "source": "../config",
+          "specifiers": [
+            "config"
+          ]
+        },
+        {
+          "source": "../services/mediaKinds",
+          "specifiers": [
+            "classify",
+            "limitMb"
+          ]
+        },
+        {
+          "source": "../services/mentions",
+          "specifiers": [
+            "extractMentions"
+          ]
+        },
+        {
+          "source": "./people",
+          "specifiers": [
+            "usePeopleStore"
+          ]
+        },
+        {
+          "source": "../services/events",
+          "specifiers": [
+            "on"
+          ]
+        }
+      ],
+      "exports": [
+        "useDraftStore"
+      ],
+      "totalLines": 92,
+      "hasStructuralAnalysis": true
+    },
+    "src/stores/people.js": {
+      "filePath": "src/stores/people.js",
+      "contentHash": "d75770e67baa06962cbd9034a0e14b5ab7513a2cf87faa1f0ebd4dedf858878e",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "pinia",
+          "specifiers": [
+            "defineStore"
+          ]
+        },
+        {
+          "source": "vue",
+          "specifiers": [
+            "computed",
+            "ref"
+          ]
+        },
+        {
+          "source": "./session",
+          "specifiers": [
+            "useSessionStore"
+          ]
+        },
+        {
+          "source": "../services/events",
+          "specifiers": [
+            "on"
+          ]
+        },
+        {
+          "source": "../services/mentions",
+          "specifiers": [
+            "isEmail",
+            "normEmail",
+            "prettyName"
+          ]
+        }
+      ],
+      "exports": [
+        "usePeopleStore"
+      ],
+      "totalLines": 66,
+      "hasStructuralAnalysis": true
+    },
+    "src/stores/posts.js": {
+      "filePath": "src/stores/posts.js",
+      "contentHash": "8617651f5b5e407f5452135e7a6d7a87bf4599b7c7d1102fff9cebfa8b2ac4f5",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "pinia",
+          "specifiers": [
+            "defineStore"
+          ]
+        },
+        {
+          "source": "vue",
+          "specifiers": [
+            "computed",
+            "reactive",
+            "ref",
+            "shallowRef"
+          ]
+        },
+        {
+          "source": "./session",
+          "specifiers": [
+            "useSessionStore"
+          ]
+        },
+        {
+          "source": "./people",
+          "specifiers": [
+            "usePeopleStore"
+          ]
+        },
+        {
+          "source": "../services/events",
+          "specifiers": [
+            "on"
+          ]
+        },
+        {
+          "source": "../services/postModel",
+          "specifiers": [
+            "byNewest"
+          ]
+        }
+      ],
+      "exports": [
+        "usePostsStore"
+      ],
+      "totalLines": 167,
+      "hasStructuralAnalysis": true
+    },
+    "src/stores/prefs.js": {
+      "filePath": "src/stores/prefs.js",
+      "contentHash": "3ca3da1237adad998f6a7b1010a6412a3e97eba13db59a6a6c0f12f403f4c04a",
+      "functions": [
+        {
+          "name": "read",
+          "params": [],
+          "exported": false,
+          "lineCount": 1
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "pinia",
+          "specifiers": [
+            "defineStore"
+          ]
+        },
+        {
+          "source": "vue",
+          "specifiers": [
+            "ref",
+            "watch"
+          ]
+        },
+        {
+          "source": "../config",
+          "specifiers": [
+            "config"
+          ]
+        },
+        {
+          "source": "../i18n",
+          "specifiers": [
+            "detectLanguage",
+            "setLocale"
+          ]
+        }
+      ],
+      "exports": [
+        "usePrefsStore"
+      ],
+      "totalLines": 41,
+      "hasStructuralAnalysis": true
+    },
+    "src/stores/session.js": {
+      "filePath": "src/stores/session.js",
+      "contentHash": "21a62136c7a7a84d7fab64d58f56b6c8ad0d1eaaf04b42a1d57d3e9375fe174f",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "pinia",
+          "specifiers": [
+            "defineStore"
+          ]
+        },
+        {
+          "source": "vue",
+          "specifiers": [
+            "markRaw",
+            "ref",
+            "shallowRef"
+          ]
+        },
+        {
+          "source": "../services/secureStore",
+          "specifiers": [
+            "vault",
+            "VaultError"
+          ]
+        },
+        {
+          "source": "../services/drive",
+          "specifiers": [
+            "DriveClient"
+          ]
+        },
+        {
+          "source": "../services/repo",
+          "specifiers": [
+            "DriveRepo"
+          ]
+        },
+        {
+          "source": "../services/googleAuth",
+          "specifiers": [
+            "AuthError",
+            "exchangeCode",
+            "hasPendingResult",
+            "refreshAccessToken",
+            "revokeToken",
+            "startSignIn",
+            "takePendingResult"
+          ]
+        },
+        {
+          "source": "../services/events",
+          "specifiers": [
+            "emit"
+          ]
+        },
+        {
+          "source": "../services/mentions",
+          "specifiers": [
+            "normEmail",
+            "prettyName"
+          ]
+        }
+      ],
+      "exports": [
+        "useSessionStore",
+        "VaultError"
+      ],
+      "totalLines": 240,
+      "hasStructuralAnalysis": true
+    },
+    "src/stores/ui.js": {
+      "filePath": "src/stores/ui.js",
+      "contentHash": "6f9f1e63945b8cad30d397358c9b769f9378bb57e3b5b160bb345b2d33a27c23",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "pinia",
+          "specifiers": [
+            "defineStore"
+          ]
+        },
+        {
+          "source": "vue",
+          "specifiers": [
+            "ref"
+          ]
+        }
+      ],
+      "exports": [
+        "useUiStore"
+      ],
+      "totalLines": 39,
+      "hasStructuralAnalysis": true
+    },
+    "src/styles/base.css": {
+      "filePath": "src/styles/base.css",
+      "contentHash": "8dccba80ffe77b87be6db99d1772b219f74b33516176fc50c3bced761fac2e60",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 121,
+      "hasStructuralAnalysis": false
+    },
+    "src/styles/compose.css": {
+      "filePath": "src/styles/compose.css",
+      "contentHash": "f17070ddb0df469bc68d4c918414cb0eccebb30e6b36fa1a8df959116f4d9f86",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 38,
+      "hasStructuralAnalysis": false
+    },
+    "src/styles/extra.css": {
+      "filePath": "src/styles/extra.css",
+      "contentHash": "3a3245c357f78c3408e67f9e7ce3fb64d55ba18ebcf4511edf68bf870f1a056b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 50,
+      "hasStructuralAnalysis": false
+    },
+    "src/styles/feed.css": {
+      "filePath": "src/styles/feed.css",
+      "contentHash": "270415c03188f37e937217c9e7a7b8c3c95f2d6af82ce06b704a4469fb30ee78",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 80,
+      "hasStructuralAnalysis": false
+    },
+    "src/styles/overlays.css": {
+      "filePath": "src/styles/overlays.css",
+      "contentHash": "ce55316e7c2ec429885fdef26785be31c832a2c2b2baa315e049a514ecc7d58b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 13,
+      "hasStructuralAnalysis": false
+    },
+    "src/styles/pages.css": {
+      "filePath": "src/styles/pages.css",
+      "contentHash": "f8b57f64f39d083a53d40df114b73ca0cf5d4f2d84c68569c38bcd3a42a719d0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 26,
+      "hasStructuralAnalysis": false
+    },
+    "src/styles/shell.css": {
+      "filePath": "src/styles/shell.css",
+      "contentHash": "be071c343ddb02a05163e9760a6319c356c67846726e04d3e6fd01595dd0cdb9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 83,
+      "hasStructuralAnalysis": false
+    },
+    "src/styles/welcome.css": {
+      "filePath": "src/styles/welcome.css",
+      "contentHash": "ac0092ea66dae0bf418f9d533c420ff8611df357d9df047864395e97cbaaf652",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 69,
+      "hasStructuralAnalysis": false
+    },
+    "src/views/ComposeView.vue": {
+      "filePath": "src/views/ComposeView.vue",
+      "contentHash": "c85c1354d7c5adaee05560b4b7391b87b62bbbcd75df1c1f367cf745f86fac82",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 272,
+      "hasStructuralAnalysis": false
+    },
+    "src/views/FeedView.vue": {
+      "filePath": "src/views/FeedView.vue",
+      "contentHash": "c66fd4208474eef3314c3f6c08634a9fde8bf6d64f9ab5803935ca8ced2ae908",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 142,
+      "hasStructuralAnalysis": false
+    },
+    "src/views/FriendsView.vue": {
+      "filePath": "src/views/FriendsView.vue",
+      "contentHash": "f3d44d8ca0dae429c383f40519a7c72c7b9f31103e0de4fb873c16ad15c7ed79",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 95,
+      "hasStructuralAnalysis": false
+    },
+    "src/views/LegalView.vue": {
+      "filePath": "src/views/LegalView.vue",
+      "contentHash": "1bd90b5686c979cd771e9a3f9aec82144167667a018459a02a4d753f4fc11d72",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 73,
+      "hasStructuralAnalysis": false
+    },
+    "src/views/NotFoundView.vue": {
+      "filePath": "src/views/NotFoundView.vue",
+      "contentHash": "078bc846e2e001c848506ef38dcc4b9d435e6bb963ec416ee6a6fd07d3242611",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 12,
+      "hasStructuralAnalysis": false
+    },
+    "src/views/PostView.vue": {
+      "filePath": "src/views/PostView.vue",
+      "contentHash": "288fd9231843822fe85dfd6f6c9c92a471712a5097e278d9c09a87055c32ff12",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 250,
+      "hasStructuralAnalysis": false
+    },
+    "src/views/SettingsView.vue": {
+      "filePath": "src/views/SettingsView.vue",
+      "contentHash": "4f74b561fde38ae681e6df4d86af9bc533e799b5874468f1882db88745515806",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 127,
+      "hasStructuralAnalysis": false
+    },
+    "src/views/WelcomeView.vue": {
+      "filePath": "src/views/WelcomeView.vue",
+      "contentHash": "0f977749133e050d2cc3bab40f318968852efa67b457d067fe4f09ffe1c5f972",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 216,
+      "hasStructuralAnalysis": false
+    },
+    "tests/browserHarness.js": {
+      "filePath": "tests/browserHarness.js",
+      "contentHash": "2f114a293bf5b40837bcc1b37b459010b2c4353c286d66539d543550005323f9",
+      "functions": [
+        {
+          "name": "bootstrap",
+          "params": [],
+          "exported": true,
+          "lineCount": 51
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "bootstrap"
+      ],
+      "totalLines": 61,
+      "hasStructuralAnalysis": true
+    },
+    "tests/chat.test.js": {
+      "filePath": "tests/chat.test.js",
+      "contentHash": "74dc0a5dbc8638a4786e106e674ee3840a569ba0130489c855c6af7a06a4835c",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "vitest",
+          "specifiers": [
+            "describe",
+            "expect",
+            "it"
+          ]
+        },
+        {
+          "source": "../src/composables/share",
+          "specifiers": [
+            "chatLink"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "tests/crypto.test.js": {
+      "filePath": "tests/crypto.test.js",
+      "contentHash": "088db8c4ea12174b53cc543227ce0b4bd0a5f12fc50ee0d0782f32d26f237472",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "vitest",
+          "specifiers": [
+            "describe",
+            "expect",
+            "it"
+          ]
+        },
+        {
+          "source": "../src/services/crypto",
+          "specifiers": [
+            "b64d",
+            "b64e",
+            "createProtection",
+            "decryptBytes",
+            "decryptJson",
+            "deriveKey",
+            "encryptBytes",
+            "encryptJson",
+            "importRawKey",
+            "newRawKey",
+            "pkcePair",
+            "rewrapProtection",
+            "unlockProtection",
+            "utf8",
+            "fromUtf8",
+            "randomBytes"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 46,
+      "hasStructuralAnalysis": true
+    },
+    "tests/docs.test.js": {
+      "filePath": "tests/docs.test.js",
+      "contentHash": "9867e4fea016911b25858b81cc70d5ec4c58d8fd529d7329be39ddd55316f7c6",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "node:fs",
+          "specifiers": [
+            "fs"
+          ]
+        },
+        {
+          "source": "node:path",
+          "specifiers": [
+            "path"
+          ]
+        },
+        {
+          "source": "vitest",
+          "specifiers": [
+            "describe",
+            "expect",
+            "it"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 39,
+      "hasStructuralAnalysis": true
+    },
+    "tests/draft.test.js": {
+      "filePath": "tests/draft.test.js",
+      "contentHash": "82eb27e9cd9106fe0beef4dfe9de1fef5493e6863e9fafb1c93eeada554bcce4",
+      "functions": [
+        {
+          "name": "img",
+          "params": [],
+          "exported": false,
+          "lineCount": 1
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "vitest",
+          "specifiers": [
+            "beforeEach",
+            "describe",
+            "expect",
+            "it",
+            "vi"
+          ]
+        },
+        {
+          "source": "pinia",
+          "specifiers": [
+            "createPinia",
+            "setActivePinia"
+          ]
+        },
+        {
+          "source": "../src/stores/draft",
+          "specifiers": [
+            "useDraftStore"
+          ]
+        },
+        {
+          "source": "../src/config",
+          "specifiers": [
+            "config"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 76,
+      "hasStructuralAnalysis": true
+    },
+    "tests/fakeDrive.js": {
+      "filePath": "tests/fakeDrive.js",
+      "contentHash": "e5b2b2874040ccc78f27266c3c95f48d81a2a1462d48e0d1df82df7bf2d145f1",
+      "functions": [
+        {
+          "name": "toBinary",
+          "params": [
+            "u8"
+          ],
+          "exported": false,
+          "lineCount": 1
+        },
+        {
+          "name": "fromBinary",
+          "params": [
+            "s"
+          ],
+          "exported": false,
+          "lineCount": 1
+        },
+        {
+          "name": "json",
+          "params": [
+            "status",
+            "body"
+          ],
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "err",
+          "params": [
+            "status",
+            "reason",
+            "message"
+          ],
+          "exported": false,
+          "lineCount": 1
+        },
+        {
+          "name": "splitAnd",
+          "params": [
+            "q"
+          ],
+          "exported": false,
+          "lineCount": 22
+        },
+        {
+          "name": "unq",
+          "params": [
+            "s"
+          ],
+          "exported": false,
+          "lineCount": 1
+        }
+      ],
+      "classes": [
+        {
+          "name": "FakeDrive",
+          "methods": [
+            "constructor",
+            "addUser",
+            "find",
+            "text",
+            "allBytesContain"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 233
+        }
+      ],
+      "imports": [],
+      "exports": [
+        "FakeDrive"
+      ],
+      "totalLines": 273,
+      "hasStructuralAnalysis": true
+    },
+    "tests/i18n.test.js": {
+      "filePath": "tests/i18n.test.js",
+      "contentHash": "8b716ff5f6a32c9a106eaa0740ab6731d71dd75493b8639cf7e6f1a03d093729",
+      "functions": [
+        {
+          "name": "params",
+          "params": [
+            "s"
+          ],
+          "exported": false,
+          "lineCount": 1
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "node:fs",
+          "specifiers": [
+            "fs"
+          ]
+        },
+        {
+          "source": "node:path",
+          "specifiers": [
+            "path"
+          ]
+        },
+        {
+          "source": "vitest",
+          "specifiers": [
+            "describe",
+            "expect",
+            "it"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 47,
+      "hasStructuralAnalysis": true
+    },
+    "tests/mediaKinds.test.js": {
+      "filePath": "tests/mediaKinds.test.js",
+      "contentHash": "5cda41d2991f1bcf0caacd95fd43edf6cd35e7aa561c045ca61e265eacb86d5e",
+      "functions": [
+        {
+          "name": "f",
+          "params": [
+            "name"
+          ],
+          "exported": false,
+          "lineCount": 1
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "vitest",
+          "specifiers": [
+            "describe",
+            "expect",
+            "it"
+          ]
+        },
+        {
+          "source": "../src/services/mediaKinds",
+          "specifiers": [
+            "classify",
+            "humanSize",
+            "isVisual",
+            "labelOf",
+            "limitMb",
+            "mimeOf"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 36,
+      "hasStructuralAnalysis": true
+    },
+    "tests/mentions.test.js": {
+      "filePath": "tests/mentions.test.js",
+      "contentHash": "e22b38a62958abd4c539cfdf8a538a84471ba2def3a4d6501beaa4f873dcc364",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "vitest",
+          "specifiers": [
+            "describe",
+            "expect",
+            "it"
+          ]
+        },
+        {
+          "source": "../src/services/mentions",
+          "specifiers": [
+            "activeMentionQuery",
+            "extractMentions",
+            "isEmail",
+            "prettyName",
+            "tokenize"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 38,
+      "hasStructuralAnalysis": true
+    },
+    "tests/pages.test.js": {
+      "filePath": "tests/pages.test.js",
+      "contentHash": "0ea9c76fbaf82a7759f3957faf7b0350389bbed9158e2b938a08d500587469c5",
+      "functions": [
+        {
+          "name": "load",
+          "params": [
+            "c"
+          ],
+          "exported": false,
+          "lineCount": 1
+        },
+        {
+          "name": "shape",
+          "params": [
+            "d"
+          ],
+          "exported": false,
+          "lineCount": 1
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "node:fs",
+          "specifiers": [
+            "fs"
+          ]
+        },
+        {
+          "source": "vitest",
+          "specifiers": [
+            "describe",
+            "expect",
+            "it"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 27,
+      "hasStructuralAnalysis": true
+    },
+    "tests/repo.test.js": {
+      "filePath": "tests/repo.test.js",
+      "contentHash": "475251f99b45104d8b67a7e17a68a000cc085fff49f3d6d61a8a41e712c11386",
+      "functions": [
+        {
+          "name": "mk",
+          "params": [
+            "email",
+            "name"
+          ],
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "file",
+          "params": [
+            "name"
+          ],
+          "exported": false,
+          "lineCount": 1
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "vitest",
+          "specifiers": [
+            "beforeEach",
+            "describe",
+            "expect",
+            "it",
+            "vi"
+          ]
+        },
+        {
+          "source": "./fakeDrive",
+          "specifiers": [
+            "FakeDrive"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 625,
+      "hasStructuralAnalysis": true
+    },
+    "tests/secureStore.test.js": {
+      "filePath": "tests/secureStore.test.js",
+      "contentHash": "0dd29a0006806ea2a58711abf9c8d9fd6a48a987ad4bf1352d48cfe3fbf5131d",
+      "functions": [
+        {
+          "name": "clearThrottle",
+          "params": [],
+          "exported": false,
+          "lineCount": 10
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "vitest",
+          "specifiers": [
+            "beforeEach",
+            "describe",
+            "expect",
+            "it",
+            "vi"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 108,
+      "hasStructuralAnalysis": true
+    },
+    "tests/security.test.js": {
+      "filePath": "tests/security.test.js",
+      "contentHash": "ed4c58a540f53f0eac9f02cf23a9213b2af435757fbc480db4a34d85004882b3",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "vitest",
+          "specifiers": [
+            "describe",
+            "it",
+            "expect"
+          ]
+        },
+        {
+          "source": "../src/services/postModel",
+          "specifiers": [
+            "publicMedia",
+            "cleanName"
+          ]
+        },
+        {
+          "source": "../src/services/mentions",
+          "specifiers": [
+            "tokenize"
+          ]
+        },
+        {
+          "source": "../src/composables/share",
+          "specifiers": [
+            "chatLink"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 30,
+      "hasStructuralAnalysis": true
+    },
+    "tests/session.test.js": {
+      "filePath": "tests/session.test.js",
+      "contentHash": "f04501d58a8811f0958a45e015bfbb48522b7a50e3abcb1b52d876fd68e2966a",
+      "functions": [
+        {
+          "name": "installFetch",
+          "params": [],
+          "exported": false,
+          "lineCount": 22
+        },
+        {
+          "name": "simulateGoogleRedirect",
+          "params": [],
+          "exported": false,
+          "lineCount": 9
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "vitest",
+          "specifiers": [
+            "beforeEach",
+            "describe",
+            "expect",
+            "it",
+            "vi"
+          ]
+        },
+        {
+          "source": "pinia",
+          "specifiers": [
+            "createPinia",
+            "setActivePinia"
+          ]
+        },
+        {
+          "source": "./fakeDrive",
+          "specifiers": [
+            "FakeDrive"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 187,
+      "hasStructuralAnalysis": true
+    },
+    "tests/setup.js": {
+      "filePath": "tests/setup.js",
+      "contentHash": "e447fa1e598a4a20882fa104f2ccb56548cc3754cc073bb977a9d9639ebc3e6b",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "fake-indexeddb/auto",
+          "specifiers": []
+        },
+        {
+          "source": "node:crypto",
+          "specifiers": [
+            "webcrypto"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 5,
+      "hasStructuralAnalysis": true
+    },
+    "tests/ui.test.js": {
+      "filePath": "tests/ui.test.js",
+      "contentHash": "c45851584f1ad64936a394578af976923bbf698008cb34ac961e175bb2cabeff",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "vitest",
+          "specifiers": [
+            "beforeEach",
+            "describe",
+            "expect",
+            "it"
+          ]
+        },
+        {
+          "source": "pinia",
+          "specifiers": [
+            "createPinia",
+            "setActivePinia"
+          ]
+        },
+        {
+          "source": "../src/stores/ui",
+          "specifiers": [
+            "useUiStore"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 35,
+      "hasStructuralAnalysis": true
+    },
+    "vite.config.js": {
+      "filePath": "vite.config.js",
+      "contentHash": "67fa4ced7e410ca1bc819fa990c2ceb0ce87b345edb5d3557ac743fc6863e78d",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "vite",
+          "specifiers": [
+            "defineConfig",
+            "loadEnv"
+          ]
+        },
+        {
+          "source": "@vitejs/plugin-vue",
+          "specifiers": [
+            "vue"
+          ]
+        },
+        {
+          "source": "vite-plugin-pwa",
+          "specifiers": [
+            "VitePWA"
+          ]
+        },
+        {
+          "source": "node:url",
+          "specifiers": [
+            "fileURLToPath",
+            "URL"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 65,
+      "hasStructuralAnalysis": true
+    }
+  }
+}

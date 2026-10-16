@@ -69,6 +69,10 @@ Mọi thứ có thể chạy mã khi mở — trang web (`.html`, `.xhtml`), SVG
 - Hai người ghi `comments.json`/`likes.json` cùng lúc: bản ghi sau thắng (đọc–sửa–ghi, không khóa).
 - Người xem có thể sao chép/chụp màn hình — thu hồi quyền không xóa được điều đã thấy.
 
+## Bộ nhớ đệm ảnh và tốc độ tải
+
+- Ảnh được tải một lần cho mỗi thiết bị. Các byte tải về (vẫn đang được mã hóa, với bài có mật khẩu) được giữ trong Cache Storage của trình duyệt (thư mục cache của app trên Android), **mã hóa bằng khóa nằm trong vault PIN**, nên không có gì đọc được trên đĩa và app đang khóa thì không đọc được. Xóa dữ liệu cục bộ sẽ xóa luôn cache.
+
 ## Báo lỗi bảo mật
 
 Mở issue riêng tư trên kho mã hoặc liên hệ người duy trì dự án. Vui lòng không đưa khóa thật vào báo cáo.

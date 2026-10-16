@@ -143,7 +143,7 @@ export class FakeDrive {
     const method = (init.method || 'GET').toUpperCase();
     const headers = Object.fromEntries(Object.entries(init.headers || {}).map(([k, v]) => [k.toLowerCase(), v]));
     this.log.push(`${method} ${u.pathname}${u.search.includes('alt=media') ? '?alt=media' : ''}`);
-    const user = this.users.get((headers.authorization || '').replace('Bearer ', ''));
+    const user = this.users.get((headers.authorization || '').replace('Bearer ', '') || u.searchParams.get('access_token') || '');
     if (!user) return err(401, 'authError', 'Invalid Credentials');
     const path = u.pathname;
     let m;

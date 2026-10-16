@@ -1,8 +1,9 @@
 <script setup>
-import { useI18n } from '@/i18n';
+import { tEnglish, useI18n } from '@/i18n';
 
-defineProps({ inverse: { type: Boolean, default: false } });
-const { t } = useI18n();
+const props = defineProps({ inverse: { type: Boolean, default: false }, english: { type: Boolean, default: false } }); // english: on a page that is only available in English
+const i18n = useI18n();
+const t = (key) => (props.english ? tEnglish(key) : i18n.t(key));
 </script>
 
 <template>

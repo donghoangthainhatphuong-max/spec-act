@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import { config } from '../config';
+import { usePrefsStore } from '../stores/prefs';
 import { useSessionStore } from '../stores/session';
 import { useUiStore } from '../stores/ui';
 
@@ -16,6 +17,7 @@ const routes = [
       return { name: 'home' };
     },
   },
+  { path: '/consent', name: 'consent', component: () => import('../views/ConsentView.vue'), meta: { public: true } },
   { path: '/about', name: 'about', component: () => import('../views/LegalView.vue'), props: { page: 'about' }, meta: { public: true, legal: true } },
   { path: '/terms', name: 'terms', component: () => import('../views/LegalView.vue'), props: { page: 'terms' }, meta: { public: true, legal: true } },
   { path: '/privacy', name: 'privacy', component: () => import('../views/LegalView.vue'), props: { page: 'privacy' }, meta: { public: true, legal: true } },
@@ -41,9 +43,16 @@ export const router = createRouter({
   },
 });
 
+// Nobody gets past the first screens without having accepted the current Terms of Use and Privacy Policy (they stay readable).
+// A brand-new device accepts them on the page where it enters its Google keys (CredentialsForm); anyone who is already
+// set up — or who opens the demo — gets the stand-alone /consent page.
+const OPEN_WITHOUT_CONSENT = new Set(['consent', 'about', 'terms', 'privacy', 'welcome']);
+
 router.beforeEach(async (to) => {
   const session = useSessionStore();
   await session.ready;
+  const settingUp = session.phase === 'no-vault' || session.phase === 'signed-out';
+  if (!usePrefsStore().consentOk && !OPEN_WITHOUT_CONSENT.has(to.name) && !settingUp) return { name: 'consent', query: to.fullPath !== '/' ? { next: to.fullPath } : {} };
   if (to.meta.public) return true;
   if (session.phase !== 'ready') return { name: 'welcome', query: to.fullPath !== '/' ? { next: to.fullPath } : {} };
   return true;

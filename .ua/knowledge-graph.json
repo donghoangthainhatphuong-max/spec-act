@@ -1,0 +1,6236 @@
+{
+  "version": "1.0.0",
+  "project": {
+    "name": "spec-act",
+    "languages": [
+      "conf",
+      "config",
+      "css",
+      "dockerfile",
+      "html",
+      "javascript",
+      "json",
+      "markdown",
+      "shell",
+      "unknown",
+      "vue",
+      "yaml"
+    ],
+    "frameworks": [
+      "Vue",
+      "Pinia",
+      "Vue Router",
+      "Vite",
+      "Vitest",
+      "vite-plugin-pwa",
+      "ESLint",
+      "Docker",
+      "Docker Compose",
+      "GitHub Actions"
+    ],
+    "description": "SPECACT (Secure Personal Ecosystem for Content, Access, and Control Trust) là một PWA Vue 3 + Vite, lưu bài đăng trong Google Drive của người dùng, không có backend. Note: this project has over 100 source files; consider scoping analysis to a subdirectory for faster results.",
+    "analyzedAt": "2026-10-13T09:27:50.108Z",
+    "gitCommitHash": "456ce85c81dc25cf8c7ce8cba77fba1cbf513f42"
+  },
+  "nodes": [
+    {
+      "id": "file:src/App.vue",
+      "type": "file",
+      "name": "App.vue",
+      "filePath": "src/App.vue",
+      "summary": "Component gốc của ứng dụng: chọn layout (AppShell hoặc bare), render ToastHost/ConfirmDialog/Lightbox, điều hướng khi đăng nhập xong và nạp people/posts khi session sẵn sàng.",
+      "tags": [
+        "component",
+        "root",
+        "vue",
+        "routing",
+        "session"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Vue 3 <script setup> với computed/watch."
+    },
+    {
+      "id": "file:src/composables/useAutoLock.js",
+      "type": "file",
+      "name": "useAutoLock.js",
+      "filePath": "src/composables/useAutoLock.js",
+      "summary": "Composable tự động khóa vault sau thời gian không hoạt động, dựa trên prefs và session store.",
+      "tags": [
+        "composable",
+        "security",
+        "auto-lock",
+        "session"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/i18n/index.js",
+      "type": "file",
+      "name": "index.js",
+      "filePath": "src/i18n/index.js",
+      "summary": "Lớp i18n nhẹ: phát hiện ngôn ngữ, dịch khóa với tham số, đặt locale, định dạng thời gian tương đối, danh sách và dung lượng.",
+      "tags": [
+        "i18n",
+        "utility",
+        "localization",
+        "formatting"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/main.js",
+      "type": "file",
+      "name": "main.js",
+      "filePath": "src/main.js",
+      "summary": "Điểm vào ứng dụng: tạo app Vue, cắm Pinia và router, nạp toàn bộ CSS, xử lý redirect OAuth và đăng ký service worker PWA.",
+      "tags": [
+        "entry-point",
+        "bootstrap",
+        "pwa",
+        "vue"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/router/index.js",
+      "type": "file",
+      "name": "index.js",
+      "filePath": "src/router/index.js",
+      "summary": "Cấu hình vue-router với các route và navigation guard dựa trên trạng thái session và ui.",
+      "tags": [
+        "router",
+        "navigation-guard",
+        "entry-point",
+        "auth"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/services/googleAuth.js",
+      "type": "file",
+      "name": "googleAuth.js",
+      "filePath": "src/services/googleAuth.js",
+      "summary": "Dịch vụ OAuth2 PKCE với Google: dựng URL đăng nhập, bắt redirect, đổi code, làm mới và thu hồi token.",
+      "tags": [
+        "service",
+        "oauth",
+        "authentication",
+        "google",
+        "pkce"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/stores/prefs.js",
+      "type": "file",
+      "name": "prefs.js",
+      "filePath": "src/stores/prefs.js",
+      "summary": "Pinia store lưu tùy chọn người dùng (ngôn ngữ, auto-lock...) vào localStorage.",
+      "tags": [
+        "store",
+        "pinia",
+        "preferences",
+        "state"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/stores/ui.js",
+      "type": "file",
+      "name": "ui.js",
+      "filePath": "src/stores/ui.js",
+      "summary": "Pinia store trạng thái UI: toast, hộp xác nhận, lightbox, tìm kiếm và cập nhật service worker.",
+      "tags": [
+        "store",
+        "pinia",
+        "ui-state",
+        "toast",
+        "tested"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/ui.test.js",
+      "type": "file",
+      "name": "ui.test.js",
+      "filePath": "tests/ui.test.js",
+      "summary": "Unit test cho ui store (toast, xác nhận, viewer).",
+      "tags": [
+        "test",
+        "unit-test",
+        "pinia",
+        "ui-state"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/composables/useAutoLock.js:useAutoLock",
+      "type": "function",
+      "name": "useAutoLock",
+      "filePath": "src/composables/useAutoLock.js",
+      "lineRange": [
+        6,
+        39
+      ],
+      "summary": "Theo dõi hoạt động người dùng và khóa session khi hết thời gian chờ.",
+      "tags": [
+        "composable",
+        "security",
+        "timer"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/i18n/index.js:t",
+      "type": "function",
+      "name": "t",
+      "filePath": "src/i18n/index.js",
+      "lineRange": [
+        15,
+        20
+      ],
+      "summary": "Dịch khóa i18n kèm nội suy tham số.",
+      "tags": [
+        "i18n",
+        "translation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/i18n/index.js:useI18n",
+      "type": "function",
+      "name": "useI18n",
+      "filePath": "src/i18n/index.js",
+      "lineRange": [
+        23,
+        23
+      ],
+      "summary": "Trả về API i18n cho component.",
+      "tags": [
+        "i18n",
+        "composable"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/i18n/index.js:currentLocale",
+      "type": "function",
+      "name": "currentLocale",
+      "filePath": "src/i18n/index.js",
+      "lineRange": [
+        24,
+        24
+      ],
+      "summary": "Trả về locale hiện tại.",
+      "tags": [
+        "i18n",
+        "getter"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/i18n/index.js:detectLanguage",
+      "type": "function",
+      "name": "detectLanguage",
+      "filePath": "src/i18n/index.js",
+      "lineRange": [
+        26,
+        35
+      ],
+      "summary": "Phát hiện ngôn ngữ từ trình duyệt trong danh sách hỗ trợ.",
+      "tags": [
+        "i18n",
+        "detection"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/i18n/index.js:setLocale",
+      "type": "function",
+      "name": "setLocale",
+      "filePath": "src/i18n/index.js",
+      "lineRange": [
+        37,
+        47
+      ],
+      "summary": "Đặt locale và nạp bản dịch tương ứng.",
+      "tags": [
+        "i18n",
+        "locale"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/i18n/index.js:ago",
+      "type": "function",
+      "name": "ago",
+      "filePath": "src/i18n/index.js",
+      "lineRange": [
+        50,
+        60
+      ],
+      "summary": "Định dạng thời gian tương đối.",
+      "tags": [
+        "i18n",
+        "formatting",
+        "date"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/i18n/index.js:listOf",
+      "type": "function",
+      "name": "listOf",
+      "filePath": "src/i18n/index.js",
+      "lineRange": [
+        62,
+        64
+      ],
+      "summary": "Nối danh sách theo quy tắc ngôn ngữ.",
+      "tags": [
+        "i18n",
+        "formatting"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/i18n/index.js:formatBytes",
+      "type": "function",
+      "name": "formatBytes",
+      "filePath": "src/i18n/index.js",
+      "lineRange": [
+        66,
+        73
+      ],
+      "summary": "Định dạng số byte sang đơn vị dễ đọc.",
+      "tags": [
+        "formatting",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/services/googleAuth.js:AuthError",
+      "type": "class",
+      "name": "AuthError",
+      "filePath": "src/services/googleAuth.js",
+      "lineRange": [
+        14,
+        16
+      ],
+      "summary": "Lớp lỗi riêng cho các lỗi xác thực Google OAuth.",
+      "tags": [
+        "error",
+        "authentication",
+        "class"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/googleAuth.js:buildSignInUrl",
+      "type": "function",
+      "name": "buildSignInUrl",
+      "filePath": "src/services/googleAuth.js",
+      "lineRange": [
+        21,
+        40
+      ],
+      "summary": "Dựng URL đăng nhập Google với PKCE challenge và state.",
+      "tags": [
+        "oauth",
+        "pkce",
+        "url"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/googleAuth.js:startSignIn",
+      "type": "function",
+      "name": "startSignIn",
+      "filePath": "src/services/googleAuth.js",
+      "lineRange": [
+        42,
+        44
+      ],
+      "summary": "Chuyển hướng trình duyệt tới trang đăng nhập Google.",
+      "tags": [
+        "oauth",
+        "redirect"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/googleAuth.js:captureRedirect",
+      "type": "function",
+      "name": "captureRedirect",
+      "filePath": "src/services/googleAuth.js",
+      "lineRange": [
+        50,
+        57
+      ],
+      "summary": "Bắt tham số kết quả từ redirect OAuth.",
+      "tags": [
+        "oauth",
+        "redirect"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/googleAuth.js:hasPendingResult",
+      "type": "function",
+      "name": "hasPendingResult",
+      "filePath": "src/services/googleAuth.js",
+      "lineRange": [
+        59,
+        61
+      ],
+      "summary": "Kiểm tra có kết quả đăng nhập đang chờ xử lý.",
+      "tags": [
+        "oauth",
+        "state"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/googleAuth.js:takePendingResult",
+      "type": "function",
+      "name": "takePendingResult",
+      "filePath": "src/services/googleAuth.js",
+      "lineRange": [
+        63,
+        77
+      ],
+      "summary": "Lấy và xóa kết quả đăng nhập đang chờ, kiểm tra state.",
+      "tags": [
+        "oauth",
+        "state",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/googleAuth.js:exchangeCode",
+      "type": "function",
+      "name": "exchangeCode",
+      "filePath": "src/services/googleAuth.js",
+      "lineRange": [
+        103,
+        112
+      ],
+      "summary": "Đổi authorization code lấy token.",
+      "tags": [
+        "oauth",
+        "token",
+        "api"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/googleAuth.js:refreshAccessToken",
+      "type": "function",
+      "name": "refreshAccessToken",
+      "filePath": "src/services/googleAuth.js",
+      "lineRange": [
+        114,
+        121
+      ],
+      "summary": "Làm mới access token bằng refresh token.",
+      "tags": [
+        "oauth",
+        "token",
+        "refresh"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/googleAuth.js:revokeToken",
+      "type": "function",
+      "name": "revokeToken",
+      "filePath": "src/services/googleAuth.js",
+      "lineRange": [
+        123,
+        125
+      ],
+      "summary": "Thu hồi token tại Google.",
+      "tags": [
+        "oauth",
+        "token",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/googleAuth.js:looksLikeClientId",
+      "type": "function",
+      "name": "looksLikeClientId",
+      "filePath": "src/services/googleAuth.js",
+      "lineRange": [
+        127,
+        127
+      ],
+      "summary": "Kiểm tra chuỗi có dạng Google client ID.",
+      "tags": [
+        "validation",
+        "oauth"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/composables/format.js",
+      "type": "file",
+      "name": "format.js",
+      "filePath": "src/composables/format.js",
+      "summary": "Composable nhỏ chuyển văn bản có mention thành plain text để hiển thị, dùng tokenizer từ mentions.js.",
+      "tags": [
+        "composable",
+        "formatting",
+        "mentions",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/composables/format.js:plainMentions",
+      "type": "function",
+      "name": "plainMentions",
+      "filePath": "src/composables/format.js",
+      "lineRange": [
+        4,
+        6
+      ],
+      "summary": "Thay các mention trong văn bản bằng tên hiển thị dạng plain text.",
+      "tags": [
+        "formatting",
+        "mentions",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/services/crypto.js",
+      "type": "file",
+      "name": "crypto.js",
+      "filePath": "src/services/crypto.js",
+      "summary": "Lớp mã hóa dựa trên WebCrypto: AES-GCM mã hóa bytes/JSON, dẫn xuất khóa từ mật khẩu, bảo vệ bằng password (wrap/unwrap khóa) và PKCE cho OAuth.",
+      "tags": [
+        "crypto",
+        "security",
+        "webcrypto",
+        "encryption",
+        "service",
+        "tested"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Dùng Web Crypto API (SubtleCrypto) bất đồng bộ; không phụ thuộc thư viện ngoài."
+    },
+    {
+      "id": "class:src/services/crypto.js:CryptoError",
+      "type": "class",
+      "name": "CryptoError",
+      "filePath": "src/services/crypto.js",
+      "lineRange": [
+        9,
+        11
+      ],
+      "summary": "Lớp lỗi riêng cho các thất bại mã hóa/giải mã.",
+      "tags": [
+        "error",
+        "crypto"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/crypto.js:deriveKey",
+      "type": "function",
+      "name": "deriveKey",
+      "filePath": "src/services/crypto.js",
+      "lineRange": [
+        49,
+        58
+      ],
+      "summary": "Dẫn xuất khóa AES từ mật khẩu và salt (KDF).",
+      "tags": [
+        "crypto",
+        "key-derivation",
+        "security"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/services/crypto.js:encryptBytes",
+      "type": "function",
+      "name": "encryptBytes",
+      "filePath": "src/services/crypto.js",
+      "lineRange": [
+        71,
+        80
+      ],
+      "summary": "Mã hóa mảng bytes bằng AES-GCM với IV ngẫu nhiên.",
+      "tags": [
+        "crypto",
+        "encryption"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/services/crypto.js:decryptBytes",
+      "type": "function",
+      "name": "decryptBytes",
+      "filePath": "src/services/crypto.js",
+      "lineRange": [
+        82,
+        92
+      ],
+      "summary": "Giải mã bytes AES-GCM và ném CryptoError khi sai khóa.",
+      "tags": [
+        "crypto",
+        "decryption"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/services/crypto.js:encryptJson",
+      "type": "function",
+      "name": "encryptJson",
+      "filePath": "src/services/crypto.js",
+      "lineRange": [
+        94,
+        96
+      ],
+      "summary": "Mã hóa một đối tượng JSON thành bytes.",
+      "tags": [
+        "crypto",
+        "encryption",
+        "json"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/crypto.js:decryptJson",
+      "type": "function",
+      "name": "decryptJson",
+      "filePath": "src/services/crypto.js",
+      "lineRange": [
+        97,
+        99
+      ],
+      "summary": "Giải mã bytes thành đối tượng JSON.",
+      "tags": [
+        "crypto",
+        "decryption",
+        "json"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/crypto.js:createProtection",
+      "type": "function",
+      "name": "createProtection",
+      "filePath": "src/services/crypto.js",
+      "lineRange": [
+        106,
+        116
+      ],
+      "summary": "Tạo khối bảo vệ bằng mật khẩu: sinh khóa nội dung và wrap bằng khóa dẫn xuất.",
+      "tags": [
+        "crypto",
+        "password-protection",
+        "security"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/services/crypto.js:unlockProtection",
+      "type": "function",
+      "name": "unlockProtection",
+      "filePath": "src/services/crypto.js",
+      "lineRange": [
+        118,
+        127
+      ],
+      "summary": "Mở khóa khối bảo vệ bằng mật khẩu để lấy lại khóa nội dung.",
+      "tags": [
+        "crypto",
+        "password-protection",
+        "security"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/services/crypto.js:rewrapProtection",
+      "type": "function",
+      "name": "rewrapProtection",
+      "filePath": "src/services/crypto.js",
+      "lineRange": [
+        129,
+        133
+      ],
+      "summary": "Đổi mật khẩu bằng cách wrap lại khóa nội dung.",
+      "tags": [
+        "crypto",
+        "password-protection"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/crypto.js:pkcePair",
+      "type": "function",
+      "name": "pkcePair",
+      "filePath": "src/services/crypto.js",
+      "lineRange": [
+        136,
+        140
+      ],
+      "summary": "Sinh cặp code_verifier/code_challenge cho OAuth PKCE.",
+      "tags": [
+        "oauth",
+        "pkce",
+        "crypto"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/crypto.js:b64e",
+      "type": "function",
+      "name": "b64e",
+      "filePath": "src/services/crypto.js",
+      "lineRange": [
+        14,
+        19
+      ],
+      "summary": "Mã hóa bytes sang base64.",
+      "tags": [
+        "encoding",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/crypto.js:b64d",
+      "type": "function",
+      "name": "b64d",
+      "filePath": "src/services/crypto.js",
+      "lineRange": [
+        20,
+        25
+      ],
+      "summary": "Giải mã base64 sang bytes.",
+      "tags": [
+        "encoding",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/crypto.js:randomBytes",
+      "type": "function",
+      "name": "randomBytes",
+      "filePath": "src/services/crypto.js",
+      "lineRange": [
+        32,
+        36
+      ],
+      "summary": "Sinh bytes ngẫu nhiên an toàn bằng crypto.getRandomValues.",
+      "tags": [
+        "crypto",
+        "random",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/crypto.js:sha256Hex",
+      "type": "function",
+      "name": "sha256Hex",
+      "filePath": "src/services/crypto.js",
+      "lineRange": [
+        42,
+        45
+      ],
+      "summary": "Tính SHA-256 và trả về chuỗi hex.",
+      "tags": [
+        "crypto",
+        "hash",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/services/demoRepo.js",
+      "type": "file",
+      "name": "demoRepo.js",
+      "filePath": "src/services/demoRepo.js",
+      "summary": "Repo giả lập trong bộ nhớ (DemoRepo) có cùng giao diện với DriveRepo, dùng cho chế độ demo không cần Google Drive.",
+      "tags": [
+        "demo",
+        "repository",
+        "mock",
+        "in-memory",
+        "service"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:src/services/demoRepo.js:DemoRepo",
+      "type": "class",
+      "name": "DemoRepo",
+      "filePath": "src/services/demoRepo.js",
+      "lineRange": [
+        31,
+        176
+      ],
+      "summary": "Triển khai repo demo lưu bài viết, bình luận và chia sẻ trong bộ nhớ, mô phỏng API của DriveRepo.",
+      "tags": [
+        "demo",
+        "repository",
+        "in-memory"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/services/mentions.js",
+      "type": "file",
+      "name": "mentions.js",
+      "filePath": "src/services/mentions.js",
+      "summary": "Tiện ích xử lý email và @mention: chuẩn hóa email, trích xuất mention, tokenize văn bản và nhận diện truy vấn mention đang gõ.",
+      "tags": [
+        "mentions",
+        "parsing",
+        "utility",
+        "email",
+        "tested"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/services/mentions.js:extractMentions",
+      "type": "function",
+      "name": "extractMentions",
+      "filePath": "src/services/mentions.js",
+      "lineRange": [
+        12,
+        16
+      ],
+      "summary": "Trích xuất danh sách email được mention từ văn bản.",
+      "tags": [
+        "mentions",
+        "parsing"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/mentions.js:tokenize",
+      "type": "function",
+      "name": "tokenize",
+      "filePath": "src/services/mentions.js",
+      "lineRange": [
+        19,
+        37
+      ],
+      "summary": "Tách văn bản thành các token text/mention.",
+      "tags": [
+        "mentions",
+        "tokenizer",
+        "parsing"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/services/mentions.js:activeMentionQuery",
+      "type": "function",
+      "name": "activeMentionQuery",
+      "filePath": "src/services/mentions.js",
+      "lineRange": [
+        40,
+        45
+      ],
+      "summary": "Xác định truy vấn mention đang được gõ tại vị trí con trỏ.",
+      "tags": [
+        "mentions",
+        "autocomplete"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/mentions.js:prettyName",
+      "type": "function",
+      "name": "prettyName",
+      "filePath": "src/services/mentions.js",
+      "lineRange": [
+        47,
+        50
+      ],
+      "summary": "Tạo tên hiển thị đẹp từ email.",
+      "tags": [
+        "formatting",
+        "mentions"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/mentions.js:normEmail",
+      "type": "function",
+      "name": "normEmail",
+      "filePath": "src/services/mentions.js",
+      "lineRange": [
+        9,
+        9
+      ],
+      "summary": "Chuẩn hóa email (trim, lowercase).",
+      "tags": [
+        "email",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/mentions.js:isEmail",
+      "type": "function",
+      "name": "isEmail",
+      "filePath": "src/services/mentions.js",
+      "lineRange": [
+        10,
+        10
+      ],
+      "summary": "Kiểm tra chuỗi có phải email hợp lệ.",
+      "tags": [
+        "email",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/services/postModel.js",
+      "type": "file",
+      "name": "postModel.js",
+      "filePath": "src/services/postModel.js",
+      "summary": "Mô hình dữ liệu bài viết: schema, vai trò, hằng số và các hàm dựng/mở tài liệu bài, entry chỉ mục, tên thư mục và shortcut trên Drive.",
+      "tags": [
+        "data-model",
+        "post",
+        "schema",
+        "service"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:src/services/postModel.js:buildPostDoc",
+      "type": "function",
+      "name": "buildPostDoc",
+      "filePath": "src/services/postModel.js",
+      "lineRange": [
+        93,
+        101
+      ],
+      "summary": "Dựng tài liệu bài viết để lưu xuống Drive.",
+      "tags": [
+        "serialization",
+        "post"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/postModel.js:openPostDoc",
+      "type": "function",
+      "name": "openPostDoc",
+      "filePath": "src/services/postModel.js",
+      "lineRange": [
+        104,
+        130
+      ],
+      "summary": "Mở và chuẩn hóa tài liệu bài đã lưu thành đối tượng dùng được.",
+      "tags": [
+        "deserialization",
+        "post",
+        "validation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/services/postModel.js:toEntry",
+      "type": "function",
+      "name": "toEntry",
+      "filePath": "src/services/postModel.js",
+      "lineRange": [
+        133,
+        157
+      ],
+      "summary": "Chuyển bài viết thành entry gọn cho chỉ mục.",
+      "tags": [
+        "index",
+        "post",
+        "mapping"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/services/postModel.js:cleanAudience",
+      "type": "function",
+      "name": "cleanAudience",
+      "filePath": "src/services/postModel.js",
+      "lineRange": [
+        57,
+        65
+      ],
+      "summary": "Làm sạch danh sách người xem/người được chia sẻ.",
+      "tags": [
+        "validation",
+        "audience"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/services/postModel.js:publicMedia",
+      "type": "function",
+      "name": "publicMedia",
+      "filePath": "src/services/postModel.js",
+      "lineRange": [
+        81,
+        90
+      ],
+      "summary": "Lọc metadata media công khai khỏi dữ liệu nhạy cảm.",
+      "tags": [
+        "media",
+        "sanitization"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/services/postModel.js:folderNameFor",
+      "type": "function",
+      "name": "folderNameFor",
+      "filePath": "src/services/postModel.js",
+      "lineRange": [
+        46,
+        50
+      ],
+      "summary": "Sinh tên thư mục Drive cho bài viết.",
+      "tags": [
+        "naming",
+        "drive"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/postModel.js:shortcutNameFor",
+      "type": "function",
+      "name": "shortcutNameFor",
+      "filePath": "src/services/postModel.js",
+      "lineRange": [
+        40,
+        44
+      ],
+      "summary": "Sinh tên shortcut Drive cho bài được chia sẻ.",
+      "tags": [
+        "naming",
+        "drive"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/postModel.js:snippetOf",
+      "type": "function",
+      "name": "snippetOf",
+      "filePath": "src/services/postModel.js",
+      "lineRange": [
+        52,
+        55
+      ],
+      "summary": "Cắt đoạn trích ngắn từ nội dung bài.",
+      "tags": [
+        "text",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/postModel.js:normMode",
+      "type": "function",
+      "name": "normMode",
+      "filePath": "src/services/postModel.js",
+      "lineRange": [
+        32,
+        32
+      ],
+      "summary": "Chuẩn hóa chế độ bình luận.",
+      "tags": [
+        "normalization",
+        "comments"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/postModel.js:canCommentWith",
+      "type": "function",
+      "name": "canCommentWith",
+      "filePath": "src/services/postModel.js",
+      "lineRange": [
+        33,
+        33
+      ],
+      "summary": "Kiểm tra vai trò có được phép bình luận.",
+      "tags": [
+        "permission",
+        "comments"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/postModel.js:emptyIndex",
+      "type": "function",
+      "name": "emptyIndex",
+      "filePath": "src/services/postModel.js",
+      "lineRange": [
+        159,
+        159
+      ],
+      "summary": "Tạo chỉ mục bài rỗng.",
+      "tags": [
+        "index",
+        "factory"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/postModel.js:byNewest",
+      "type": "function",
+      "name": "byNewest",
+      "filePath": "src/services/postModel.js",
+      "lineRange": [
+        161,
+        161
+      ],
+      "summary": "Comparator sắp xếp bài mới nhất trước.",
+      "tags": [
+        "sorting",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/services/repo.js",
+      "type": "file",
+      "name": "repo.js",
+      "filePath": "src/services/repo.js",
+      "summary": "DriveRepo là domain layer: biến bài viết, bình luận và chia sẻ thành thư mục, file và quyền trên Google Drive, kèm mã hóa bằng mật khẩu, chỉ mục và đồng bộ.",
+      "tags": [
+        "repository",
+        "google-drive",
+        "domain-layer",
+        "encryption",
+        "sharing"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Class lớn dùng async/await, mapLimit để giới hạn song song và RepoError mang mã lỗi."
+    },
+    {
+      "id": "class:src/services/repo.js:RepoError",
+      "type": "class",
+      "name": "RepoError",
+      "filePath": "src/services/repo.js",
+      "lineRange": [
+        17,
+        19
+      ],
+      "summary": "Lỗi domain mang mã code và dữ liệu bổ sung.",
+      "tags": [
+        "error",
+        "repository"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/services/repo.js:DriveRepo",
+      "type": "class",
+      "name": "DriveRepo",
+      "filePath": "src/services/repo.js",
+      "lineRange": [
+        25,
+        799
+      ],
+      "summary": "Repo chính thao tác bài viết, bình luận, chia sẻ, media và chỉ mục trên Drive, áp dụng quyền Google và lớp mã hóa phía client.",
+      "tags": [
+        "repository",
+        "google-drive",
+        "sharing",
+        "encryption"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/services/util.js",
+      "type": "file",
+      "name": "util.js",
+      "filePath": "src/services/util.js",
+      "summary": "Các helper bất đồng bộ nhỏ: mapLimit chạy song song có giới hạn, sleep, debounce và clone.",
+      "tags": [
+        "utility",
+        "async",
+        "concurrency"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/util.js:mapLimit",
+      "type": "function",
+      "name": "mapLimit",
+      "filePath": "src/services/util.js",
+      "lineRange": [
+        1,
+        12
+      ],
+      "summary": "Chạy hàm bất đồng bộ trên danh sách với giới hạn số tác vụ song song.",
+      "tags": [
+        "concurrency",
+        "async",
+        "utility"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/services/util.js:debounce",
+      "type": "function",
+      "name": "debounce",
+      "filePath": "src/services/util.js",
+      "lineRange": [
+        16,
+        22
+      ],
+      "summary": "Trì hoãn gọi hàm đến khi ngừng kích hoạt.",
+      "tags": [
+        "debounce",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/util.js:sleep",
+      "type": "function",
+      "name": "sleep",
+      "filePath": "src/services/util.js",
+      "lineRange": [
+        14,
+        14
+      ],
+      "summary": "Trả về promise chờ số ms cho trước.",
+      "tags": [
+        "async",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/util.js:clone",
+      "type": "function",
+      "name": "clone",
+      "filePath": "src/services/util.js",
+      "lineRange": [
+        24,
+        24
+      ],
+      "summary": "Sao chép sâu một giá trị.",
+      "tags": [
+        "utility",
+        "clone"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/crypto.test.js",
+      "type": "file",
+      "name": "crypto.test.js",
+      "filePath": "tests/crypto.test.js",
+      "summary": "Bộ test vitest cho crypto.js: base64, mã hóa/giải mã bytes và JSON, bảo vệ bằng mật khẩu, rewrap và PKCE.",
+      "tags": [
+        "test",
+        "crypto",
+        "vitest",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/mentions.test.js",
+      "type": "file",
+      "name": "mentions.test.js",
+      "filePath": "tests/mentions.test.js",
+      "summary": "Bộ test vitest cho mentions.js: chuẩn hóa email, trích xuất và tokenize mention.",
+      "tags": [
+        "test",
+        "mentions",
+        "vitest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/config.js",
+      "type": "file",
+      "name": "config.js",
+      "filePath": "src/config.js",
+      "summary": "Cấu hình trung tâm của ứng dụng: đọc biến môi trường Vite với các helper ép kiểu (str/int/num/bool), khai báo danh sách ngôn ngữ LANGS và tính redirectUri cho OAuth Google.",
+      "tags": [
+        "configuration",
+        "env",
+        "oauth",
+        "entry-point"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Dùng import.meta.env của Vite để đọc cấu hình lúc build."
+    },
+    {
+      "id": "function:src/config.js:redirectUri",
+      "type": "function",
+      "name": "redirectUri",
+      "filePath": "src/config.js",
+      "lineRange": [
+        73,
+        76
+      ],
+      "summary": "Tính URL redirect OAuth dựa trên origin hiện tại và base path của ứng dụng.",
+      "tags": [
+        "oauth",
+        "utility",
+        "config"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/services/image.js",
+      "type": "file",
+      "name": "image.js",
+      "filePath": "src/services/image.js",
+      "summary": "Xử lý media phía client trước khi tải lên Drive: resize ảnh qua canvas, tạo poster cho video, và chuẩn bị audio/file với giới hạn kích thước theo loại.",
+      "tags": [
+        "media",
+        "image-processing",
+        "canvas",
+        "service",
+        "upload"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:src/services/image.js:ImageError",
+      "type": "class",
+      "name": "ImageError",
+      "filePath": "src/services/image.js",
+      "lineRange": [
+        4,
+        6
+      ],
+      "summary": "Lớp lỗi riêng cho các thất bại khi xử lý media (file quá lớn, không đọc được).",
+      "tags": [
+        "error",
+        "class",
+        "media"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/image.js:fitWithin",
+      "type": "function",
+      "name": "fitWithin",
+      "filePath": "src/services/image.js",
+      "lineRange": [
+        8,
+        11
+      ],
+      "summary": "Tính kích thước mới giữ tỉ lệ để ảnh vừa trong cạnh tối đa.",
+      "tags": [
+        "utility",
+        "media",
+        "upload"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/image.js:prepareImage",
+      "type": "function",
+      "name": "prepareImage",
+      "filePath": "src/services/image.js",
+      "lineRange": [
+        36,
+        49
+      ],
+      "summary": "Đọc ảnh, resize và nén thành blob sẵn sàng tải lên.",
+      "tags": [
+        "image-processing",
+        "media",
+        "upload"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/image.js:isVideoFile",
+      "type": "function",
+      "name": "isVideoFile",
+      "filePath": "src/services/image.js",
+      "lineRange": [
+        51,
+        51
+      ],
+      "summary": "Kiểm tra file có phải video dựa trên MIME/đuôi file.",
+      "tags": [
+        "utility",
+        "media",
+        "upload"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/image.js:prepareVideo",
+      "type": "function",
+      "name": "prepareVideo",
+      "filePath": "src/services/image.js",
+      "lineRange": [
+        68,
+        85
+      ],
+      "summary": "Chuẩn bị video: kiểm tra giới hạn và trích poster frame làm ảnh bìa.",
+      "tags": [
+        "video",
+        "media",
+        "upload"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/image.js:prepareAudio",
+      "type": "function",
+      "name": "prepareAudio",
+      "filePath": "src/services/image.js",
+      "lineRange": [
+        99,
+        112
+      ],
+      "summary": "Chuẩn bị file audio, kiểm tra giới hạn kích thước.",
+      "tags": [
+        "audio",
+        "media",
+        "upload"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/image.js:prepareFile",
+      "type": "function",
+      "name": "prepareFile",
+      "filePath": "src/services/image.js",
+      "lineRange": [
+        115,
+        118
+      ],
+      "summary": "Chuẩn bị file đính kèm tổng quát với kiểm tra kích thước.",
+      "tags": [
+        "file",
+        "media",
+        "upload"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/image.js:prepareMedia",
+      "type": "function",
+      "name": "prepareMedia",
+      "filePath": "src/services/image.js",
+      "lineRange": [
+        121,
+        128
+      ],
+      "summary": "Điểm vào điều phối: phân loại file rồi gọi hàm prepare phù hợp.",
+      "tags": [
+        "dispatcher",
+        "media",
+        "upload"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/services/mediaKinds.js",
+      "type": "file",
+      "name": "mediaKinds.js",
+      "filePath": "src/services/mediaKinds.js",
+      "summary": "Phân loại file media (ảnh, video, audio, file) theo đuôi/MIME, cung cấp giới hạn dung lượng, nhãn hiển thị và định dạng kích thước dễ đọc.",
+      "tags": [
+        "media",
+        "utility",
+        "classification",
+        "pure-functions",
+        "tested"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/mediaKinds.js:extOf",
+      "type": "function",
+      "name": "extOf",
+      "filePath": "src/services/mediaKinds.js",
+      "lineRange": [
+        18,
+        18
+      ],
+      "summary": "Lấy phần đuôi file viết thường.",
+      "tags": [
+        "utility",
+        "media",
+        "pure-function"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/mediaKinds.js:mimeOf",
+      "type": "function",
+      "name": "mimeOf",
+      "filePath": "src/services/mediaKinds.js",
+      "lineRange": [
+        33,
+        33
+      ],
+      "summary": "Suy ra MIME type từ file hoặc tên file.",
+      "tags": [
+        "utility",
+        "media",
+        "pure-function"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/mediaKinds.js:classify",
+      "type": "function",
+      "name": "classify",
+      "filePath": "src/services/mediaKinds.js",
+      "lineRange": [
+        36,
+        43
+      ],
+      "summary": "Phân loại file thành kind (image/video/audio/file).",
+      "tags": [
+        "utility",
+        "media",
+        "pure-function"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/mediaKinds.js:limitMb",
+      "type": "function",
+      "name": "limitMb",
+      "filePath": "src/services/mediaKinds.js",
+      "lineRange": [
+        45,
+        47
+      ],
+      "summary": "Trả về giới hạn dung lượng (MB) cho từng loại media.",
+      "tags": [
+        "utility",
+        "media",
+        "pure-function"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/mediaKinds.js:isVisual",
+      "type": "function",
+      "name": "isVisual",
+      "filePath": "src/services/mediaKinds.js",
+      "lineRange": [
+        50,
+        50
+      ],
+      "summary": "Cho biết loại media có hiển thị trực quan (ảnh/video) hay không.",
+      "tags": [
+        "utility",
+        "media",
+        "pure-function"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/mediaKinds.js:humanSize",
+      "type": "function",
+      "name": "humanSize",
+      "filePath": "src/services/mediaKinds.js",
+      "lineRange": [
+        52,
+        59
+      ],
+      "summary": "Định dạng số byte thành chuỗi dễ đọc (KB, MB).",
+      "tags": [
+        "utility",
+        "media",
+        "pure-function"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/mediaKinds.js:labelOf",
+      "type": "function",
+      "name": "labelOf",
+      "filePath": "src/services/mediaKinds.js",
+      "lineRange": [
+        62,
+        62
+      ],
+      "summary": "Trả về nhãn hiển thị của một loại media.",
+      "tags": [
+        "utility",
+        "media",
+        "pure-function"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/services/secureStore.js",
+      "type": "file",
+      "name": "secureStore.js",
+      "filePath": "src/services/secureStore.js",
+      "summary": "Kho bí mật (vault) mã hoá lưu trong IndexedDB, mở khoá bằng PIN: tạo, mở khoá, xác minh, đổi PIN, khoá và xoá sạch dữ liệu.",
+      "tags": [
+        "security",
+        "encryption",
+        "indexeddb",
+        "vault",
+        "service",
+        "tested"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Dùng IndexedDB qua các wrapper Promise và crypto service để mã hoá."
+    },
+    {
+      "id": "class:src/services/secureStore.js:VaultError",
+      "type": "class",
+      "name": "VaultError",
+      "filePath": "src/services/secureStore.js",
+      "lineRange": [
+        21,
+        23
+      ],
+      "summary": "Lớp lỗi riêng cho các thất bại của vault (sai PIN, chưa khởi tạo).",
+      "tags": [
+        "error",
+        "security",
+        "class"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/services/secureStore.js:SecureStore",
+      "type": "class",
+      "name": "SecureStore",
+      "filePath": "src/services/secureStore.js",
+      "lineRange": [
+        65,
+        207
+      ],
+      "summary": "Lớp quản lý vault mã hoá với vòng đời create/unlock/lock, get/set/remove, đổi PIN và wipe.",
+      "tags": [
+        "security",
+        "encryption",
+        "class",
+        "state"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:src/services/secureStore.js:openDb",
+      "type": "function",
+      "name": "openDb",
+      "filePath": "src/services/secureStore.js",
+      "lineRange": [
+        27,
+        41
+      ],
+      "summary": "Mở cơ sở dữ liệu IndexedDB và khởi tạo object store của vault.",
+      "tags": [
+        "indexeddb",
+        "database",
+        "helper"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/secureStore.js:tx",
+      "type": "function",
+      "name": "tx",
+      "filePath": "src/services/secureStore.js",
+      "lineRange": [
+        42,
+        53
+      ],
+      "summary": "Bao bọc một transaction IndexedDB thành Promise.",
+      "tags": [
+        "indexeddb",
+        "helper",
+        "promise"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/stores/draft.js",
+      "type": "file",
+      "name": "draft.js",
+      "filePath": "src/stores/draft.js",
+      "summary": "Pinia store giữ bản nháp bài đăng (nội dung, media đính kèm, đề cập người dùng, đối tượng xem) và trạng thái soạn thảo.",
+      "tags": [
+        "pinia",
+        "state-management",
+        "draft",
+        "store",
+        "tested"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/stores/draft.js:useDraftStore",
+      "type": "function",
+      "name": "useDraftStore",
+      "filePath": "src/stores/draft.js",
+      "lineRange": [
+        1,
+        83
+      ],
+      "summary": "Định nghĩa Pinia store cho bản nháp bài đăng, kết hợp media, mentions và people store.",
+      "tags": [
+        "pinia",
+        "store",
+        "draft"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/draft.test.js",
+      "type": "file",
+      "name": "draft.test.js",
+      "filePath": "tests/draft.test.js",
+      "summary": "Bộ test cho draft store, kiểm tra thêm/xoá media và các giới hạn theo config.",
+      "tags": [
+        "test",
+        "draft",
+        "pinia",
+        "unit-test"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/mediaKinds.test.js",
+      "type": "file",
+      "name": "mediaKinds.test.js",
+      "filePath": "tests/mediaKinds.test.js",
+      "summary": "Test đơn vị cho việc phân loại media, giới hạn dung lượng và định dạng kích thước.",
+      "tags": [
+        "test",
+        "media",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/services/drive.js",
+      "type": "file",
+      "name": "drive.js",
+      "filePath": "src/services/drive.js",
+      "summary": "Client REST cho Google Drive v3: bọc fetch với retry/backoff, giới hạn đồng thời (Limiter), upload multipart/resumable, quản lý file, folder, shortcut và permissions.",
+      "tags": [
+        "google-drive",
+        "api-client",
+        "service",
+        "rate-limiting",
+        "http"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Dùng class với async methods và lỗi tùy biến DriveError (notFound/forbidden)."
+    },
+    {
+      "id": "file:src/services/events.js",
+      "type": "file",
+      "name": "events.js",
+      "filePath": "src/services/events.js",
+      "summary": "Pub/sub nhỏ gọn giúp các store tự dọn state khi session kết thúc mà không cần import lẫn nhau.",
+      "tags": [
+        "event-bus",
+        "pub-sub",
+        "utility",
+        "decoupling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/stores/people.js",
+      "type": "file",
+      "name": "people.js",
+      "filePath": "src/stores/people.js",
+      "summary": "Pinia store quản lý danh bạ (contacts): tải, học tên từ mentions, thêm, đổi tên, xóa và tra cứu tên theo email.",
+      "tags": [
+        "pinia-store",
+        "contacts",
+        "state-management",
+        "people"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/stores/posts.js",
+      "type": "file",
+      "name": "posts.js",
+      "filePath": "src/stores/posts.js",
+      "summary": "Pinia store trung tâm cho bài viết: đồng bộ index mine/shared, mở và giải mã bài, comment, like, tạo/sửa/xóa, cấp quyền và auto-sync.",
+      "tags": [
+        "pinia-store",
+        "posts",
+        "state-management",
+        "sync",
+        "social"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/stores/session.js",
+      "type": "file",
+      "name": "session.js",
+      "filePath": "src/stores/session.js",
+      "summary": "Pinia store phiên đăng nhập: vault PIN, credentials OAuth, token refresh, khởi tạo DriveRepo, lock/sign-out, reset thiết bị và chế độ demo.",
+      "tags": [
+        "pinia-store",
+        "session",
+        "auth",
+        "oauth",
+        "security"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:src/services/drive.js:DriveError",
+      "type": "class",
+      "name": "DriveError",
+      "filePath": "src/services/drive.js",
+      "lineRange": [
+        10,
+        19
+      ],
+      "summary": "Lỗi tùy biến cho Drive API, mang status và có helper notFound/forbidden.",
+      "tags": [
+        "error",
+        "drive",
+        "class"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/services/drive.js:Limiter",
+      "type": "class",
+      "name": "Limiter",
+      "filePath": "src/services/drive.js",
+      "lineRange": [
+        26,
+        33
+      ],
+      "summary": "Bộ giới hạn số request đồng thời cho Drive API.",
+      "tags": [
+        "concurrency",
+        "rate-limiting",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/services/drive.js:DriveClient",
+      "type": "class",
+      "name": "DriveClient",
+      "filePath": "src/services/drive.js",
+      "lineRange": [
+        35,
+        222
+      ],
+      "summary": "Client Drive với các thao tác list/get/create/update/trash, upload file lớn, tải JSON/bytes và quản lý permissions.",
+      "tags": [
+        "api-client",
+        "drive",
+        "crud",
+        "permissions"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:src/services/drive.js:qs",
+      "type": "function",
+      "name": "qs",
+      "filePath": "src/services/drive.js",
+      "lineRange": [
+        22,
+        22
+      ],
+      "summary": "Tạo query string từ object params cho Drive API.",
+      "tags": [
+        "utility",
+        "query-string",
+        "drive"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/events.js:on",
+      "type": "function",
+      "name": "on",
+      "filePath": "src/services/events.js",
+      "lineRange": [
+        3,
+        7
+      ],
+      "summary": "Đăng ký handler cho sự kiện và trả về hàm hủy đăng ký.",
+      "tags": [
+        "pub-sub",
+        "event",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/services/events.js:emit",
+      "type": "function",
+      "name": "emit",
+      "filePath": "src/services/events.js",
+      "lineRange": [
+        8,
+        10
+      ],
+      "summary": "Phát sự kiện tới các handler, bắt lỗi từng handler để không ảnh hưởng nhau.",
+      "tags": [
+        "pub-sub",
+        "event",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/stores/people.js:usePeopleStore",
+      "type": "function",
+      "name": "usePeopleStore",
+      "filePath": "src/stores/people.js",
+      "lineRange": [
+        8,
+        65
+      ],
+      "summary": "Định nghĩa Pinia store danh bạ với load/learn/add/rename/remove.",
+      "tags": [
+        "pinia-store",
+        "contacts",
+        "composable"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/stores/posts.js:usePostsStore",
+      "type": "function",
+      "name": "usePostsStore",
+      "filePath": "src/stores/posts.js",
+      "lineRange": [
+        8,
+        166
+      ],
+      "summary": "Định nghĩa Pinia store bài viết với sync, social và quản lý quyền truy cập.",
+      "tags": [
+        "pinia-store",
+        "posts",
+        "composable",
+        "sync"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:src/stores/session.js:useSessionStore",
+      "type": "function",
+      "name": "useSessionStore",
+      "filePath": "src/stores/session.js",
+      "lineRange": [
+        17,
+        237
+      ],
+      "summary": "Định nghĩa Pinia store phiên: unlock vault, OAuth, token, repo lifecycle, demo.",
+      "tags": [
+        "pinia-store",
+        "session",
+        "auth",
+        "composable"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/composables/share.js",
+      "type": "file",
+      "name": "share.js",
+      "filePath": "src/composables/share.js",
+      "summary": "Cung cấp các helper chia sẻ: tạo link mở post trong app, tạo link Google Chat tới một người (chỉ cho phép https), mở chat trong tab mới và copy text vào clipboard có fallback.",
+      "tags": [
+        "utility",
+        "share",
+        "security",
+        "clipboard",
+        "tested"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Chỉ mở URL template từ config khi protocol là https để tránh javascript:/data:; copyText fallback sang execCommand khi Clipboard API lỗi."
+    },
+    {
+      "id": "function:src/composables/share.js:postLink",
+      "type": "function",
+      "name": "postLink",
+      "filePath": "src/composables/share.js",
+      "lineRange": [
+        7,
+        10
+      ],
+      "summary": "Tạo link tới post; nếu post chia sẻ bằng link công khai thì dùng id của post.json, ngược lại dùng id của folder.",
+      "tags": [
+        "utility",
+        "link",
+        "share"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/composables/share.js:chatLink",
+      "type": "function",
+      "name": "chatLink",
+      "filePath": "src/composables/share.js",
+      "lineRange": [
+        13,
+        18
+      ],
+      "summary": "Thay {me}/{email} vào template chatUrl trong config và chỉ chấp nhận kết quả https, nếu không thì dùng link Google Chat mặc định.",
+      "tags": [
+        "utility",
+        "security",
+        "validation",
+        "chat"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/composables/share.js:openChat",
+      "type": "function",
+      "name": "openChat",
+      "filePath": "src/composables/share.js",
+      "lineRange": [
+        20,
+        22
+      ],
+      "summary": "Mở cuộc trò chuyện Google Chat trong tab mới với noopener,noreferrer.",
+      "tags": [
+        "utility",
+        "chat",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/composables/share.js:copyText",
+      "type": "function",
+      "name": "copyText",
+      "filePath": "src/composables/share.js",
+      "lineRange": [
+        24,
+        37
+      ],
+      "summary": "Copy text vào clipboard bằng Clipboard API, fallback sang textarea ẩn và execCommand; trả về true/false theo kết quả.",
+      "tags": [
+        "utility",
+        "clipboard",
+        "fallback"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/chat.test.js",
+      "type": "file",
+      "name": "chat.test.js",
+      "filePath": "tests/chat.test.js",
+      "summary": "Test vitest kiểm tra chatLink tạo đúng URL cuộc trò chuyện trực tiếp với tham số authuser được mã hóa.",
+      "tags": [
+        "test",
+        "vitest",
+        "chat"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/security.test.js",
+      "type": "file",
+      "name": "security.test.js",
+      "filePath": "tests/security.test.js",
+      "summary": "Test bảo mật: post.json không tin cậy không được giữ mime thực thi hay id sai, tên file bị làm sạch, chỉ link http(s) được tạo link và chatLink luôn là https.",
+      "tags": [
+        "test",
+        "security",
+        "vitest",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/fakeDrive.js",
+      "type": "file",
+      "name": "fakeDrive.js",
+      "filePath": "tests/fakeDrive.js",
+      "summary": "Giả lập Google Drive trong bộ nhớ (FakeDrive) dùng cho test: xử lý files, permissions, truy vấn và upload mà không cần mạng thật.",
+      "tags": [
+        "test",
+        "mock",
+        "test-helper",
+        "google-drive"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:tests/fakeDrive.js:FakeDrive",
+      "type": "class",
+      "name": "FakeDrive",
+      "filePath": "tests/fakeDrive.js",
+      "lineRange": [
+        40,
+        272
+      ],
+      "summary": "Lớp fake của Drive REST API, giữ file/permission trong memory, mô phỏng fetch, người dùng và kiểm tra bytes bị lộ.",
+      "tags": [
+        "test",
+        "mock",
+        "class",
+        "google-drive"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:tests/fakeDrive.js:splitAnd",
+      "type": "function",
+      "name": "splitAnd",
+      "filePath": "tests/fakeDrive.js",
+      "lineRange": [
+        16,
+        37
+      ],
+      "summary": "Tách chuỗi truy vấn Drive theo toán tử \"and\" để bộ giả lập phân tích điều kiện query.",
+      "tags": [
+        "utility",
+        "parser",
+        "test-helper"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/repo.test.js",
+      "type": "file",
+      "name": "repo.test.js",
+      "filePath": "tests/repo.test.js",
+      "summary": "Bộ test tích hợp cho repository: cấu trúc thư mục, chia sẻ, mã hoá bằng mật khẩu, chế độ comment, video/audio, likes và contacts trên FakeDrive.",
+      "tags": [
+        "test",
+        "integration-test",
+        "repository",
+        "sharing"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:tests/repo.test.js:mk",
+      "type": "function",
+      "name": "mk",
+      "filePath": "tests/repo.test.js",
+      "lineRange": [
+        33,
+        37
+      ],
+      "summary": "Helper dựng repo và người dùng FakeDrive cho từng test.",
+      "tags": [
+        "test-helper",
+        "factory",
+        "setup"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/session.test.js",
+      "type": "file",
+      "name": "session.test.js",
+      "filePath": "tests/session.test.js",
+      "summary": "Test cho vòng đời session: PIN, khoá, OAuth Google (CSRF, refresh token), offline, sign-out và reset.",
+      "tags": [
+        "test",
+        "session",
+        "authentication",
+        "oauth"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:tests/session.test.js:installFetch",
+      "type": "function",
+      "name": "installFetch",
+      "filePath": "tests/session.test.js",
+      "lineRange": [
+        19,
+        40
+      ],
+      "summary": "Cài đặt fetch giả để mô phỏng các endpoint OAuth và Drive trong test session.",
+      "tags": [
+        "test-helper",
+        "mock",
+        "fetch"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:tests/session.test.js:simulateGoogleRedirect",
+      "type": "function",
+      "name": "simulateGoogleRedirect",
+      "filePath": "tests/session.test.js",
+      "lineRange": [
+        43,
+        51
+      ],
+      "summary": "Mô phỏng redirect trả về từ Google với code và state.",
+      "tags": [
+        "test-helper",
+        "oauth",
+        "mock"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:Dockerfile",
+      "type": "service",
+      "name": "Dockerfile",
+      "filePath": "Dockerfile",
+      "summary": "Dockerfile multi-stage: build site tĩnh bằng node:22-alpine rồi serve bằng nginx-unprivileged chạy non-root, có healthcheck tại /healthz và script entrypoint áp dụng biến VITE_* lúc khởi động container.",
+      "tags": [
+        "containerization",
+        "infrastructure",
+        "deployment",
+        "nginx"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Multi-stage build giúp image cuối nhỏ gọn, chỉ chứa dist và nginx; chỉ VITE_BASE_PATH được bake lúc build."
+    },
+    {
+      "id": "service:docker-compose.yml",
+      "type": "service",
+      "name": "docker-compose.yml",
+      "filePath": "docker-compose.yml",
+      "summary": "Compose chạy service specact (build từ Dockerfile) với env_file .env, map cổng cấu hình được, root filesystem read-only, bỏ toàn bộ capabilities và no-new-privileges để tăng cường bảo mật.",
+      "tags": [
+        "orchestration",
+        "infrastructure",
+        "security",
+        "deployment"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:.dockerignore",
+      "type": "config",
+      "name": ".dockerignore",
+      "filePath": ".dockerignore",
+      "summary": "Loại trừ node_modules, dist, .git, log, coverage và tests khỏi build context của Docker để build nhanh và gọn hơn.",
+      "tags": [
+        "configuration",
+        "containerization",
+        "build-system"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "pipeline:.github/workflows/ci.yml",
+      "type": "pipeline",
+      "name": "ci.yml",
+      "filePath": ".github/workflows/ci.yml",
+      "summary": "Workflow GitHub Actions chạy khi push và pull_request: checkout, cài Node 22 với cache npm, rồi chạy npm ci, lint, test và build.",
+      "tags": [
+        "ci-cd",
+        "github-actions",
+        "deployment",
+        "build-system"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:.env",
+      "type": "config",
+      "name": ".env",
+      "filePath": ".env",
+      "summary": "Tệp cấu hình runtime thực tế cho SPECACT: cổng Docker, giao diện, ngôn ngữ, Google Drive/OAuth, bảo mật PIN/PBKDF2 và giới hạn media.",
+      "tags": [
+        "configuration",
+        "environment",
+        "docker",
+        "security"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:.env.example",
+      "type": "config",
+      "name": ".env.example",
+      "filePath": ".env.example",
+      "summary": "Mẫu cấu hình các biến VITE_* và SPECACT_PORT (song ngữ vi/en), có chú thích; không chứa Google client secret.",
+      "tags": [
+        "configuration",
+        "environment",
+        "template",
+        "documentation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:CLAUDE.md",
+      "type": "document",
+      "name": "CLAUDE.md",
+      "filePath": "CLAUDE.md",
+      "summary": "Quy tắc làm việc cho dự án SPECACT: các bất biến sản phẩm, bài học rút ra, quy trình thay đổi, quy ước code, chống XSS và hướng dẫn knowledge graph.",
+      "tags": [
+        "documentation",
+        "conventions",
+        "guidelines",
+        "security"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:CLAUDE.vi.md",
+      "type": "document",
+      "name": "CLAUDE.vi.md",
+      "filePath": "CLAUDE.vi.md",
+      "summary": "Bản tiếng Việt của CLAUDE.md với cùng các quy tắc làm việc và bất biến của dự án.",
+      "tags": [
+        "documentation",
+        "conventions",
+        "localization",
+        "guidelines"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "README.md",
+      "summary": "Tổng quan dự án SPECACT: tính năng, quick start, Docker, cấu hình .env, dữ liệu trong Drive, phát triển và hạn chế đã biết.",
+      "tags": [
+        "documentation",
+        "entry-point",
+        "overview",
+        "docker"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:README.vi.md",
+      "type": "document",
+      "name": "README.vi.md",
+      "filePath": "README.vi.md",
+      "summary": "Bản tiếng Việt của README với hướng dẫn cài đặt, cấu hình và phát triển.",
+      "tags": [
+        "documentation",
+        "entry-point",
+        "localization",
+        "overview"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:index.html",
+      "type": "file",
+      "name": "index.html",
+      "filePath": "index.html",
+      "summary": "Trang HTML gốc của PWA: khai báo meta, manifest, nạp env-config.js và mount Vue app qua /src/main.js.",
+      "tags": [
+        "entry-point",
+        "html",
+        "pwa",
+        "markup"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:package.json",
+      "type": "config",
+      "name": "package.json",
+      "filePath": "package.json",
+      "summary": "Khai báo package spec-act: scripts (dev/build/test/lint/icons), phụ thuộc Vue 3, Pinia, Vue Router và toolchain Vite/Vitest/ESLint.",
+      "tags": [
+        "configuration",
+        "build-system",
+        "dependencies",
+        "vue"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/ARCHITECTURE.md",
+      "type": "document",
+      "name": "ARCHITECTURE.md",
+      "filePath": "docs/ARCHITECTURE.md",
+      "summary": "Bản tiếng Anh. Tài liệu kiến trúc mô tả cấu trúc thư mục Drive, schema post.json/comments.json/likes.json/index.json, mô hình phân quyền, đồng bộ index và code map của SPECACT.",
+      "tags": [
+        "documentation",
+        "architecture",
+        "drive-layout",
+        "data-schema",
+        "english"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/ARCHITECTURE.vi.md",
+      "type": "document",
+      "name": "ARCHITECTURE.vi.md",
+      "filePath": "docs/ARCHITECTURE.vi.md",
+      "summary": "Bản tiếng Việt. Tài liệu kiến trúc mô tả cấu trúc thư mục Drive, schema post.json/comments.json/likes.json/index.json, mô hình phân quyền, đồng bộ index và code map của SPECACT.",
+      "tags": [
+        "documentation",
+        "architecture",
+        "drive-layout",
+        "data-schema",
+        "vietnamese"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/GOOGLE_SETUP.md",
+      "type": "document",
+      "name": "GOOGLE_SETUP.md",
+      "filePath": "docs/GOOGLE_SETUP.md",
+      "summary": "Bản tiếng Anh. Hướng dẫn thiết lập Google OAuth: tạo project, bật Drive API, cấu hình consent screen, tạo OAuth client, nhập vào SPECACT và xử lý sự cố.",
+      "tags": [
+        "documentation",
+        "oauth",
+        "google-drive",
+        "setup-guide",
+        "english"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/GOOGLE_SETUP.vi.md",
+      "type": "document",
+      "name": "GOOGLE_SETUP.vi.md",
+      "filePath": "docs/GOOGLE_SETUP.vi.md",
+      "summary": "Bản tiếng Việt. Hướng dẫn thiết lập Google OAuth: tạo project, bật Drive API, cấu hình consent screen, tạo OAuth client, nhập vào SPECACT và xử lý sự cố.",
+      "tags": [
+        "documentation",
+        "oauth",
+        "google-drive",
+        "setup-guide",
+        "vietnamese"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/OPEN_FORMAT.md",
+      "type": "document",
+      "name": "OPEN_FORMAT.md",
+      "filePath": "docs/OPEN_FORMAT.md",
+      "summary": "Bản tiếng Anh. Mô tả các nguyên tắc dữ liệu mở, di động (data sovereignty) và đặc tả tối thiểu để ứng dụng khác đọc dữ liệu SPECACT.",
+      "tags": [
+        "documentation",
+        "open-format",
+        "data-sovereignty",
+        "specification",
+        "english"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/OPEN_FORMAT.vi.md",
+      "type": "document",
+      "name": "OPEN_FORMAT.vi.md",
+      "filePath": "docs/OPEN_FORMAT.vi.md",
+      "summary": "Bản tiếng Việt. Mô tả các nguyên tắc dữ liệu mở, di động (data sovereignty) và đặc tả tối thiểu để ứng dụng khác đọc dữ liệu SPECACT.",
+      "tags": [
+        "documentation",
+        "open-format",
+        "data-sovereignty",
+        "specification",
+        "vietnamese"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/SECURITY.md",
+      "type": "document",
+      "name": "SECURITY.md",
+      "filePath": "docs/SECURITY.md",
+      "summary": "Bản tiếng Anh. Tài liệu bảo mật: ai thấy gì, local vault, OAuth, bài viết có mật khẩu, link công khai, camera/mic, ảnh, giới hạn chia sẻ và cách báo lỗ hổng.",
+      "tags": [
+        "documentation",
+        "security",
+        "privacy",
+        "encryption",
+        "english"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/SECURITY.vi.md",
+      "type": "document",
+      "name": "SECURITY.vi.md",
+      "filePath": "docs/SECURITY.vi.md",
+      "summary": "Bản tiếng Việt. Tài liệu bảo mật: ai thấy gì, local vault, OAuth, bài viết có mật khẩu, link công khai, camera/mic, ảnh, giới hạn chia sẻ và cách báo lỗ hổng.",
+      "tags": [
+        "documentation",
+        "security",
+        "privacy",
+        "encryption",
+        "vietnamese"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/styles/base.css",
+      "type": "file",
+      "name": "base.css",
+      "filePath": "src/styles/base.css",
+      "summary": "Nền tảng CSS: design tokens (biến màu light/dark theme, bán kính, font), reset, tiện ích (.sr, .muted, .grow) và hệ thống nút .btn.",
+      "tags": [
+        "design-tokens",
+        "theming",
+        "reset",
+        "css"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/styles/compose.css",
+      "type": "file",
+      "name": "compose.css",
+      "filePath": "src/styles/compose.css",
+      "summary": "Style cho màn hình soạn bài viết: textarea, thumbnail ảnh, chọn đối tượng (pickgrid) và danh sách bạn bè (fgrid).",
+      "tags": [
+        "compose",
+        "form",
+        "layout",
+        "css"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/styles/extra.css",
+      "type": "file",
+      "name": "extra.css",
+      "filePath": "src/styles/extra.css",
+      "summary": "Bổ sung trên design v3: autolink, responsive (media query mobile), update banner, màn hình insecure và segmented control.",
+      "tags": [
+        "responsive",
+        "overrides",
+        "banner",
+        "css"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/styles/feed.css",
+      "type": "file",
+      "name": "feed.css",
+      "filePath": "src/styles/feed.css",
+      "summary": "Style cho feed bài viết: post card, header, văn bản, lưới ảnh (n1/n2/n3) và thanh actions.",
+      "tags": [
+        "feed",
+        "post-card",
+        "image-grid",
+        "css"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/styles/overlays.css",
+      "type": "file",
+      "name": "overlays.css",
+      "filePath": "src/styles/overlays.css",
+      "summary": "Style lớp phủ: toast, image viewer toàn màn hình, dialog, keyframes và hỗ trợ prefers-reduced-motion.",
+      "tags": [
+        "overlay",
+        "toast",
+        "dialog",
+        "accessibility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/styles/pages.css",
+      "type": "file",
+      "name": "pages.css",
+      "filePath": "src/styles/pages.css",
+      "summary": "Style trang cài đặt: khối .set, hàng tuỳ chọn, ô chọn theme (tiles với mini preview light/dark/system) và storage.",
+      "tags": [
+        "settings",
+        "theme-picker",
+        "layout",
+        "css"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/styles/shell.css",
+      "type": "file",
+      "name": "shell.css",
+      "filePath": "src/styles/shell.css",
+      "summary": "Layout khung ứng dụng 3 cột: sidebar, nav, search, main và rail bên phải với mosaic ảnh.",
+      "tags": [
+        "layout",
+        "shell",
+        "navigation",
+        "css"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/styles/welcome.css",
+      "type": "file",
+      "name": "welcome.css",
+      "filePath": "src/styles/welcome.css",
+      "summary": "Style màn hình chào: bố cục 2 cột, hiệu ứng orbit avatar, orbit-card và animation vẽ đường nối.",
+      "tags": [
+        "welcome",
+        "animation",
+        "orbit",
+        "css"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:.ua/config.json",
+      "type": "config",
+      "name": "config.json",
+      "filePath": ".ua/config.json",
+      "summary": "Cấu hình Understand-Anything: bật autoUpdate và đặt ngôn ngữ đầu ra là tiếng Việt.",
+      "tags": [
+        "configuration",
+        "tooling",
+        "i18n"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:docker/40-specact-env.sh",
+      "type": "file",
+      "name": "40-specact-env.sh",
+      "filePath": "docker/40-specact-env.sh",
+      "summary": "Script khởi động container: gom mọi biến môi trường VITE_* thành /tmp/specact/env-config.js (có escape) để đổi cấu hình mà không cần build lại image.",
+      "tags": [
+        "shell",
+        "deployment",
+        "runtime-config",
+        "containerization"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Dùng sed để escape dấu \\, \" và < nhằm tránh injection vào JS sinh ra."
+    },
+    {
+      "id": "config:eslint.config.js",
+      "type": "config",
+      "name": "eslint.config.js",
+      "filePath": "eslint.config.js",
+      "summary": "Cấu hình ESLint flat config cho Vue 3: rule recommended + vue essential, tắt multi-word-component-names, thêm globals vitest cho thư mục tests.",
+      "tags": [
+        "configuration",
+        "linting",
+        "vue",
+        "build-system"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:public/env-config.js",
+      "type": "file",
+      "name": "env-config.js",
+      "filePath": "public/env-config.js",
+      "summary": "Placeholder cấu hình runtime khởi tạo window.__SPECACT_ENV__, bị ghi đè khi container khởi động.",
+      "tags": [
+        "runtime-config",
+        "configuration",
+        "entry-point"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:scripts/gen-icons.mjs",
+      "type": "file",
+      "name": "gen-icons.mjs",
+      "filePath": "scripts/gen-icons.mjs",
+      "summary": "Script dùng sharp render logo SVG thành các icon PWA (192, 512, maskable, apple-touch) vào public/icons.",
+      "tags": [
+        "build-system",
+        "pwa",
+        "assets",
+        "script"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:scripts/gen-icons.mjs:logo",
+      "type": "function",
+      "name": "gen-icons.mjs",
+      "filePath": "scripts/gen-icons.mjs",
+      "summary": "Tạo Buffer SVG của logo với kích thước, padding và màu nền cho từng icon.",
+      "tags": [
+        "svg",
+        "utility",
+        "assets"
+      ],
+      "complexity": "simple",
+      "lineRange": [
+        5,
+        10
+      ]
+    },
+    {
+      "id": "service:docker/nginx.conf",
+      "type": "service",
+      "name": "nginx.conf",
+      "filePath": "docker/nginx.conf",
+      "summary": "Cấu hình nginx phục vụ tĩnh SPA trên cổng 8080 (gzip, cache assets immutable, env-config.js động), không có backend.",
+      "tags": [
+        "containerization",
+        "infrastructure",
+        "nginx",
+        "deployment"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:docker/security-headers.conf",
+      "type": "config",
+      "name": "security-headers.conf",
+      "filePath": "docker/security-headers.conf",
+      "summary": "Các header bảo mật (CSP giới hạn connect-src tới Google, X-Frame-Options, Permissions-Policy...) được include trong mọi location của nginx.",
+      "tags": [
+        "security",
+        "configuration",
+        "nginx",
+        "infrastructure"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:src/assets/fonts.css",
+      "type": "config",
+      "name": "fonts.css",
+      "filePath": "src/assets/fonts.css",
+      "summary": "Khai báo @font-face cho các font biến thiên (Bricolage Grotesque, Newsreader) theo unicode-range gồm cả tiếng Việt.",
+      "tags": [
+        "css",
+        "fonts",
+        "styling",
+        "assets"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/components/auth/ChangePinDialog.vue",
+      "type": "file",
+      "name": "ChangePinDialog.vue",
+      "filePath": "src/components/auth/ChangePinDialog.vue",
+      "summary": "Hộp thoại đổi mã PIN, dùng PinPad nhập từng bước và cập nhật session store.",
+      "tags": [
+        "component",
+        "auth",
+        "dialog",
+        "security"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Vue 3 SFC dùng <script setup>."
+    },
+    {
+      "id": "file:src/components/auth/CredentialsForm.vue",
+      "type": "file",
+      "name": "CredentialsForm.vue",
+      "filePath": "src/components/auth/CredentialsForm.vue",
+      "summary": "Form nhập Google OAuth client ID/secret kèm hướng dẫn, redirect URI có nút sao chép và ẩn/hiện mật khẩu.",
+      "tags": [
+        "component",
+        "auth",
+        "form",
+        "oauth"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Vue 3 SFC dùng <script setup>."
+    },
+    {
+      "id": "file:src/components/auth/PinPad.vue",
+      "type": "file",
+      "name": "PinPad.vue",
+      "filePath": "src/components/auth/PinPad.vue",
+      "summary": "Bàn phím số nhập PIN, phát sự kiện complete khi đủ độ dài; có trạng thái lỗi/bận.",
+      "tags": [
+        "component",
+        "auth",
+        "input",
+        "security"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Vue 3 SFC dùng <script setup>."
+    },
+    {
+      "id": "file:src/components/layout/AppShell.vue",
+      "type": "file",
+      "name": "AppShell.vue",
+      "filePath": "src/components/layout/AppShell.vue",
+      "summary": "Khung layout chính: thanh trên với logo, đổi theme, avatar, điều hướng và RightRail.",
+      "tags": [
+        "component",
+        "layout",
+        "navigation",
+        "shell"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Vue 3 SFC dùng <script setup>."
+    },
+    {
+      "id": "file:src/components/layout/DriveCard.vue",
+      "type": "file",
+      "name": "DriveCard.vue",
+      "filePath": "src/components/layout/DriveCard.vue",
+      "summary": "Thẻ hiển thị trạng thái Google Drive (hoặc demo) và dung lượng đã dùng.",
+      "tags": [
+        "component",
+        "layout",
+        "drive",
+        "status"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Vue 3 SFC dùng <script setup>."
+    },
+    {
+      "id": "file:src/components/layout/LegalLinks.vue",
+      "type": "file",
+      "name": "LegalLinks.vue",
+      "filePath": "src/components/layout/LegalLinks.vue",
+      "summary": "Các liên kết pháp lý (điều khoản, quyền riêng tư) có biến thể inverse.",
+      "tags": [
+        "component",
+        "layout",
+        "legal"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Vue 3 SFC dùng <script setup>."
+    },
+    {
+      "id": "file:src/components/layout/RightRail.vue",
+      "type": "file",
+      "name": "RightRail.vue",
+      "filePath": "src/components/layout/RightRail.vue",
+      "summary": "Cột phải hiển thị đồ thị quỹ đạo, thẻ Drive, bản nháp và người liên hệ theo route hiện tại.",
+      "tags": [
+        "component",
+        "layout",
+        "sidebar",
+        "people"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Vue 3 SFC dùng <script setup>."
+    },
+    {
+      "id": "file:src/components/post/AttachmentList.vue",
+      "type": "file",
+      "name": "AttachmentList.vue",
+      "filePath": "src/components/post/AttachmentList.vue",
+      "summary": "Danh sách tệp đính kèm (audio/file) với phát và tải xuống an toàn qua session.",
+      "tags": [
+        "component",
+        "post",
+        "attachments",
+        "media"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Vue 3 SFC dùng <script setup>."
+    },
+    {
+      "id": "file:src/components/post/AudienceRow.vue",
+      "type": "file",
+      "name": "AudienceRow.vue",
+      "filePath": "src/components/post/AudienceRow.vue",
+      "summary": "Một dòng người nhận bài viết: avatar, tên, vai trò, nút xóa và chat.",
+      "tags": [
+        "component",
+        "post",
+        "audience",
+        "sharing"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Vue 3 SFC dùng <script setup>."
+    },
+    {
+      "id": "file:src/components/post/CameraDialog.vue",
+      "type": "file",
+      "name": "CameraDialog.vue",
+      "filePath": "src/components/post/CameraDialog.vue",
+      "summary": "Hộp thoại chụp ảnh, quay video và ghi âm bằng MediaDevices, có đổi camera và đồng hồ đo âm lượng.",
+      "tags": [
+        "component",
+        "post",
+        "camera",
+        "media"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Vue 3 SFC dùng <script setup>."
+    },
+    {
+      "id": "file:src/components/post/MentionTextarea.vue",
+      "type": "file",
+      "name": "MentionTextarea.vue",
+      "filePath": "src/components/post/MentionTextarea.vue",
+      "summary": "Textarea hỗ trợ @mention với gợi ý email/người dùng và avatar.",
+      "tags": [
+        "component",
+        "post",
+        "mention",
+        "input"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Vue 3 SFC dùng <script setup>."
+    },
+    {
+      "id": "file:src/components/post/PhotoGrid.vue",
+      "type": "file",
+      "name": "PhotoGrid.vue",
+      "filePath": "src/components/post/PhotoGrid.vue",
+      "summary": "Lưới ảnh/video của bài viết, phát sự kiện open để mở lightbox.",
+      "tags": [
+        "component",
+        "post",
+        "media",
+        "gallery"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Vue 3 SFC dùng <script setup>."
+    },
+    {
+      "id": "file:src/components/post/PostCard.vue",
+      "type": "file",
+      "name": "PostCard.vue",
+      "filePath": "src/components/post/PostCard.vue",
+      "summary": "Thẻ bài viết: tác giả, nội dung RichText, ảnh, đính kèm, đối tượng và SealedBox khi bị khóa.",
+      "tags": [
+        "component",
+        "post",
+        "card",
+        "ui"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Vue 3 SFC dùng <script setup>."
+    },
+    {
+      "id": "file:src/components/post/RichText.vue",
+      "type": "file",
+      "name": "RichText.vue",
+      "filePath": "src/components/post/RichText.vue",
+      "summary": "Hiển thị văn bản đã tokenize, làm nổi bật mention theo store people.",
+      "tags": [
+        "component",
+        "post",
+        "text",
+        "mention"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Vue 3 SFC dùng <script setup>."
+    },
+    {
+      "id": "file:src/components/post/SealedBox.vue",
+      "type": "file",
+      "name": "SealedBox.vue",
+      "filePath": "src/components/post/SealedBox.vue",
+      "summary": "Hộp bài viết được niêm phong, mở khóa bằng mật khẩu qua posts store.",
+      "tags": [
+        "component",
+        "post",
+        "encryption",
+        "security"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Vue 3 SFC dùng <script setup>."
+    },
+    {
+      "id": "file:src/components/ui/AppAvatar.vue",
+      "type": "file",
+      "name": "AppAvatar.vue",
+      "filePath": "src/components/ui/AppAvatar.vue",
+      "summary": "Avatar người dùng suy ra từ email/tên với nhiều cỡ.",
+      "tags": [
+        "component",
+        "ui",
+        "avatar"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Vue 3 SFC dùng <script setup>."
+    },
+    {
+      "id": "file:src/components/ui/AppIcon.vue",
+      "type": "file",
+      "name": "AppIcon.vue",
+      "filePath": "src/components/ui/AppIcon.vue",
+      "summary": "Thành phần icon SVG tập trung, chọn theo tên với size và fill.",
+      "tags": [
+        "component",
+        "ui",
+        "icon",
+        "svg"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Vue 3 SFC dùng <script setup>."
+    },
+    {
+      "id": "file:src/components/ui/AppLogo.vue",
+      "type": "file",
+      "name": "AppLogo.vue",
+      "filePath": "src/components/ui/AppLogo.vue",
+      "summary": "Component logo ứng dụng dạng SVG nhỏ, dùng ở màn hình Welcome và trang pháp lý.",
+      "tags": [
+        "component",
+        "ui",
+        "logo"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Vue SFC dùng <script setup>."
+    },
+    {
+      "id": "file:src/components/ui/AvatarPile.vue",
+      "type": "file",
+      "name": "AvatarPile.vue",
+      "filePath": "src/components/ui/AvatarPile.vue",
+      "summary": "Hiển thị chồng avatar của danh sách email người nhận cùng nhãn tóm tắt (ví dụ 'A, B và N người khác') qua i18n.",
+      "tags": [
+        "component",
+        "ui",
+        "avatar"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Vue SFC dùng <script setup>."
+    },
+    {
+      "id": "file:src/components/ui/ChatButton.vue",
+      "type": "file",
+      "name": "ChatButton.vue",
+      "filePath": "src/components/ui/ChatButton.vue",
+      "summary": "Nút mở cuộc trò chuyện với một người bạn theo email, dùng session và people store.",
+      "tags": [
+        "component",
+        "ui",
+        "chat"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Vue SFC dùng <script setup>."
+    },
+    {
+      "id": "file:src/components/ui/ConfirmDialog.vue",
+      "type": "file",
+      "name": "ConfirmDialog.vue",
+      "filePath": "src/components/ui/ConfirmDialog.vue",
+      "summary": "Hộp thoại xác nhận toàn cục điều khiển bởi ui store, quản lý focus bằng nextTick.",
+      "tags": [
+        "component",
+        "dialog",
+        "accessibility",
+        "ui"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Vue SFC dùng <script setup>."
+    },
+    {
+      "id": "file:src/components/ui/Lightbox.vue",
+      "type": "file",
+      "name": "Lightbox.vue",
+      "filePath": "src/components/ui/Lightbox.vue",
+      "summary": "Lightbox xem ảnh toàn màn hình với điều hướng, đóng bằng phím và tải ảnh bảo mật qua session store.",
+      "tags": [
+        "component",
+        "lightbox",
+        "image-viewer",
+        "ui"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Vue SFC dùng <script setup>."
+    },
+    {
+      "id": "file:src/components/ui/OrbitGraphic.vue",
+      "type": "file",
+      "name": "OrbitGraphic.vue",
+      "filePath": "src/components/ui/OrbitGraphic.vue",
+      "summary": "Đồ họa quỹ đạo gồm các avatar và icon xoay quanh, trang trí cho màn hình Welcome.",
+      "tags": [
+        "component",
+        "graphic",
+        "decoration",
+        "ui"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Vue SFC dùng <script setup>."
+    },
+    {
+      "id": "file:src/components/ui/SecureImage.vue",
+      "type": "file",
+      "name": "SecureImage.vue",
+      "filePath": "src/components/ui/SecureImage.vue",
+      "summary": "Component ảnh tải nội dung bảo mật từ Google Drive bằng token phiên, quản lý object URL và dọn dẹp khi unmount.",
+      "tags": [
+        "component",
+        "image",
+        "security",
+        "drive"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Vue SFC dùng <script setup>."
+    },
+    {
+      "id": "file:src/components/ui/ToastHost.vue",
+      "type": "file",
+      "name": "ToastHost.vue",
+      "filePath": "src/components/ui/ToastHost.vue",
+      "summary": "Vùng chứa hiển thị thông báo toast từ ui store.",
+      "tags": [
+        "component",
+        "toast",
+        "notification",
+        "ui"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Vue SFC dùng <script setup>."
+    },
+    {
+      "id": "file:src/views/ComposeView.vue",
+      "type": "file",
+      "name": "ComposeView.vue",
+      "filePath": "src/views/ComposeView.vue",
+      "summary": "Màn hình soạn bài: văn bản có mention, ảnh, camera, chọn đối tượng xem, lưu nháp và chặn rời trang khi chưa lưu.",
+      "tags": [
+        "view",
+        "compose",
+        "draft",
+        "form"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Vue SFC dùng <script setup>."
+    },
+    {
+      "id": "file:src/views/FeedView.vue",
+      "type": "file",
+      "name": "FeedView.vue",
+      "filePath": "src/views/FeedView.vue",
+      "summary": "Màn hình bảng tin liệt kê PostCard từ posts store, có làm mới, tải thêm và định dạng thời gian theo locale.",
+      "tags": [
+        "view",
+        "feed",
+        "routing"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Vue SFC dùng <script setup>."
+    },
+    {
+      "id": "file:src/views/FriendsView.vue",
+      "type": "file",
+      "name": "FriendsView.vue",
+      "filePath": "src/views/FriendsView.vue",
+      "summary": "Màn hình quản lý bạn bè: danh sách, thêm bằng email có kiểm tra hợp lệ và mở chat.",
+      "tags": [
+        "view",
+        "friends",
+        "people"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Vue SFC dùng <script setup>."
+    },
+    {
+      "id": "file:src/views/LegalView.vue",
+      "type": "file",
+      "name": "LegalView.vue",
+      "filePath": "src/views/LegalView.vue",
+      "summary": "Trang pháp lý dùng chung (about, terms, privacy) nạp nội dung theo ngôn ngữ đang chọn.",
+      "tags": [
+        "view",
+        "legal",
+        "i18n"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Vue SFC dùng <script setup>."
+    },
+    {
+      "id": "file:src/views/NotFoundView.vue",
+      "type": "file",
+      "name": "NotFoundView.vue",
+      "filePath": "src/views/NotFoundView.vue",
+      "summary": "Trang 404 đơn giản khi route không tồn tại.",
+      "tags": [
+        "view",
+        "error-page",
+        "routing"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Vue SFC dùng <script setup>."
+    },
+    {
+      "id": "file:src/views/PostView.vue",
+      "type": "file",
+      "name": "PostView.vue",
+      "filePath": "src/views/PostView.vue",
+      "summary": "Màn hình chi tiết bài viết với RichText, bình luận/phản hồi, đối tượng xem và nút chat.",
+      "tags": [
+        "view",
+        "post-detail",
+        "routing",
+        "interaction"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Vue SFC dùng <script setup>."
+    },
+    {
+      "id": "file:src/views/SettingsView.vue",
+      "type": "file",
+      "name": "SettingsView.vue",
+      "filePath": "src/views/SettingsView.vue",
+      "summary": "Màn hình cài đặt: ngôn ngữ, giao diện, thông tin tài khoản, đổi PIN, đăng xuất và liên kết pháp lý.",
+      "tags": [
+        "view",
+        "settings",
+        "preferences",
+        "auth"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Vue SFC dùng <script setup>."
+    },
+    {
+      "id": "file:src/views/WelcomeView.vue",
+      "type": "file",
+      "name": "WelcomeView.vue",
+      "filePath": "src/views/WelcomeView.vue",
+      "summary": "Màn hình chào/đăng nhập gồm PinPad, form thông tin, đồ họa quỹ đạo và đăng nhập Google.",
+      "tags": [
+        "view",
+        "welcome",
+        "auth",
+        "onboarding"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Vue SFC dùng <script setup>."
+    },
+    {
+      "id": "config:src/locales/en.json",
+      "type": "config",
+      "name": "en.json",
+      "filePath": "src/locales/en.json",
+      "summary": "Bản dịch tiếng Anh cho toàn bộ chuỗi giao diện ứng dụng, nhóm theo khu vực chức năng.",
+      "tags": [
+        "i18n",
+        "locale",
+        "english",
+        "configuration"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "config:src/locales/vi.json",
+      "type": "config",
+      "name": "vi.json",
+      "filePath": "src/locales/vi.json",
+      "summary": "Bản dịch tiếng Việt tương ứng en.json cho toàn bộ chuỗi giao diện.",
+      "tags": [
+        "i18n",
+        "locale",
+        "vietnamese",
+        "configuration"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "config:src/locales/pages/en.json",
+      "type": "config",
+      "name": "en.json",
+      "filePath": "src/locales/pages/en.json",
+      "summary": "Nội dung trang tĩnh (about, terms, privacy) bằng tiếng Anh.",
+      "tags": [
+        "i18n",
+        "content",
+        "legal",
+        "english"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "config:src/locales/pages/vi.json",
+      "type": "config",
+      "name": "vi.json",
+      "filePath": "src/locales/pages/vi.json",
+      "summary": "Nội dung trang tĩnh (about, terms, privacy) bằng tiếng Việt.",
+      "tags": [
+        "i18n",
+        "content",
+        "legal",
+        "vietnamese"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:tests/browserHarness.js",
+      "type": "file",
+      "name": "browserHarness.js",
+      "filePath": "tests/browserHarness.js",
+      "summary": "Harness chạy trong trình duyệt: bootstrap session, FakeDrive, DriveRepo và các store để kiểm thử end-to-end.",
+      "tags": [
+        "test",
+        "harness",
+        "e2e",
+        "fixture"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/docs.test.js",
+      "type": "file",
+      "name": "docs.test.js",
+      "filePath": "tests/docs.test.js",
+      "summary": "Vitest kiểm tra tài liệu dự án nhất quán với mã nguồn.",
+      "tags": [
+        "test",
+        "documentation",
+        "vitest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/i18n.test.js",
+      "type": "file",
+      "name": "i18n.test.js",
+      "filePath": "tests/i18n.test.js",
+      "summary": "Vitest kiểm tra các file locale có cùng khóa và tham số nội suy.",
+      "tags": [
+        "test",
+        "i18n",
+        "vitest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/pages.test.js",
+      "type": "file",
+      "name": "pages.test.js",
+      "filePath": "tests/pages.test.js",
+      "summary": "Vitest kiểm tra cấu trúc nội dung trang tĩnh trong locales/pages.",
+      "tags": [
+        "test",
+        "pages",
+        "vitest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/secureStore.test.js",
+      "type": "file",
+      "name": "secureStore.test.js",
+      "filePath": "tests/secureStore.test.js",
+      "summary": "Vitest kiểm tra vault secureStore: mã hóa, throttle PIN và xóa trạng thái.",
+      "tags": [
+        "test",
+        "security",
+        "vault",
+        "vitest"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:tests/browserHarness.js:bootstrap",
+      "type": "function",
+      "name": "bootstrap",
+      "filePath": "tests/browserHarness.js",
+      "summary": "Khởi tạo môi trường thử nghiệm: dựng FakeDrive, đăng nhập giả, nạp repo và các store.",
+      "tags": [
+        "test",
+        "bootstrap",
+        "fixture"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        10,
+        60
+      ]
+    },
+    {
+      "id": "function:tests/secureStore.test.js:clearThrottle",
+      "type": "function",
+      "name": "clearThrottle",
+      "filePath": "tests/secureStore.test.js",
+      "summary": "Helper xóa trạng thái throttle PIN giữa các test.",
+      "tags": [
+        "test",
+        "helper",
+        "throttle"
+      ],
+      "complexity": "simple",
+      "lineRange": [
+        10,
+        19
+      ]
+    },
+    {
+      "id": "file:tests/setup.js",
+      "type": "file",
+      "name": "setup.js",
+      "filePath": "tests/setup.js",
+      "summary": "File setup cho Vitest: nạp fake-indexeddb và polyfill Web Crypto (webcrypto của Node) khi môi trường jsdom thiếu crypto.subtle.",
+      "tags": [
+        "test",
+        "setup",
+        "polyfill",
+        "indexeddb"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Dùng Object.defineProperty để gán globalThis.crypto khi chưa có subtle."
+    },
+    {
+      "id": "file:vite.config.js",
+      "type": "file",
+      "name": "vite.config.js",
+      "filePath": "vite.config.js",
+      "summary": "Cấu hình Vite cho Vue 3 PWA: alias '@', plugin CSP meta khi build, VitePWA (manifest, workbox, runtime caching cho env-config.js) và cấu hình test Vitest với jsdom.",
+      "tags": [
+        "configuration",
+        "build-system",
+        "pwa",
+        "vite",
+        "security"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Dùng defineConfig dạng hàm với loadEnv để đọc biến VITE_*; CSP chỉ cho phép kết nối tới Google APIs."
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:src/composables/useAutoLock.js",
+      "target": "function:src/composables/useAutoLock.js:useAutoLock",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/composables/useAutoLock.js",
+      "target": "function:src/composables/useAutoLock.js:useAutoLock",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/i18n/index.js",
+      "target": "function:src/i18n/index.js:t",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/i18n/index.js",
+      "target": "function:src/i18n/index.js:t",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/i18n/index.js",
+      "target": "function:src/i18n/index.js:useI18n",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/i18n/index.js",
+      "target": "function:src/i18n/index.js:useI18n",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/i18n/index.js",
+      "target": "function:src/i18n/index.js:currentLocale",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/i18n/index.js",
+      "target": "function:src/i18n/index.js:currentLocale",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/i18n/index.js",
+      "target": "function:src/i18n/index.js:detectLanguage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/i18n/index.js",
+      "target": "function:src/i18n/index.js:detectLanguage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/i18n/index.js",
+      "target": "function:src/i18n/index.js:setLocale",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/i18n/index.js",
+      "target": "function:src/i18n/index.js:setLocale",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/i18n/index.js",
+      "target": "function:src/i18n/index.js:ago",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/i18n/index.js",
+      "target": "function:src/i18n/index.js:ago",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/i18n/index.js",
+      "target": "function:src/i18n/index.js:listOf",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/i18n/index.js",
+      "target": "function:src/i18n/index.js:listOf",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/i18n/index.js",
+      "target": "function:src/i18n/index.js:formatBytes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/i18n/index.js",
+      "target": "function:src/i18n/index.js:formatBytes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/googleAuth.js",
+      "target": "class:src/services/googleAuth.js:AuthError",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/googleAuth.js",
+      "target": "class:src/services/googleAuth.js:AuthError",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/googleAuth.js",
+      "target": "function:src/services/googleAuth.js:buildSignInUrl",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/googleAuth.js",
+      "target": "function:src/services/googleAuth.js:buildSignInUrl",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/googleAuth.js",
+      "target": "function:src/services/googleAuth.js:startSignIn",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/googleAuth.js",
+      "target": "function:src/services/googleAuth.js:startSignIn",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/googleAuth.js",
+      "target": "function:src/services/googleAuth.js:captureRedirect",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/googleAuth.js",
+      "target": "function:src/services/googleAuth.js:captureRedirect",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/googleAuth.js",
+      "target": "function:src/services/googleAuth.js:hasPendingResult",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/googleAuth.js",
+      "target": "function:src/services/googleAuth.js:hasPendingResult",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/googleAuth.js",
+      "target": "function:src/services/googleAuth.js:takePendingResult",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/googleAuth.js",
+      "target": "function:src/services/googleAuth.js:takePendingResult",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/googleAuth.js",
+      "target": "function:src/services/googleAuth.js:exchangeCode",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/googleAuth.js",
+      "target": "function:src/services/googleAuth.js:exchangeCode",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/googleAuth.js",
+      "target": "function:src/services/googleAuth.js:refreshAccessToken",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/googleAuth.js",
+      "target": "function:src/services/googleAuth.js:refreshAccessToken",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/googleAuth.js",
+      "target": "function:src/services/googleAuth.js:revokeToken",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/googleAuth.js",
+      "target": "function:src/services/googleAuth.js:revokeToken",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/googleAuth.js",
+      "target": "function:src/services/googleAuth.js:looksLikeClientId",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/googleAuth.js",
+      "target": "function:src/services/googleAuth.js:looksLikeClientId",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/composables/useAutoLock.js",
+      "target": "file:src/stores/prefs.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/composables/useAutoLock.js",
+      "target": "file:src/stores/session.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/i18n/index.js",
+      "target": "file:src/config.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/main.js",
+      "target": "file:src/App.vue",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/main.js",
+      "target": "file:src/i18n/index.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/main.js",
+      "target": "file:src/router/index.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/main.js",
+      "target": "file:src/services/googleAuth.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/main.js",
+      "target": "file:src/stores/prefs.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/main.js",
+      "target": "file:src/stores/session.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/main.js",
+      "target": "file:src/stores/ui.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/main.js",
+      "target": "file:src/styles/base.css",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/main.js",
+      "target": "file:src/styles/compose.css",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/main.js",
+      "target": "file:src/styles/extra.css",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/main.js",
+      "target": "file:src/styles/feed.css",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/main.js",
+      "target": "file:src/styles/overlays.css",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/main.js",
+      "target": "file:src/styles/pages.css",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/main.js",
+      "target": "file:src/styles/shell.css",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/main.js",
+      "target": "file:src/styles/welcome.css",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/router/index.js",
+      "target": "file:src/config.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/router/index.js",
+      "target": "file:src/stores/session.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/router/index.js",
+      "target": "file:src/stores/ui.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/services/googleAuth.js",
+      "target": "file:src/config.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/services/googleAuth.js",
+      "target": "file:src/services/crypto.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/stores/prefs.js",
+      "target": "file:src/config.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/stores/prefs.js",
+      "target": "file:src/i18n/index.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/ui.test.js",
+      "target": "file:src/stores/ui.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/stores/ui.js",
+      "target": "file:tests/ui.test.js",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/main.js",
+      "target": "file:src/App.vue",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/composables/format.js",
+      "target": "function:src/composables/format.js:plainMentions",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/composables/format.js",
+      "target": "function:src/composables/format.js:plainMentions",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/crypto.js",
+      "target": "class:src/services/crypto.js:CryptoError",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/crypto.js",
+      "target": "class:src/services/crypto.js:CryptoError",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/crypto.js",
+      "target": "function:src/services/crypto.js:deriveKey",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/crypto.js",
+      "target": "function:src/services/crypto.js:deriveKey",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/crypto.js",
+      "target": "function:src/services/crypto.js:encryptBytes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/crypto.js",
+      "target": "function:src/services/crypto.js:encryptBytes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/crypto.js",
+      "target": "function:src/services/crypto.js:decryptBytes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/crypto.js",
+      "target": "function:src/services/crypto.js:decryptBytes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/crypto.js",
+      "target": "function:src/services/crypto.js:encryptJson",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/crypto.js",
+      "target": "function:src/services/crypto.js:encryptJson",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/crypto.js",
+      "target": "function:src/services/crypto.js:decryptJson",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/crypto.js",
+      "target": "function:src/services/crypto.js:decryptJson",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/crypto.js",
+      "target": "function:src/services/crypto.js:createProtection",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/crypto.js",
+      "target": "function:src/services/crypto.js:createProtection",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/crypto.js",
+      "target": "function:src/services/crypto.js:unlockProtection",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/crypto.js",
+      "target": "function:src/services/crypto.js:unlockProtection",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/crypto.js",
+      "target": "function:src/services/crypto.js:rewrapProtection",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/crypto.js",
+      "target": "function:src/services/crypto.js:rewrapProtection",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/crypto.js",
+      "target": "function:src/services/crypto.js:pkcePair",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/crypto.js",
+      "target": "function:src/services/crypto.js:pkcePair",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/crypto.js",
+      "target": "function:src/services/crypto.js:b64e",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/crypto.js",
+      "target": "function:src/services/crypto.js:b64e",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/crypto.js",
+      "target": "function:src/services/crypto.js:b64d",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/crypto.js",
+      "target": "function:src/services/crypto.js:b64d",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/crypto.js",
+      "target": "function:src/services/crypto.js:randomBytes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/crypto.js",
+      "target": "function:src/services/crypto.js:randomBytes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/crypto.js",
+      "target": "function:src/services/crypto.js:sha256Hex",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/crypto.js",
+      "target": "function:src/services/crypto.js:sha256Hex",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/demoRepo.js",
+      "target": "class:src/services/demoRepo.js:DemoRepo",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/demoRepo.js",
+      "target": "class:src/services/demoRepo.js:DemoRepo",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/mentions.js",
+      "target": "function:src/services/mentions.js:extractMentions",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/mentions.js",
+      "target": "function:src/services/mentions.js:extractMentions",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/mentions.js",
+      "target": "function:src/services/mentions.js:tokenize",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/mentions.js",
+      "target": "function:src/services/mentions.js:tokenize",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/mentions.js",
+      "target": "function:src/services/mentions.js:activeMentionQuery",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/mentions.js",
+      "target": "function:src/services/mentions.js:activeMentionQuery",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/mentions.js",
+      "target": "function:src/services/mentions.js:prettyName",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/mentions.js",
+      "target": "function:src/services/mentions.js:prettyName",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/mentions.js",
+      "target": "function:src/services/mentions.js:normEmail",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/mentions.js",
+      "target": "function:src/services/mentions.js:normEmail",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/mentions.js",
+      "target": "function:src/services/mentions.js:isEmail",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/mentions.js",
+      "target": "function:src/services/mentions.js:isEmail",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/postModel.js",
+      "target": "function:src/services/postModel.js:buildPostDoc",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/postModel.js",
+      "target": "function:src/services/postModel.js:buildPostDoc",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/postModel.js",
+      "target": "function:src/services/postModel.js:openPostDoc",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/postModel.js",
+      "target": "function:src/services/postModel.js:openPostDoc",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/postModel.js",
+      "target": "function:src/services/postModel.js:toEntry",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/postModel.js",
+      "target": "function:src/services/postModel.js:toEntry",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/postModel.js",
+      "target": "function:src/services/postModel.js:cleanAudience",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/postModel.js",
+      "target": "function:src/services/postModel.js:cleanAudience",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/postModel.js",
+      "target": "function:src/services/postModel.js:publicMedia",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/postModel.js",
+      "target": "function:src/services/postModel.js:publicMedia",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/postModel.js",
+      "target": "function:src/services/postModel.js:folderNameFor",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/postModel.js",
+      "target": "function:src/services/postModel.js:folderNameFor",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/postModel.js",
+      "target": "function:src/services/postModel.js:shortcutNameFor",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/postModel.js",
+      "target": "function:src/services/postModel.js:shortcutNameFor",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/postModel.js",
+      "target": "function:src/services/postModel.js:snippetOf",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/postModel.js",
+      "target": "function:src/services/postModel.js:snippetOf",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/postModel.js",
+      "target": "function:src/services/postModel.js:normMode",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/postModel.js",
+      "target": "function:src/services/postModel.js:normMode",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/postModel.js",
+      "target": "function:src/services/postModel.js:canCommentWith",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/postModel.js",
+      "target": "function:src/services/postModel.js:canCommentWith",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/postModel.js",
+      "target": "function:src/services/postModel.js:emptyIndex",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/postModel.js",
+      "target": "function:src/services/postModel.js:emptyIndex",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/postModel.js",
+      "target": "function:src/services/postModel.js:byNewest",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/postModel.js",
+      "target": "function:src/services/postModel.js:byNewest",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/repo.js",
+      "target": "class:src/services/repo.js:RepoError",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/repo.js",
+      "target": "class:src/services/repo.js:RepoError",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/repo.js",
+      "target": "class:src/services/repo.js:DriveRepo",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/repo.js",
+      "target": "class:src/services/repo.js:DriveRepo",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/util.js",
+      "target": "function:src/services/util.js:mapLimit",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/util.js",
+      "target": "function:src/services/util.js:mapLimit",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/util.js",
+      "target": "function:src/services/util.js:debounce",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/util.js",
+      "target": "function:src/services/util.js:debounce",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/util.js",
+      "target": "function:src/services/util.js:sleep",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/util.js",
+      "target": "function:src/services/util.js:sleep",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/util.js",
+      "target": "function:src/services/util.js:clone",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/util.js",
+      "target": "function:src/services/util.js:clone",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/composables/format.js",
+      "target": "file:src/services/mentions.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/services/demoRepo.js",
+      "target": "file:src/services/crypto.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/services/demoRepo.js",
+      "target": "file:src/services/mediaKinds.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/services/demoRepo.js",
+      "target": "file:src/services/mentions.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/services/demoRepo.js",
+      "target": "file:src/services/postModel.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/services/demoRepo.js",
+      "target": "file:src/services/repo.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/services/postModel.js",
+      "target": "file:src/services/crypto.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/services/postModel.js",
+      "target": "file:src/services/mediaKinds.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/services/postModel.js",
+      "target": "file:src/services/mentions.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/services/repo.js",
+      "target": "file:src/config.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/services/repo.js",
+      "target": "file:src/services/crypto.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/services/repo.js",
+      "target": "file:src/services/drive.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/services/repo.js",
+      "target": "file:src/services/image.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/services/repo.js",
+      "target": "file:src/services/mediaKinds.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/services/repo.js",
+      "target": "file:src/services/mentions.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/services/repo.js",
+      "target": "file:src/services/postModel.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/services/repo.js",
+      "target": "file:src/services/util.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/crypto.test.js",
+      "target": "file:src/services/crypto.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/mentions.test.js",
+      "target": "file:src/services/mentions.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/services/crypto.js",
+      "target": "file:tests/crypto.test.js",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/services/mentions.js",
+      "target": "file:tests/mentions.test.js",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/services/demoRepo.js",
+      "target": "class:src/services/repo.js:DriveRepo",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "function:src/composables/format.js:plainMentions",
+      "target": "function:src/services/mentions.js:tokenize",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/config.js",
+      "target": "function:src/config.js:redirectUri",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/config.js",
+      "target": "function:src/config.js:redirectUri",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/image.js",
+      "target": "class:src/services/image.js:ImageError",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/image.js",
+      "target": "class:src/services/image.js:ImageError",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/image.js",
+      "target": "function:src/services/image.js:fitWithin",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/image.js",
+      "target": "function:src/services/image.js:fitWithin",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/image.js",
+      "target": "function:src/services/image.js:prepareImage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/image.js",
+      "target": "function:src/services/image.js:prepareImage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/image.js",
+      "target": "function:src/services/image.js:isVideoFile",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/image.js",
+      "target": "function:src/services/image.js:isVideoFile",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/image.js",
+      "target": "function:src/services/image.js:prepareVideo",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/image.js",
+      "target": "function:src/services/image.js:prepareVideo",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/image.js",
+      "target": "function:src/services/image.js:prepareAudio",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/image.js",
+      "target": "function:src/services/image.js:prepareAudio",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/image.js",
+      "target": "function:src/services/image.js:prepareFile",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/image.js",
+      "target": "function:src/services/image.js:prepareFile",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/image.js",
+      "target": "function:src/services/image.js:prepareMedia",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/image.js",
+      "target": "function:src/services/image.js:prepareMedia",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/mediaKinds.js",
+      "target": "function:src/services/mediaKinds.js:extOf",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/mediaKinds.js",
+      "target": "function:src/services/mediaKinds.js:extOf",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/mediaKinds.js",
+      "target": "function:src/services/mediaKinds.js:mimeOf",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/mediaKinds.js",
+      "target": "function:src/services/mediaKinds.js:mimeOf",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/mediaKinds.js",
+      "target": "function:src/services/mediaKinds.js:classify",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/mediaKinds.js",
+      "target": "function:src/services/mediaKinds.js:classify",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/mediaKinds.js",
+      "target": "function:src/services/mediaKinds.js:limitMb",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/mediaKinds.js",
+      "target": "function:src/services/mediaKinds.js:limitMb",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/mediaKinds.js",
+      "target": "function:src/services/mediaKinds.js:isVisual",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/mediaKinds.js",
+      "target": "function:src/services/mediaKinds.js:isVisual",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/mediaKinds.js",
+      "target": "function:src/services/mediaKinds.js:humanSize",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/mediaKinds.js",
+      "target": "function:src/services/mediaKinds.js:humanSize",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/mediaKinds.js",
+      "target": "function:src/services/mediaKinds.js:labelOf",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/mediaKinds.js",
+      "target": "function:src/services/mediaKinds.js:labelOf",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/secureStore.js",
+      "target": "class:src/services/secureStore.js:VaultError",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/secureStore.js",
+      "target": "class:src/services/secureStore.js:VaultError",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/secureStore.js",
+      "target": "class:src/services/secureStore.js:SecureStore",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/secureStore.js",
+      "target": "class:src/services/secureStore.js:SecureStore",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/secureStore.js",
+      "target": "function:src/services/secureStore.js:openDb",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/secureStore.js",
+      "target": "function:src/services/secureStore.js:openDb",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/secureStore.js",
+      "target": "function:src/services/secureStore.js:tx",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/secureStore.js",
+      "target": "function:src/services/secureStore.js:tx",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/stores/draft.js",
+      "target": "function:src/stores/draft.js:useDraftStore",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/stores/draft.js",
+      "target": "function:src/stores/draft.js:useDraftStore",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/image.js",
+      "target": "file:src/config.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/services/image.js",
+      "target": "file:src/services/mediaKinds.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/services/mediaKinds.js",
+      "target": "file:src/config.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/services/secureStore.js",
+      "target": "file:src/config.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/services/secureStore.js",
+      "target": "file:src/services/crypto.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/stores/draft.js",
+      "target": "file:src/config.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/stores/draft.js",
+      "target": "file:src/services/events.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/stores/draft.js",
+      "target": "file:src/services/mediaKinds.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/stores/draft.js",
+      "target": "file:src/services/mentions.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/stores/draft.js",
+      "target": "file:src/stores/people.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/draft.test.js",
+      "target": "file:src/config.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/draft.test.js",
+      "target": "file:src/stores/draft.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/mediaKinds.test.js",
+      "target": "file:src/services/mediaKinds.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/stores/draft.js",
+      "target": "file:tests/draft.test.js",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/services/mediaKinds.js",
+      "target": "file:tests/mediaKinds.test.js",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "function:src/services/image.js:prepareMedia",
+      "target": "function:src/services/mediaKinds.js:classify",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/drive.js",
+      "target": "class:src/services/drive.js:DriveError",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/drive.js",
+      "target": "class:src/services/drive.js:DriveError",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/drive.js",
+      "target": "class:src/services/drive.js:Limiter",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/drive.js",
+      "target": "class:src/services/drive.js:Limiter",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/drive.js",
+      "target": "class:src/services/drive.js:DriveClient",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/drive.js",
+      "target": "class:src/services/drive.js:DriveClient",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/drive.js",
+      "target": "function:src/services/drive.js:qs",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/drive.js",
+      "target": "function:src/services/drive.js:qs",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/events.js",
+      "target": "function:src/services/events.js:on",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/events.js",
+      "target": "function:src/services/events.js:on",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/events.js",
+      "target": "function:src/services/events.js:emit",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/events.js",
+      "target": "function:src/services/events.js:emit",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/stores/people.js",
+      "target": "function:src/stores/people.js:usePeopleStore",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/stores/people.js",
+      "target": "function:src/stores/people.js:usePeopleStore",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/stores/posts.js",
+      "target": "function:src/stores/posts.js:usePostsStore",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/stores/posts.js",
+      "target": "function:src/stores/posts.js:usePostsStore",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/stores/session.js",
+      "target": "function:src/stores/session.js:useSessionStore",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/stores/session.js",
+      "target": "function:src/stores/session.js:useSessionStore",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/stores/people.js",
+      "target": "file:src/services/events.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/stores/people.js",
+      "target": "file:src/services/mentions.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/stores/people.js",
+      "target": "file:src/stores/session.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/stores/posts.js",
+      "target": "file:src/services/events.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/stores/posts.js",
+      "target": "file:src/services/postModel.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/stores/posts.js",
+      "target": "file:src/stores/people.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/stores/posts.js",
+      "target": "file:src/stores/session.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/stores/session.js",
+      "target": "file:src/services/drive.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/stores/session.js",
+      "target": "file:src/services/events.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/stores/session.js",
+      "target": "file:src/services/googleAuth.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/stores/session.js",
+      "target": "file:src/services/mentions.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/stores/session.js",
+      "target": "file:src/services/repo.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/stores/session.js",
+      "target": "file:src/services/secureStore.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/stores/session.js",
+      "target": "class:src/services/repo.js:DriveRepo",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/composables/share.js",
+      "target": "file:src/config.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/chat.test.js",
+      "target": "file:src/composables/share.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/security.test.js",
+      "target": "file:src/composables/share.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/security.test.js",
+      "target": "file:src/services/mentions.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/security.test.js",
+      "target": "file:src/services/postModel.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/composables/share.js",
+      "target": "function:src/composables/share.js:postLink",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/composables/share.js",
+      "target": "function:src/composables/share.js:chatLink",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/composables/share.js",
+      "target": "function:src/composables/share.js:openChat",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/composables/share.js",
+      "target": "function:src/composables/share.js:copyText",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/composables/share.js",
+      "target": "function:src/composables/share.js:postLink",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/composables/share.js",
+      "target": "function:src/composables/share.js:chatLink",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/composables/share.js",
+      "target": "function:src/composables/share.js:openChat",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/composables/share.js",
+      "target": "function:src/composables/share.js:copyText",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/composables/share.js:openChat",
+      "target": "function:src/composables/share.js:chatLink",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/composables/share.js",
+      "target": "file:tests/chat.test.js",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/composables/share.js",
+      "target": "file:tests/security.test.js",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:tests/repo.test.js",
+      "target": "file:tests/fakeDrive.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/session.test.js",
+      "target": "file:tests/fakeDrive.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/fakeDrive.js",
+      "target": "class:tests/fakeDrive.js:FakeDrive",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/fakeDrive.js",
+      "target": "class:tests/fakeDrive.js:FakeDrive",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/fakeDrive.js",
+      "target": "function:tests/fakeDrive.js:splitAnd",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/repo.test.js",
+      "target": "function:tests/repo.test.js:mk",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/session.test.js",
+      "target": "function:tests/session.test.js:installFetch",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/session.test.js",
+      "target": "function:tests/session.test.js:simulateGoogleRedirect",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "service:docker-compose.yml",
+      "target": "service:Dockerfile",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:.dockerignore",
+      "target": "service:Dockerfile",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:.env.example",
+      "target": "config:.env",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "config:.env.example",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.vi.md",
+      "target": "config:.env.example",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.vi.md",
+      "target": "document:README.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:CLAUDE.vi.md",
+      "target": "document:CLAUDE.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:package.json",
+      "target": "file:index.html",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:.env",
+      "target": "file:index.html",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:index.html",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/ARCHITECTURE.vi.md",
+      "target": "document:docs/ARCHITECTURE.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/GOOGLE_SETUP.vi.md",
+      "target": "document:docs/GOOGLE_SETUP.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/OPEN_FORMAT.vi.md",
+      "target": "document:docs/OPEN_FORMAT.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/SECURITY.vi.md",
+      "target": "document:docs/SECURITY.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/main.js",
+      "target": "file:src/styles/base.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/main.js",
+      "target": "file:src/styles/compose.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/main.js",
+      "target": "file:src/styles/extra.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/main.js",
+      "target": "file:src/styles/feed.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/main.js",
+      "target": "file:src/styles/overlays.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/main.js",
+      "target": "file:src/styles/pages.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/main.js",
+      "target": "file:src/styles/shell.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/main.js",
+      "target": "file:src/styles/welcome.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:scripts/gen-icons.mjs",
+      "target": "function:scripts/gen-icons.mjs:logo",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/auth/ChangePinDialog.vue",
+      "target": "file:src/components/auth/PinPad.vue",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/components/auth/CredentialsForm.vue",
+      "target": "file:src/components/ui/AppIcon.vue",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/components/auth/PinPad.vue",
+      "target": "file:src/components/ui/AppIcon.vue",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/components/layout/AppShell.vue",
+      "target": "file:src/components/layout/RightRail.vue",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/components/layout/AppShell.vue",
+      "target": "file:src/components/ui/AppIcon.vue",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/components/layout/AppShell.vue",
+      "target": "file:src/components/ui/AppAvatar.vue",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/components/layout/DriveCard.vue",
+      "target": "file:src/components/ui/AppIcon.vue",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/components/layout/RightRail.vue",
+      "target": "file:src/components/layout/DriveCard.vue",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/components/layout/RightRail.vue",
+      "target": "file:src/components/ui/AppIcon.vue",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/components/post/PostCard.vue",
+      "target": "file:src/components/post/RichText.vue",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/components/post/PostCard.vue",
+      "target": "file:src/components/post/PhotoGrid.vue",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/components/post/PostCard.vue",
+      "target": "file:src/components/post/AttachmentList.vue",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/components/post/PostCard.vue",
+      "target": "file:src/components/post/SealedBox.vue",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/components/post/PostCard.vue",
+      "target": "file:src/components/ui/AppAvatar.vue",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/components/post/PostCard.vue",
+      "target": "file:src/components/ui/AppIcon.vue",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/components/post/AttachmentList.vue",
+      "target": "file:src/components/ui/AppIcon.vue",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/components/post/AudienceRow.vue",
+      "target": "file:src/components/ui/AppAvatar.vue",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/components/post/AudienceRow.vue",
+      "target": "file:src/components/ui/AppIcon.vue",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/components/post/CameraDialog.vue",
+      "target": "file:src/components/ui/AppIcon.vue",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/components/post/MentionTextarea.vue",
+      "target": "file:src/components/ui/AppAvatar.vue",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/components/post/PhotoGrid.vue",
+      "target": "file:src/components/ui/AppIcon.vue",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/components/post/SealedBox.vue",
+      "target": "file:src/components/ui/AppIcon.vue",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:docker/nginx.conf",
+      "target": "config:docker/security-headers.conf",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:docker/40-specact-env.sh",
+      "target": "file:public/env-config.js",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:docker/nginx.conf",
+      "target": "file:public/env-config.js",
+      "type": "serves",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "config:src/assets/fonts.css",
+      "target": "file:src/main.js",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:eslint.config.js",
+      "target": "file:src/components/layout/AppShell.vue",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tests/browserHarness.js",
+      "target": "function:tests/browserHarness.js:bootstrap",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/browserHarness.js",
+      "target": "function:tests/browserHarness.js:bootstrap",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/secureStore.test.js",
+      "target": "function:tests/secureStore.test.js:clearThrottle",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/services/secureStore.js",
+      "target": "file:tests/secureStore.test.js",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:src/locales/en.json",
+      "target": "file:src/i18n/index.js",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tests/i18n.test.js",
+      "target": "config:src/locales/en.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:tests/pages.test.js",
+      "target": "config:src/locales/pages/en.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:src/locales/pages/en.json",
+      "target": "file:src/views/LegalView.vue",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:src/locales/vi.json",
+      "target": "file:src/i18n/index.js",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tests/i18n.test.js",
+      "target": "config:src/locales/vi.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:tests/pages.test.js",
+      "target": "config:src/locales/pages/vi.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:src/locales/pages/vi.json",
+      "target": "file:src/views/LegalView.vue",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/views/WelcomeView.vue",
+      "target": "file:src/components/ui/OrbitGraphic.vue",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/views/WelcomeView.vue",
+      "target": "file:src/components/ui/AppLogo.vue",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/views/LegalView.vue",
+      "target": "file:src/components/ui/AppLogo.vue",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/views/FriendsView.vue",
+      "target": "file:src/components/ui/ChatButton.vue",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/views/PostView.vue",
+      "target": "file:src/components/ui/ChatButton.vue",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/views/ComposeView.vue",
+      "target": "file:src/components/ui/SecureImage.vue",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/views/FriendsView.vue",
+      "target": "file:src/components/ui/SecureImage.vue",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/components/ui/AvatarPile.vue",
+      "target": "file:src/i18n/index.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:vite.config.js",
+      "target": "file:tests/setup.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/i18n/index.js",
+      "target": "config:src/locales/en.json",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7,
+      "recoveredFromImportMap": true
+    },
+    {
+      "source": "file:src/main.js",
+      "target": "config:src/assets/fonts.css",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7,
+      "recoveredFromImportMap": true
+    }
+  ],
+  "layers": [
+    {
+      "id": "layer:app-bootstrap",
+      "name": "Khởi động & Định tuyến",
+      "description": "Điểm vào ứng dụng Vue (main.js, App.vue, index.html), Vue Router, i18n runtime và cấu hình runtime.",
+      "nodeIds": [
+        "file:src/App.vue",
+        "file:src/i18n/index.js",
+        "file:src/main.js",
+        "file:src/router/index.js",
+        "file:src/config.js",
+        "file:index.html"
+      ]
+    },
+    {
+      "id": "layer:views",
+      "name": "Views (Trang)",
+      "description": "Các trang cấp route: Feed, Compose, Friends, Settings, Welcome, Post, Legal, NotFound.",
+      "nodeIds": [
+        "file:src/views/ComposeView.vue",
+        "file:src/views/FeedView.vue",
+        "file:src/views/FriendsView.vue",
+        "file:src/views/LegalView.vue",
+        "file:src/views/NotFoundView.vue",
+        "file:src/views/PostView.vue",
+        "file:src/views/SettingsView.vue",
+        "file:src/views/WelcomeView.vue"
+      ]
+    },
+    {
+      "id": "layer:components",
+      "name": "Components",
+      "description": "Vue components tái sử dụng: auth, layout, post và ui primitives.",
+      "nodeIds": [
+        "file:src/components/auth/ChangePinDialog.vue",
+        "file:src/components/auth/CredentialsForm.vue",
+        "file:src/components/auth/PinPad.vue",
+        "file:src/components/layout/AppShell.vue",
+        "file:src/components/layout/DriveCard.vue",
+        "file:src/components/layout/LegalLinks.vue",
+        "file:src/components/layout/RightRail.vue",
+        "file:src/components/post/AttachmentList.vue",
+        "file:src/components/post/AudienceRow.vue",
+        "file:src/components/post/CameraDialog.vue",
+        "file:src/components/post/MentionTextarea.vue",
+        "file:src/components/post/PhotoGrid.vue",
+        "file:src/components/post/PostCard.vue",
+        "file:src/components/post/RichText.vue",
+        "file:src/components/post/SealedBox.vue",
+        "file:src/components/ui/AppAvatar.vue",
+        "file:src/components/ui/AppIcon.vue",
+        "file:src/components/ui/AppLogo.vue",
+        "file:src/components/ui/AvatarPile.vue",
+        "file:src/components/ui/ChatButton.vue",
+        "file:src/components/ui/ConfirmDialog.vue",
+        "file:src/components/ui/Lightbox.vue",
+        "file:src/components/ui/OrbitGraphic.vue",
+        "file:src/components/ui/SecureImage.vue",
+        "file:src/components/ui/ToastHost.vue"
+      ]
+    },
+    {
+      "id": "layer:state",
+      "name": "Pinia Stores & Composables",
+      "description": "Pinia stores (posts, session, people, draft, prefs, ui) và composables dùng chung.",
+      "nodeIds": [
+        "file:src/composables/useAutoLock.js",
+        "file:src/stores/prefs.js",
+        "file:src/stores/ui.js",
+        "file:src/composables/format.js",
+        "file:src/stores/draft.js",
+        "file:src/stores/people.js",
+        "file:src/stores/posts.js",
+        "file:src/stores/session.js",
+        "file:src/composables/share.js"
+      ]
+    },
+    {
+      "id": "layer:services",
+      "name": "Services (Drive & Bảo mật)",
+      "description": "Logic Google Drive, auth, repo, crypto, secureStore (vault mã hóa cục bộ), xử lý ảnh, mentions và mô hình post; không có backend.",
+      "nodeIds": [
+        "file:src/services/googleAuth.js",
+        "file:src/services/crypto.js",
+        "file:src/services/demoRepo.js",
+        "file:src/services/mentions.js",
+        "file:src/services/postModel.js",
+        "file:src/services/repo.js",
+        "file:src/services/util.js",
+        "file:src/services/image.js",
+        "file:src/services/mediaKinds.js",
+        "file:src/services/secureStore.js",
+        "file:src/services/drive.js",
+        "file:src/services/events.js"
+      ]
+    },
+    {
+      "id": "layer:styles-i18n",
+      "name": "Styles & Locales",
+      "description": "CSS toàn cục, fonts và file dịch en/vi cho i18n.",
+      "nodeIds": [
+        "file:src/styles/base.css",
+        "file:src/styles/compose.css",
+        "file:src/styles/extra.css",
+        "file:src/styles/feed.css",
+        "file:src/styles/overlays.css",
+        "file:src/styles/pages.css",
+        "file:src/styles/shell.css",
+        "file:src/styles/welcome.css",
+        "config:src/assets/fonts.css",
+        "config:src/locales/en.json",
+        "config:src/locales/vi.json",
+        "config:src/locales/pages/en.json",
+        "config:src/locales/pages/vi.json"
+      ]
+    },
+    {
+      "id": "layer:tests",
+      "name": "Tests (Vitest)",
+      "description": "Unit/integration tests, fake Drive, browser harness và setup cho Vitest.",
+      "nodeIds": [
+        "file:tests/ui.test.js",
+        "file:tests/crypto.test.js",
+        "file:tests/mentions.test.js",
+        "file:tests/draft.test.js",
+        "file:tests/mediaKinds.test.js",
+        "file:tests/chat.test.js",
+        "file:tests/security.test.js",
+        "file:tests/fakeDrive.js",
+        "file:tests/repo.test.js",
+        "file:tests/session.test.js",
+        "file:tests/browserHarness.js",
+        "file:tests/docs.test.js",
+        "file:tests/i18n.test.js",
+        "file:tests/pages.test.js",
+        "file:tests/secureStore.test.js",
+        "file:tests/setup.js"
+      ]
+    },
+    {
+      "id": "layer:infra",
+      "name": "Infrastructure & CI/CD",
+      "description": "Docker, nginx, script env runtime, GitHub Actions CI và script sinh icon.",
+      "nodeIds": [
+        "service:Dockerfile",
+        "service:docker-compose.yml",
+        "config:.dockerignore",
+        "pipeline:.github/workflows/ci.yml",
+        "file:docker/40-specact-env.sh",
+        "file:scripts/gen-icons.mjs",
+        "service:docker/nginx.conf",
+        "config:docker/security-headers.conf"
+      ]
+    },
+    {
+      "id": "layer:docs",
+      "name": "Documentation",
+      "description": "README, CLAUDE.md và tài liệu docs/ (kiến trúc, bảo mật, Google setup, open format) bản en/vi.",
+      "nodeIds": [
+        "document:CLAUDE.md",
+        "document:CLAUDE.vi.md",
+        "document:README.md",
+        "document:README.vi.md",
+        "document:docs/ARCHITECTURE.md",
+        "document:docs/ARCHITECTURE.vi.md",
+        "document:docs/GOOGLE_SETUP.md",
+        "document:docs/GOOGLE_SETUP.vi.md",
+        "document:docs/OPEN_FORMAT.md",
+        "document:docs/OPEN_FORMAT.vi.md",
+        "document:docs/SECURITY.md",
+        "document:docs/SECURITY.vi.md"
+      ]
+    },
+    {
+      "id": "layer:config",
+      "name": "Project Config",
+      "description": "Cấu hình build/lint/env: package.json, vite.config.js, eslint, .env và public/env-config.js.",
+      "nodeIds": [
+        "config:.env",
+        "config:.env.example",
+        "config:package.json",
+        "config:.ua/config.json",
+        "config:eslint.config.js",
+        "file:public/env-config.js",
+        "file:vite.config.js"
+      ]
+    }
+  ],
+  "tour": [
+    {
+      "order": 1,
+      "title": "Tổng quan SPECACT",
+      "description": "README.md giới thiệu SPECACT: một PWA Vue 3 + Vite lưu bài viết trong chính Google Drive của người dùng, không có backend. Đây là điểm xuất phát để hiểu tính năng, cách cài đặt và những hạn chế. ARCHITECTURE.md bổ sung cấu trúc thư mục Drive và schema post.json/comments.json/likes.json.",
+      "nodeIds": [
+        "document:README.md",
+        "document:docs/ARCHITECTURE.md"
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Điểm vào ứng dụng",
+      "description": "index.html là trang gốc của PWA và mount Vue app qua /src/main.js. main.js tạo app, cắm Pinia và router, nạp CSS và xử lý redirect OAuth. App.vue chọn layout (AppShell hoặc bare) và render các thành phần toàn cục như ToastHost, ConfirmDialog, Lightbox.",
+      "nodeIds": [
+        "file:index.html",
+        "file:src/main.js",
+        "file:src/App.vue"
+      ]
+    },
+    {
+      "order": 3,
+      "title": "Cấu hình và runtime env",
+      "description": "config.js đọc biến VITE_* và là module được import nhiều nhất, nên mọi giới hạn và tùy chọn đều đi qua đây. Khi chạy trong container, env-config.js được ghi đè lúc khởi động để đổi cấu hình mà không cần build lại. .env.example là mẫu các biến cấu hình.",
+      "nodeIds": [
+        "file:src/config.js",
+        "file:public/env-config.js",
+        "config:.env.example"
+      ]
+    },
+    {
+      "order": 4,
+      "title": "Routing và điều hướng",
+      "description": "Router định nghĩa các route và navigation guard dựa trên session và ui store, quyết định người dùng thấy Welcome hay Feed. Các view như WelcomeView, FeedView, ComposeView, PostView là các màn hình chính xây trên App.vue ở bước trước.",
+      "nodeIds": [
+        "file:src/router/index.js",
+        "file:src/views/WelcomeView.vue",
+        "file:src/views/FeedView.vue",
+        "file:src/views/ComposeView.vue",
+        "file:src/views/PostView.vue"
+      ]
+    },
+    {
+      "order": 5,
+      "title": "Đăng nhập Google OAuth và session",
+      "description": "googleAuth.js thực hiện OAuth2 PKCE với Google, còn session store quản lý vault PIN, token refresh và khởi tạo DriveRepo. Events.js là pub/sub nhỏ giúp các store tự dọn state khi session kết thúc mà không import lẫn nhau. GOOGLE_SETUP.md hướng dẫn tạo OAuth client.",
+      "nodeIds": [
+        "file:src/services/googleAuth.js",
+        "file:src/stores/session.js",
+        "file:src/services/events.js",
+        "document:docs/GOOGLE_SETUP.md"
+      ]
+    },
+    {
+      "order": 6,
+      "title": "Mã hóa và vault bảo mật",
+      "description": "crypto.js dựa trên WebCrypto (AES-GCM, dẫn xuất khóa từ mật khẩu) và được nhiều module dùng. secureStore.js lưu bí mật mã hóa trong IndexedDB và mở khóa bằng PIN. SECURITY.md giải thích mô hình đe dọa: ai thấy gì, bài có mật khẩu và link công khai.",
+      "nodeIds": [
+        "file:src/services/crypto.js",
+        "file:src/services/secureStore.js",
+        "document:docs/SECURITY.md"
+      ]
+    },
+    {
+      "order": 7,
+      "title": "Mô hình dữ liệu bài viết",
+      "description": "postModel.js định nghĩa schema, vai trò và các hàm dựng/mở tài liệu bài viết, entry chỉ mục và tên thư mục. OPEN_FORMAT.md mô tả đặc tả mở để ứng dụng khác có thể đọc dữ liệu, thể hiện nguyên tắc data sovereignty.",
+      "nodeIds": [
+        "file:src/services/postModel.js",
+        "document:docs/OPEN_FORMAT.md"
+      ]
+    },
+    {
+      "order": 8,
+      "title": "Drive client và DriveRepo",
+      "description": "drive.js là client REST cho Google Drive v3 với retry/backoff và giới hạn đồng thời. repo.js (DriveRepo) là domain layer biến bài viết, bình luận và chia sẻ thành thư mục, file và quyền trên Drive. demoRepo.js có cùng giao diện cho chế độ demo không cần Drive.",
+      "nodeIds": [
+        "file:src/services/drive.js",
+        "file:src/services/repo.js",
+        "file:src/services/demoRepo.js"
+      ]
+    },
+    {
+      "order": 9,
+      "title": "Pinia stores",
+      "description": "posts store là trung tâm: đồng bộ index, mở và giải mã bài, bình luận, like, tạo/sửa/xóa. draft, people, prefs và ui store quản lý bản nháp, danh bạ, tùy chọn người dùng và trạng thái UI như toast, lightbox. Các store này dựa trên session và repo ở các bước trước.",
+      "nodeIds": [
+        "file:src/stores/posts.js",
+        "file:src/stores/draft.js",
+        "file:src/stores/people.js",
+        "file:src/stores/prefs.js",
+        "file:src/stores/ui.js"
+      ]
+    },
+    {
+      "order": 10,
+      "title": "Media và mention",
+      "description": "mediaKinds.js phân loại ảnh/video/audio/file và đặt giới hạn dung lượng, còn image.js resize ảnh phía client trước khi tải lên Drive. mentions.js chuẩn hóa email và tokenize @mention, được nhiều module dùng lại.",
+      "nodeIds": [
+        "file:src/services/mediaKinds.js",
+        "file:src/services/image.js",
+        "file:src/services/mentions.js"
+      ]
+    },
+    {
+      "order": 11,
+      "title": "Component giao diện",
+      "description": "AppShell và RightRail tạo khung ứng dụng, PostCard cùng RichText, PhotoGrid, SealedBox hiển thị bài viết, và SecureImage tải ảnh bảo mật bằng token phiên. AppIcon là component được dùng rộng rãi nhất. Các style CSS như base.css, feed.css, shell.css cung cấp design tokens và layout.",
+      "nodeIds": [
+        "file:src/components/layout/AppShell.vue",
+        "file:src/components/post/PostCard.vue",
+        "file:src/components/post/SealedBox.vue",
+        "file:src/components/ui/SecureImage.vue",
+        "file:src/styles/base.css"
+      ]
+    },
+    {
+      "order": 12,
+      "title": "i18n song ngữ",
+      "description": "Lớp i18n nhẹ phát hiện ngôn ngữ, dịch khóa có tham số và định dạng thời gian tương đối. Chuỗi giao diện nằm trong en.json và vi.json, còn nội dung trang tĩnh nằm trong locales/pages.",
+      "nodeIds": [
+        "file:src/i18n/index.js",
+        "config:src/locales/en.json",
+        "config:src/locales/vi.json"
+      ]
+    },
+    {
+      "order": 13,
+      "title": "PWA, build và triển khai",
+      "description": "vite.config.js cấu hình Vite với VitePWA, alias và CSP meta khi build. Dockerfile build multi-stage rồi serve bằng nginx non-root, nginx.conf phục vụ SPA và security-headers.conf giới hạn CSP tới Google. Script 40-specact-env.sh sinh env-config.js lúc container khởi động.",
+      "nodeIds": [
+        "file:vite.config.js",
+        "service:Dockerfile",
+        "service:docker/nginx.conf",
+        "config:docker/security-headers.conf",
+        "file:docker/40-specact-env.sh"
+      ],
+      "languageLesson": "Multi-stage build dùng nhiều lệnh FROM: stage đầu có toolchain để build, stage cuối chỉ chứa file tĩnh và nginx nên image nhỏ và an toàn hơn."
+    },
+    {
+      "order": 14,
+      "title": "Kiểm thử và CI",
+      "description": "Các test vitest như crypto.test.js, repo.test.js, session.test.js kiểm tra mã hóa, repository và vòng đời session. fakeDrive.js giả lập Google Drive trong bộ nhớ để test không cần mạng, và security.test.js bảo vệ khỏi dữ liệu post.json không tin cậy. Workflow ci.yml chạy lint và test mỗi lần push.",
+      "nodeIds": [
+        "file:tests/fakeDrive.js",
+        "file:tests/repo.test.js",
+        "file:tests/session.test.js",
+        "file:tests/security.test.js",
+        "pipeline:.github/workflows/ci.yml"
+      ]
+    }
+  ]
+}

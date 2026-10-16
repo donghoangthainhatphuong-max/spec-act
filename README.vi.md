@@ -8,7 +8,7 @@
 
 [English](README.md) · [Tiếng Việt](README.vi.md) · [中文](README.zh.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Русский](README.ru.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Español](README.es.md) · [ไทย](README.th.md) · [Bahasa Indonesia](README.id.md) · [हिन्दी](README.hi.md) · [العربية](README.ar.md) · [Türkçe](README.tr.md)
 
-[Kiến trúc](docs/ARCHITECTURE.vi.md) · [Bảo mật](docs/SECURITY.vi.md) · [Thiết lập Google](docs/GOOGLE_SETUP.vi.md) · [Định dạng mở](docs/OPEN_FORMAT.vi.md)
+[Kiến trúc](docs/ARCHITECTURE.vi.md) · [Bảo mật](docs/SECURITY.vi.md) · [Thiết lập Google](docs/GOOGLE_SETUP.vi.md) · [Định dạng mở](docs/OPEN_FORMAT.vi.md) · [Thương hiệu](docs/BRAND.vi.md)
 
 </div>
 
@@ -84,6 +84,7 @@ docker compose up -d --build
 | `VITE_ENABLE_DEMO` | `true` | Bật chế độ dùng thử |
 | `VITE_DRIVE_ROOT_FOLDER` / `VITE_DRIVE_POSTS_FOLDER` | `SPECACT` / `posts` | Tên thư mục trên Drive |
 | `VITE_CHAT_URL_TEMPLATE` | `https://mail.google.com/chat/?authuser={me}#chat/dm/{email}` | Đường dẫn mở cuộc trò chuyện Google Chat (`{me}` = email của bạn, `{email}` = email bạn bè) |
+| `VITE_LINK_PREVIEW_URL` | _(để trống = tắt)_ | Xem trước liên kết (Open Graph): địa chỉ một dịch vụ trả về HTML của trang, `{url}` = link đã dán. Trình duyệt không đọc được site khác (CORS) và SPECACT không có máy chủ nên bạn tự chọn dịch vụ — nó thấy mọi link bạn dán. Docker tự thêm origin của nó vào CSP. |
 | `VITE_DRIVE_SHARED_FOLDER` / `VITE_GROUP_SHARED` | `shared` / `true` | Thư mục chứa lối tắt tới các bài được chia sẻ với bạn; bật/tắt việc gom nhóm |
 | `VITE_OAUTH_SCOPES` | `…/auth/drive` | Phạm vi OAuth (cần `drive` đầy đủ để mở bài người khác chia sẻ) |
 | `VITE_OAUTH_REDIRECT_URI` | *(tự động)* | Ghi đè redirect URI nếu cần |
